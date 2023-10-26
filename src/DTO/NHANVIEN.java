@@ -12,15 +12,15 @@ public class NHANVIEN {
 	public NHANVIEN() {
 	}
 	
-	public NHANVIEN(String maNV, String tenNV, String gioiTinh, String ngaySinh, String sdt, String diaChi,
+	public NHANVIEN(String maNV, String tenNV, String gioiTinh, String ngaySinh, String diaChi, String sdt,
 			int trangThai) {
 		super();
 		this.maNV = maNV;
 		this.tenNV = tenNV;
 		this.gioiTinh = gioiTinh;
 		this.ngaySinh = ngaySinh;
-		this.sdt = sdt;
 		this.diaChi = diaChi;
+		this.sdt = sdt;
 		this.trangThai = trangThai;
 	}
 	
