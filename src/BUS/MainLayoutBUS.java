@@ -21,6 +21,7 @@ import GUI.NhanVienGUI;
 import GUI.NhapHangGUI;
 import GUI.PhieuNhapGUI;
 import GUI.TaiKhoanGUI;
+import GUI.ThongKeGUI;
 
 public class MainLayoutBUS {
 	private JLabel lblList[];
@@ -415,8 +416,7 @@ public class MainLayoutBUS {
 				}
 				
 				if(flag[8] == 0) {
-					JPanel pnlThongKe = new JPanel();
-					pnlThongKe.add(new JLabel("Thống kê"));
+					JPanel pnlThongKe = new ThongKeGUI();
 					pnlContent.add(pnlThongKe, "8");
 					cardLayout.show(pnlContent, "8");
 				}else {
