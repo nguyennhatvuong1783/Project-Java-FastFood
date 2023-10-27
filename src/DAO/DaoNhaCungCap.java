@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
-import DTO.KHACHHANG;
 import DTO.NHACUNGCAP;
 
 public class DaoNhaCungCap implements DaoInterface<NHACUNGCAP>{

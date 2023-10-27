@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
-import DTO.CHUCNANG;
 import DTO.MONAN;
 
 public class DaoMonAn implements DaoInterface<MONAN>{

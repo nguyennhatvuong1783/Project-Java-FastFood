@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
-import DTO.CHITIETHOADON;
 import DTO.CHITIETMONAN;
 
 public class DaoChiTietMonAn implements DaoInterface<CHITIETMONAN>{

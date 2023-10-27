@@ -16,11 +16,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import BUS.MainLayoutBUS;
 
 public class MainLayoutGUI {
 	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	
-	private JFrame f;
+	public JFrame f;
 	private JPanel pnlTitle;
 	private JPanel pnlLeftMenu;
 	private JPanel pnlContent;
@@ -33,9 +36,15 @@ public class MainLayoutGUI {
 	public JLabel lblKhuyenMai;
 	public JLabel lblTaiKhoan;
 	public JLabel lblThongKe;
+	public JTabbedPane tpBanHang;
+	public JTabbedPane tpNhapHang;
+	public JTabbedPane tpSanPham;
 	
 	public MainLayoutGUI() {
 		init();
+		new MainLayoutBUS(lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
+				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe, pnlContent, tpBanHang, 
+				tpNhapHang, tpSanPham);
 	}
 	
 	private void init() {
@@ -54,8 +63,13 @@ public class MainLayoutGUI {
 		
 		pnlTitle = Title();
 		pnlLeftMenu = LeftMenu();
+		pnlContent = new JPanel();
+		tpBanHang = new JTabbedPane();
+		tpNhapHang = new JTabbedPane();
+		tpSanPham = new JTabbedPane();
 		f.add(pnlTitle, BorderLayout.NORTH);
 		f.add(pnlLeftMenu, BorderLayout.WEST);
+		f.add(pnlContent, BorderLayout.CENTER);
 		
 		f.setVisible(true);
 	}
@@ -163,57 +177,73 @@ public class MainLayoutGUI {
 		pnlLeftMenu.setBackground(new Color(62,78,94));
 		
 		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource("/icon_img/logo-fast-food-150.png")));
-		lblLogo.setPreferredSize(new Dimension(200, 170));
+		lblLogo.setPreferredSize(new Dimension(190, 170));
 		
 		JPanel pnlMenu = new JPanel(new GridLayout(9, 1));
 		pnlMenu.setBackground(new Color(62,78,94));
 		
 		lblBanHang = new JLabel("Bán hàng", JLabel.CENTER);
-		lblBanHang.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblBanHang.setIcon(new ImageIcon(getClass().getResource("/icon_img/sell-30.png")));
 		lblBanHang.setForeground(new Color(255,255,255));
 		lblBanHang.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		lblBanHang.setBackground(new Color(39,199,183));
+		lblBanHang.setBackground(new Color(62,78,94));
 		lblBanHang.setOpaque(true);
 		
 		lblNhapHang = new JLabel("Nhập hàng", JLabel.CENTER);
-		lblNhapHang.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblNhapHang.setIcon(new ImageIcon(getClass().getResource("/icon_img/truck-30.png")));
 		lblNhapHang.setForeground(new Color(255,255,255));
 		lblNhapHang.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblNhapHang.setBackground(new Color(62,78,94));
+		lblNhapHang.setOpaque(true);
 		
 		lblSanPham = new JLabel("Sản phẩm", JLabel.CENTER);
-		lblSanPham.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblSanPham.setIcon(new ImageIcon(getClass().getResource("/icon_img/burger-30.png")));
 		lblSanPham.setForeground(new Color(255,255,255));
 		lblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblSanPham.setBackground(new Color(62,78,94));
+		lblSanPham.setOpaque(true);
 		
 		lblNhanVien = new JLabel("Nhân viên", JLabel.CENTER);
-		lblNhanVien.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblNhanVien.setIcon(new ImageIcon(getClass().getResource("/icon_img/employee-30.png")));
 		lblNhanVien.setForeground(new Color(255,255,255));
 		lblNhanVien.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblNhanVien.setBackground(new Color(62,78,94));
+		lblNhanVien.setOpaque(true);
 		
 		lblKhachHang = new JLabel("Khách hàng", JLabel.CENTER);
-		lblKhachHang.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblKhachHang.setIcon(new ImageIcon(getClass().getResource("/icon_img/id-card-30.png")));
 		lblKhachHang.setForeground(new Color(255,255,255));
 		lblKhachHang.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblKhachHang.setBackground(new Color(62,78,94));
+		lblKhachHang.setOpaque(true);
 		
 		lblNhaCungCap = new JLabel("Nhà cung cấp", JLabel.CENTER);
-		lblNhaCungCap.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblNhaCungCap.setIcon(new ImageIcon(getClass().getResource("/icon_img/supplier-30.png")));
 		lblNhaCungCap.setForeground(new Color(255,255,255));
 		lblNhaCungCap.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblNhaCungCap.setBackground(new Color(62,78,94));
+		lblNhaCungCap.setOpaque(true);
 		
 		lblKhuyenMai = new JLabel("Khuyến mãi", JLabel.CENTER);
-		lblKhuyenMai.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblKhuyenMai.setIcon(new ImageIcon(getClass().getResource("/icon_img/promotion-30.png")));
 		lblKhuyenMai.setForeground(new Color(255,255,255));
 		lblKhuyenMai.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblKhuyenMai.setBackground(new Color(62,78,94));
+		lblKhuyenMai.setOpaque(true);
 		
 		lblTaiKhoan = new JLabel("Tài khoản", JLabel.CENTER);
-		lblTaiKhoan.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblTaiKhoan.setIcon(new ImageIcon(getClass().getResource("/icon_img/account-30.png")));
 		lblTaiKhoan.setForeground(new Color(255,255,255));
 		lblTaiKhoan.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblTaiKhoan.setBackground(new Color(62,78,94));
+		lblTaiKhoan.setOpaque(true);
 		
 		lblThongKe = new JLabel("Thống kê", JLabel.CENTER);
-		lblThongKe.setIcon(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		lblThongKe.setIcon(new ImageIcon(getClass().getResource("/icon_img/circle-chart-30.png")));
 		lblThongKe.setForeground(new Color(255,255,255));
 		lblThongKe.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		lblThongKe.setBackground(new Color(62,78,94));
+		lblThongKe.setOpaque(true);
 		
 		pnlMenu.add(lblBanHang);
 		pnlMenu.add(lblNhapHang);

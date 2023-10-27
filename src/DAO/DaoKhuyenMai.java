@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
-import DTO.CHUCNANG;
 import DTO.KHUYENMAI;
 
 public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{

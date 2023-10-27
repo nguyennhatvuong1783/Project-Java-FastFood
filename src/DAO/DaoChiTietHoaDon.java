@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import Connection.connec;
 import DTO.CHITIETHOADON;
-import DTO.HOADON;
 
 public class DaoChiTietHoaDon implements DaoInterface<CHITIETHOADON> {
 	

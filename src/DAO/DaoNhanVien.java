@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
-import DTO.KHACHHANG;
 import DTO.NHANVIEN;
 
 public class DaoNhanVien implements DaoInterface<NHANVIEN>{

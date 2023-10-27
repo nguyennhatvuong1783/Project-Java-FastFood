@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
-import DTO.CHUCNANG;
 import DTO.TAIKHOAN;
 
 public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
