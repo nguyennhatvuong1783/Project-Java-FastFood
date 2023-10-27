@@ -4,17 +4,15 @@ public class TAIKHOAN {
 	private String userName;
 	private String matKhau;
 	private int trangThai;
-	private String maQuyen;
 	
 	public TAIKHOAN() {
 	}
 
-	public TAIKHOAN(String userName, String matKhau, int trangThai, String maQuyen) {
+	public TAIKHOAN(String userName, String matKhau, int trangThai) {
 		super();
 		this.userName = userName;
 		this.matKhau = matKhau;
 		this.trangThai = trangThai;
-		this.maQuyen = maQuyen;
 	}
 
 	public String getUserName() {
@@ -40,16 +38,4 @@ public class TAIKHOAN {
 	public void setTrangThai(int trangThai) {
 		this.trangThai = trangThai;
 	}
-
-	public String getMaQuyen() {
-		return maQuyen;
-	}
-
-	public void setMaQuyen(String maQuyen) {
-		this.maQuyen = maQuyen;
-	}
-	
-	
-	
-
 }

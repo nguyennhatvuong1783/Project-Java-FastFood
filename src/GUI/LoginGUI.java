@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import BUS.LoginBUS;
+
 public class LoginGUI {
 	private JFrame f;
 	private JLabel lblBg, lblLogo, lblTitle, lblUser, lblPass, lblLogin, lblClose;
@@ -21,6 +23,7 @@ public class LoginGUI {
 	
 	public LoginGUI() {
 		init();
+		new LoginBUS(f, txtUser, txtPass, lblLogin);
 	}
 	
 	private void init() {

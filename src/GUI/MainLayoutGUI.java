@@ -21,7 +21,8 @@ import javax.swing.JTabbedPane;
 import BUS.MainLayoutBUS;
 
 public class MainLayoutGUI {
-	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().
+			getScreenDevices()[0];
 	
 	public JFrame f;
 	private JPanel pnlTitle;
@@ -49,7 +50,8 @@ public class MainLayoutGUI {
 	
 	private void init() {
 		f = new JFrame();
-		f.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("./icon_img/logo-fast-food-40.png")));
+		f.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(
+				"./icon_img/logo-fast-food-40.png")));
 		f.setUndecorated(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
@@ -87,9 +89,11 @@ public class MainLayoutGUI {
 		lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblTitle.setForeground(new Color(255,255,255));
 		
-		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource("/icon_img/logo-fast-food-30.png")));
+		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource(
+				"/icon_img/logo-fast-food-30.png")));
 		
-		JLabel lblExit = new JLabel(new ImageIcon(getClass().getResource("/icon_img/close-lblexit-20.png")));
+		JLabel lblExit = new JLabel(new ImageIcon(getClass().getResource(
+				"/icon_img/close-lblexit-20.png")));
 		lblExit.setPreferredSize(new Dimension(42,32));
 		lblExit.setBackground(new Color(255,165,0));
 		lblExit.setOpaque(true);
@@ -111,7 +115,8 @@ public class MainLayoutGUI {
 			}
 		});
 				
-		JLabel lblScreen = new JLabel(new ImageIcon(getClass().getResource("/icon_img/square-lblscreen-20.png")));
+		JLabel lblScreen = new JLabel(new ImageIcon(getClass().getResource(
+				"/icon_img/square-lblscreen-20.png")));
 		lblScreen.setPreferredSize(new Dimension(42,32));
 		lblScreen.setBackground(new Color(255,165,0));
 		lblScreen.setOpaque(true);
@@ -121,10 +126,12 @@ public class MainLayoutGUI {
 				super.mouseClicked(e);
 	        	if(device.getFullScreenWindow() == null) {
 		            device.setFullScreenWindow(f);
-		            lblScreen.setIcon(new ImageIcon(getClass().getResource("/icon_img/restore-down-lblscreen-20.png")));
+		            lblScreen.setIcon(new ImageIcon(getClass().getResource(
+		            		"/icon_img/restore-down-lblscreen-20.png")));
 	        	}else {
 		            device.setFullScreenWindow(null);
-		            lblScreen.setIcon(new ImageIcon(getClass().getResource("/icon_img/square-lblscreen-20.png")));
+		            lblScreen.setIcon(new ImageIcon(getClass().getResource(
+		            		"/icon_img/square-lblscreen-20.png")));
 				}
 			}
 			@Override
@@ -139,7 +146,8 @@ public class MainLayoutGUI {
 			}
 		});
 
-		JLabel lblHide = new JLabel(new ImageIcon(getClass().getResource("/icon_img/line-lblhide-20.png")));
+		JLabel lblHide = new JLabel(new ImageIcon(getClass().getResource(
+				"/icon_img/line-lblhide-20.png")));
 		lblHide.setPreferredSize(new Dimension(42,32));
 		lblHide.setBackground(new Color(255,165,0));
 		lblHide.setOpaque(true);
@@ -176,7 +184,8 @@ public class MainLayoutGUI {
 		JPanel pnlLeftMenu = new JPanel(new BorderLayout());
 		pnlLeftMenu.setBackground(new Color(62,78,94));
 		
-		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource("/icon_img/logo-fast-food-150.png")));
+		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource(
+				"/icon_img/logo-fast-food-150.png")));
 		lblLogo.setPreferredSize(new Dimension(190, 170));
 		
 		JPanel pnlMenu = new JPanel(new GridLayout(9, 1));
