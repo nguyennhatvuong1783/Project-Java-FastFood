@@ -43,12 +43,13 @@ public class MainLayoutGUI {
 	public JTabbedPane tpBanHang;
 	public JTabbedPane tpNhapHang;
 	public JTabbedPane tpSanPham;
+	public JTabbedPane tpTaiKhoan;
 	
 	public MainLayoutGUI() {
 		init();
 		new MainLayoutBUS(lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe, pnlContent, tpBanHang, 
-				tpNhapHang, tpSanPham);
+				tpNhapHang, tpSanPham, tpTaiKhoan);
 	}
 	
 	private void init() {
@@ -72,6 +73,7 @@ public class MainLayoutGUI {
 		tpBanHang = new JTabbedPane();
 		tpNhapHang = new JTabbedPane();
 		tpSanPham = new JTabbedPane();
+		tpTaiKhoan = new JTabbedPane();
 		f.add(pnlTitle, BorderLayout.NORTH);
 		f.add(pnlLeftMenu, BorderLayout.WEST);
 		f.add(pnlContent, BorderLayout.CENTER);

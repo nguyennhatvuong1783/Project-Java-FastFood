@@ -23,6 +23,7 @@ import GUI.NhaCungCapGUI;
 import GUI.NhanVienGUI;
 import GUI.NhapHangGUI;
 import GUI.PhieuNhapGUI;
+import GUI.QuyenGUI;
 import GUI.TaiKhoanGUI;
 import GUI.ThongKeGUI;
 
@@ -35,7 +36,7 @@ public class MainLayoutBUS {
 	public MainLayoutBUS(JLabel lblBanHang, JLabel lblNhapHang, JLabel lblSanPham, 
 			JLabel lblNhanVien, JLabel lblKhachHang, JLabel lblNhaCungCap, JLabel lblKhuyenMai, 
 			JLabel lblTaiKhoan, JLabel lblThongKe, JPanel pnlContent, JTabbedPane tpBanHang, 
-			JTabbedPane tpNhapHang, JTabbedPane tpSanPham) {
+			JTabbedPane tpNhapHang, JTabbedPane tpSanPham, JTabbedPane tpTaiKhoan) {
 		JLabel list[] = {lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe};
 		lblList = list;
@@ -48,7 +49,7 @@ public class MainLayoutBUS {
 		EventKhachHang(lblKhachHang);
 		EventNhaCungCap(lblNhaCungCap);
 		EventKhuyenMai(lblKhuyenMai);
-		EventTaiKhoan(lblTaiKhoan);
+		EventTaiKhoan(lblTaiKhoan, tpTaiKhoan);
 		EventThongKe(lblThongKe);
 		pnlContent.add(new JPanel(), "null");
 	}
@@ -349,7 +350,7 @@ public class MainLayoutBUS {
 		});
 	}
 	
-	public void EventTaiKhoan(JLabel lblTaiKhoan) {
+	public void EventTaiKhoan(JLabel lblTaiKhoan, JTabbedPane tpTaiKhoan) {
 		lblTaiKhoan.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -378,7 +379,10 @@ public class MainLayoutBUS {
 				
 				if(flag[7] == 0) {
 					JPanel pnlTaiKhoan = new TaiKhoanGUI();
-					pnlContent.add(pnlTaiKhoan, "7");
+					JPanel pnlQuyen = new QuyenGUI();
+					tpTaiKhoan.add("Tài khoản", pnlTaiKhoan);
+					tpTaiKhoan.add("Quyền", pnlQuyen);
+					pnlContent.add(tpTaiKhoan, "7");
 					cardLayout.show(pnlContent, "7");
 				}else {
 					cardLayout.show(pnlContent, "7");
