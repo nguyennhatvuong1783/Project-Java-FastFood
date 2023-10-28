@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import BUS.MainLayoutBUS;
 
@@ -85,7 +88,8 @@ public class MainLayoutGUI {
 		pnlControl.setLayout(new FlowLayout(0, 0, FlowLayout.RIGHT));
 		pnlControl.setBackground(new Color(255,165,0));
 		
-		JLabel lblTitle = new JLabel("Phần mềm quản lý cửa hàng thức ăn nhanh", JLabel.CENTER);
+		JLabel lblTitle = new JLabel("                          "
+				+ "Phần mềm quản lý cửa hàng thức ăn nhanh", JLabel.CENTER);
 		lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblTitle.setForeground(new Color(255,255,255));
 		
@@ -271,6 +275,17 @@ public class MainLayoutGUI {
 	}
 	
 	public static void main(String[] args) {
-		new MainLayoutGUI();
+		try {
+			UIDefaults def = UIManager.getLookAndFeelDefaults();
+			def.put("TabbedPane.font", new Font("Times New Roman", Font.PLAIN, 17));
+			def.put("TabbedPane.foreground", new Color(255,255,255));
+			def.put("TabbedPane.selected", new Color(79,148,205));
+	        def.put("TabbedPane.background", new Color(190,190,190));
+	        def.put("TabbedPane.tabInsets", new Insets(3,17,3,17));
+
+			new MainLayoutGUI();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

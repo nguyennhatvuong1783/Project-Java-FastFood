@@ -1,5 +1,8 @@
 package BUS;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -8,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import DAO.DaoTaiKhoan;
 import DTO.TAIKHOAN;
@@ -30,7 +35,18 @@ public class LoginBUS {
 					if((txtUser.getText()).equals(taikhoan.getUserName())) {
 						if((String.valueOf(txtPass.getPassword())).equals(taikhoan.getMatKhau())) {
 							f.dispose();
-							new MainLayoutGUI();
+							try {
+								UIDefaults def = UIManager.getLookAndFeelDefaults();
+								def.put("TabbedPane.font", new Font("Times New Roman", Font.PLAIN, 17));
+								def.put("TabbedPane.foreground", new Color(255,255,255));
+								def.put("TabbedPane.selected", new Color(79,148,205));
+						        def.put("TabbedPane.background", new Color(190,190,190));
+						        def.put("TabbedPane.tabInsets", new Insets(3,17,3,17));
+
+								new MainLayoutGUI();
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
 						}
 					}
 				}

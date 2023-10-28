@@ -3,12 +3,15 @@ package BUS;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import GUI.BanHangGUI;
 import GUI.HoaDonGUI;
@@ -80,7 +83,6 @@ public class MainLayoutBUS {
 				if(flag[0] == 0) {
 					JPanel pnlBanHang = new BanHangGUI();
 					JPanel pnlHoaDon = new HoaDonGUI();
-					tpBanHang.setPreferredSize(new Dimension(200, 20));
 					tpBanHang.add("Bán hàng", pnlBanHang);
 					tpBanHang.add("Hóa đơn", pnlHoaDon);
 					pnlContent.add(tpBanHang, "0");
