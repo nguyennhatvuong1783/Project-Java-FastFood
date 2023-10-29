@@ -2,6 +2,7 @@ package GiaoDienChuan;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 
@@ -25,13 +26,14 @@ public class MyTable extends JPanel{
 		pane = new JScrollPane(table);
 		pane.getVerticalScrollBar().setUnitIncrement(8);
 		
+		table.setPreferredScrollableViewportSize(new Dimension(0, 500));
 		table.setFillsViewportHeight(true);
-		table.setFont(new Font("Segoe UI ", Font.BOLD, 16));
+		table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		
 		//Color
-		table.getTableHeader().setBackground(new Color(225, 112, 85));
-		table.getTableHeader().setForeground(new Color(0, 0, 0));
-		table.setBackground(new Color(225, 112, 85));
+		table.getTableHeader().setBackground(new Color(255,165,0));
+		table.getTableHeader().setForeground(new Color(255, 255, 255));
+		table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 		table.setForeground(new Color(0, 0, 0));
 		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

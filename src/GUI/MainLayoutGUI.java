@@ -136,6 +136,7 @@ public class MainLayoutGUI {
 		            		"/icon_img/restore-down-lblscreen-20.png")));
 	        	}else {
 		            device.setFullScreenWindow(null);
+		            f.setSize(new Dimension(1000, 600));
 		            lblScreen.setIcon(new ImageIcon(getClass().getResource(
 		            		"/icon_img/square-lblscreen-20.png")));
 				}

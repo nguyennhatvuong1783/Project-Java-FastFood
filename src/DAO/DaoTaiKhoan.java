@@ -19,12 +19,13 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "INSERT INTO TAIKHOAN(USERNAME, MATKHAU, TRANGTHAI) " +
+			String sql = "INSERT INTO TAIKHOAN(USERNAME, MATKHAU, TRANGTHAI, MAQUYEN) " +
 			             " VALUES(?,?,?)";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getUserName());
 			pst.setString(2, t.getMatKhau());
 			pst.setInt(3, t.getTrangThai());
+			pst.setString(4, t.getMaQuyen());
 			ketqua = pst.executeUpdate();
 			
 			System.out.println("Bạn đã thực thi " + sql);
@@ -73,6 +74,7 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
 			pst.setString(1, t.getUserName());
 			pst.setString(2, t.getMatKhau());
 			pst.setInt(3, t.getTrangThai());
+			pst.setString(4, t.getMaQuyen());
 			ketqua = pst.executeUpdate();
 			
 			System.out.println("Bạn đã thực thi " + sql);
@@ -100,8 +102,9 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
 				String userName = rs.getString("USERNAME");
 				String matKhau = rs.getString("MATKHAU");
 				int trangThai = rs.getInt("TRANGTHAI");
+				String maQuyen = rs.getString("MAQUYEN");
 				
-				TAIKHOAN a = new TAIKHOAN(userName, matKhau, trangThai);
+				TAIKHOAN a = new TAIKHOAN(userName, matKhau, trangThai, maQuyen);
 				ketqua.add(a);
 			}
 			connec.closeConnection(c);
@@ -126,8 +129,9 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
 				String userName = rs.getString("USERNAME");
 				String matKhau = rs.getString("MATKHAU");
 				int trangThai = rs.getInt("TRANGTHAI");
+				String maQuyen = rs.getString("MAQUYEN");
 				
-				ketqua = new TAIKHOAN(userName, matKhau, trangThai);
+				ketqua = new TAIKHOAN(userName, matKhau, trangThai, maQuyen);
 			}
 			connec.closeConnection(c);
 		} catch (SQLException e) {
@@ -150,8 +154,9 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
 				String userName = rs.getString("USERNAME");
 				String matKhau = rs.getString("MATKHAU");
 				int trangThai = rs.getInt("TRANGTHAI");
+				String maQuyen = rs.getString("MAQUYEN");
 				
-				TAIKHOAN a = new TAIKHOAN(userName, matKhau, trangThai);
+				TAIKHOAN a = new TAIKHOAN(userName, matKhau, trangThai, maQuyen);
 				ketqua.add(a);
 			}
 			connec.closeConnection(c);
