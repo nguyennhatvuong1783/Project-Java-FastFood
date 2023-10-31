@@ -24,8 +24,7 @@ import javax.swing.UIManager;
 import BUS.MainLayoutBUS;
 
 public class MainLayoutGUI {
-	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().
-			getScreenDevices()[0];
+	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	public JFrame f;
 	private JPanel pnlTitle;
@@ -44,12 +43,13 @@ public class MainLayoutGUI {
 	public JTabbedPane tpNhapHang;
 	public JTabbedPane tpSanPham;
 	public JTabbedPane tpTaiKhoan;
+	public JLabel lblLogOut;
 	
 	public MainLayoutGUI() {
 		init();
-		new MainLayoutBUS(lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
+		new MainLayoutBUS(f, lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe, pnlContent, tpBanHang, 
-				tpNhapHang, tpSanPham, tpTaiKhoan);
+				tpNhapHang, tpSanPham, tpTaiKhoan, lblLogOut);
 	}
 	
 	private void init() {
@@ -59,12 +59,9 @@ public class MainLayoutGUI {
 		f.setUndecorated(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
-		f.setSize(new Dimension(1000, 600));
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		int w = d.width;
-		int h = d.height;
-		int x = (w - f.getSize().width) / 2;
-		int y = (h - f.getSize().height) / 2;
+		f.setSize(new Dimension(1200, 800));
+		int x = (d.width - f.getSize().width) / 2;
+		int y = (d.height - f.getSize().height) / 2;
 		f.setLocation(x, y);
 		
 		pnlTitle = Title();
@@ -130,15 +127,20 @@ public class MainLayoutGUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-	        	if(device.getFullScreenWindow() == null) {
-		            device.setFullScreenWindow(f);
-		            lblScreen.setIcon(new ImageIcon(getClass().getResource(
-		            		"/icon_img/restore-down-lblscreen-20.png")));
-	        	}else {
-		            device.setFullScreenWindow(null);
-		            f.setSize(new Dimension(1000, 600));
+	        	if(f.getSize().width == d.width && f.getSize().height == d.height) {
+	        		f.setSize(new Dimension(1200, 800));
+	        		int x = (d.width - f.getSize().width) / 2;
+	        		int y = (d.height - f.getSize().height) / 2;
+	        		f.setLocation(x, y);
+
 		            lblScreen.setIcon(new ImageIcon(getClass().getResource(
 		            		"/icon_img/square-lblscreen-20.png")));
+	        	}else {
+	        		f.setSize(d);
+	        		f.setLocation(0, 0);
+	        		
+		            lblScreen.setIcon(new ImageIcon(getClass().getResource(
+		            		"/icon_img/restore-down-lblscreen-20.png")));
 				}
 			}
 			@Override
@@ -176,6 +178,25 @@ public class MainLayoutGUI {
 			}
 		});
 		
+		lblLogOut = new JLabel(new ImageIcon(getClass().getResource(
+				"/icon_img/icons8-log-out-30.png")));
+		lblLogOut.setPreferredSize(new Dimension(42,32));
+		lblLogOut.setBackground(new Color(255,165,0));
+		lblLogOut.setOpaque(true);
+		lblLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				super.mouseEntered(e);
+				lblLogOut.setBackground(new Color(255,95,0));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				super.mouseExited(e);
+				lblLogOut.setBackground(new Color(255,165,0));
+			}
+		});
+		
+		pnlControl.add(lblLogOut);
 		pnlControl.add(lblHide);
 		pnlControl.add(lblScreen);
 		pnlControl.add(lblExit);
@@ -193,7 +214,7 @@ public class MainLayoutGUI {
 		
 		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource(
 				"/icon_img/logo-fast-food-150.png")));
-		lblLogo.setPreferredSize(new Dimension(190, 170));
+		lblLogo.setPreferredSize(new Dimension(215, 170));
 		
 		JPanel pnlMenu = new JPanel(new GridLayout(9, 1));
 		pnlMenu.setBackground(new Color(62,78,94));

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -13,6 +14,7 @@ import GUI.BanHangGUI;
 import GUI.HoaDonGUI;
 import GUI.KhachHangGUI;
 import GUI.KhuyenMaiGUI;
+import GUI.LoginGUI;
 import GUI.MonAnGUI;
 import GUI.NguyenLieuGUI;
 import GUI.NhaCungCapGUI;
@@ -29,10 +31,10 @@ public class MainLayoutBUS {
 	private JPanel pnlContent;
 	private CardLayout cardLayout = new CardLayout();
 	
-	public MainLayoutBUS(JLabel lblBanHang, JLabel lblNhapHang, JLabel lblSanPham, 
+	public MainLayoutBUS(JFrame f, JLabel lblBanHang, JLabel lblNhapHang, JLabel lblSanPham, 
 			JLabel lblNhanVien, JLabel lblKhachHang, JLabel lblNhaCungCap, JLabel lblKhuyenMai, 
 			JLabel lblTaiKhoan, JLabel lblThongKe, JPanel pnlContent, JTabbedPane tpBanHang, 
-			JTabbedPane tpNhapHang, JTabbedPane tpSanPham, JTabbedPane tpTaiKhoan) {
+			JTabbedPane tpNhapHang, JTabbedPane tpSanPham, JTabbedPane tpTaiKhoan, JLabel lblLogOut) {
 		JLabel list[] = {lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe};
 		lblList = list;
@@ -47,6 +49,7 @@ public class MainLayoutBUS {
 		EventKhuyenMai(lblKhuyenMai);
 		EventTaiKhoan(lblTaiKhoan, tpTaiKhoan);
 		EventThongKe(lblThongKe);
+		EventLogOut(f, lblLogOut);
 		pnlContent.add(new JPanel(), "null");
 	}
 	
@@ -427,6 +430,17 @@ public class MainLayoutBUS {
 				
 				flag[8] = 2;
 				lblThongKe.setBackground(new Color(39,199,183));
+			}
+		});
+	}
+	
+	public void EventLogOut(JFrame f, JLabel lblLogOut) {
+		lblLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				f.dispose();
+				new LoginGUI();
 			}
 		});
 	}

@@ -158,15 +158,15 @@ ALTER TABLE CHITIETMONAN ADD CONSTRAINT CTMA_MANL_FK FOREIGN KEY (MANL) REFERENC
 INSERT INTO NHANVIEN(MANV, TENNV, GIOITINH, NGAYSINH, DIACHI, SDT)
 VALUES
 ('admin', N'Nguyễn Văn A', N'nam', '2003-08-17', N'Quận 1, Thành phố Hồ Chí Minh', '0123456789'),
-('NV1', N'Trần Thị B', N'nữ', '2001-09-18', N'Quận 2, Thành phố Hồ Chí Minh', '0987654321'),
-('NV2', N'Lê Văn C', N'nam', '2004-10-19', N'Quận 3, Thành phố Hồ Chí Minh', '0123123123'),
-('NV3', N'Nguyễn Thị D', N'nữ', '1999-11-20', N'Quận 4, Thành phố Hồ Chí Minh', '0456456456'),
-('NV4', N'Phan Văn E', N'nam', '2000-12-21', N'Quận 5, Thành phố Hồ Chí Minh', '0789789789')
+('NV001', N'Trần Thị B', N'nữ', '2001-09-18', N'Quận 2, Thành phố Hồ Chí Minh', '0987654321'),
+('NV002', N'Lê Văn C', N'nam', '2004-10-19', N'Quận 3, Thành phố Hồ Chí Minh', '0123123123'),
+('NV003', N'Nguyễn Thị D', N'nữ', '1999-11-20', N'Quận 4, Thành phố Hồ Chí Minh', '0456456456'),
+('NV004', N'Phan Văn E', N'nam', '2000-12-21', N'Quận 5, Thành phố Hồ Chí Minh', '0789789789')
 
 INSERT INTO TAIKHOAN(USERNAME, MATKHAU)
 VALUES
 ('admin', 'admin'),
-('NV1', 'nv1'),
-('NV2', 'nv2'),
-('NV3', 'nv3'),
-('NV4', 'nv4')
+('NV001', 'nv001'),
+('NV002', 'nv002'),
+('NV003', 'nv003'),
+('NV004', 'nv004')
