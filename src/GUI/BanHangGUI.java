@@ -9,6 +9,6 @@ public class BanHangGUI extends JPanel{
 	}
 	
 	public void init() {
-		this.add(new JLabel("Bán hàng GUI"));
+		
 	}
 }

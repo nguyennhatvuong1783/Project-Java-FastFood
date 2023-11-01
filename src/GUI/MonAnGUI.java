@@ -37,6 +37,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.border.EmptyBorder;
 
 import BUS.MonAnBus;
 import DTO.MONAN;
@@ -77,6 +78,7 @@ public class MonAnGUI extends JPanel{
 		//this
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JLabel lblTitle = new JLabel("QUẢN LÝ MÓN ĂN", JLabel.CENTER);
+		lblTitle.setBorder(new EmptyBorder(5, 0, 0, 0));
 		lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		
 		//pnlMonAn
@@ -112,12 +114,12 @@ public class MonAnGUI extends JPanel{
 		txtDonGia = new JTextField();
 		cbLoai = new JTextField();
 		
-		txtMaMA.setPreferredSize(new Dimension(450, 10));
-		txtTenMA.setPreferredSize(new Dimension(450, 10));
-		txtSL.setPreferredSize(new Dimension(450, 10));
-		txtDonViTinh.setPreferredSize(new Dimension(450, 10));
-		txtDonGia.setPreferredSize(new Dimension(450, 10));
-		cbLoai.setPreferredSize(new Dimension(450, 10));
+		txtMaMA.setPreferredSize(new Dimension(300, 25));
+		txtTenMA.setPreferredSize(new Dimension(300, 25));
+		txtSL.setPreferredSize(new Dimension(300, 25));
+		txtDonViTinh.setPreferredSize(new Dimension(300, 25));
+		txtDonGia.setPreferredSize(new Dimension(300, 25));
+		cbLoai.setPreferredSize(new Dimension(326, 30));
 		
 		gbclbl.ipadx = 9;
 		gbclbl.ipady = 5;
@@ -163,11 +165,11 @@ public class MonAnGUI extends JPanel{
 		JPanel pnlImage = new JPanel();
 		BoxLayout layout = new BoxLayout(pnlImage, BoxLayout.Y_AXIS);
 		pnlImage.setLayout(layout);
-		pnlImage.setPreferredSize(new Dimension(450, 200));
+		pnlImage.setPreferredSize(new Dimension(450, 250));
 		
 		lblHinhAnh = new JLabel();
 		lblHinhAnh.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		lblHinhAnh.setMaximumSize(new Dimension(160, 150));		
+		lblHinhAnh.setMaximumSize(new Dimension(200, 190));		
 		btnChonAnh = new FileButton();
 		btnChonAnh.setText("Chọn ảnh");
 		
@@ -177,10 +179,7 @@ public class MonAnGUI extends JPanel{
 		pnlImage.add(lblHinhAnh);
 		pnlImage.add(Box.createRigidArea(new Dimension(0, 3)));
 		pnlImage.add(btnChonAnh);
-		
-		pnlInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		pnlImage.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+				
 		pnlMonAn.add(pnlInfo);
 		pnlMonAn.add(pnlImage);
 		
@@ -189,7 +188,7 @@ public class MonAnGUI extends JPanel{
 		lblTimKiem.setFont(new Font("Times New Roman", Font.BOLD, 16));
 
 		txtTimKiem = new JTextField();
-		txtTimKiem.setPreferredSize(new Dimension(0, 20));
+		txtTimKiem.setPreferredSize(new Dimension(400, 25));
 		
 		JPanel pnlTimKiem = new JPanel(new GridBagLayout());
 		
@@ -288,10 +287,6 @@ public class MonAnGUI extends JPanel{
 		});
 
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-		pnlMonAn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		pnlTimKiem.setAlignmentX(Component.CENTER_ALIGNMENT);
-		pnlbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		pnlMonAnTable.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		//this add
 		this.add(lblTitle);
