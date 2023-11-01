@@ -75,11 +75,11 @@ public class DaoMonAn implements DaoInterface<MONAN>{
 			String sql = "UPDATE MONAN " +
 			             " SET TENMA=? "+
 					     ", SL=? "+
-			             ", DONVITINH "+
-					     ", DONGIA "+
-			             ", HINHANH "+
-					     ", LOAI "+
-			             ", TRANGTHAI "+
+			             ", DONVITINH=? "+
+					     ", DONGIA=? "+
+			             ", HINHANH=? "+
+					     ", LOAI=? "+
+			             ", TRANGTHAI=? "+
 					     " WHERE MAMA=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setNString(1, t.getTenMonAn());

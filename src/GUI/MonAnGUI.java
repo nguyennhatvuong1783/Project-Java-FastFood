@@ -9,18 +9,37 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import BUS.MonAnBus;
+import DTO.MONAN;
 import GiaoDienChuan.ExportExcelButton;
 import GiaoDienChuan.FileButton;
 import GiaoDienChuan.ImportExcelButton;
@@ -31,13 +50,13 @@ import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
 
 public class MonAnGUI extends JPanel{
-	public MyTable pnlMonAnTable;
+	public static MyTable pnlMonAnTable;
 	public JTextField txtMaMA;
 	public JTextField txtTenMA;
 	public JTextField txtSL;
 	public JTextField txtDonViTinh;
 	public JTextField txtDonGia;
-	public JComboBox<String> cbLoai;
+	public JTextField cbLoai;
 	public JLabel lblHinhAnh;
 	public JButton btnChonAnh;
 	public JButton btnThem;
@@ -47,6 +66,8 @@ public class MonAnGUI extends JPanel{
 	public JButton btnXuat;
 	public JButton btnLamMoi;
 	public JTextField txtTimKiem;
+	
+	MonAnBus mAnBus = new MonAnBus();
 	
 	public MonAnGUI() {
 		init();
@@ -89,7 +110,7 @@ public class MonAnGUI extends JPanel{
 		txtSL.setEditable(false);
 		txtDonViTinh = new JTextField();
 		txtDonGia = new JTextField();
-		cbLoai = new JComboBox<String>();
+		cbLoai = new JTextField();
 		
 		txtMaMA.setPreferredSize(new Dimension(450, 10));
 		txtTenMA.setPreferredSize(new Dimension(450, 10));
@@ -189,6 +210,38 @@ public class MonAnGUI extends JPanel{
 		btnXuat = new ExportExcelButton();
 		btnLamMoi = new RefreshButton();
 		
+		//sự kiện
+		addDocumentListener(txtTimKiem);
+		btnThem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FormThemMonAn a = new FormThemMonAn();
+				a.addWindowListener(new WindowAdapter() {
+					@Override
+					 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+		                clearInfo();
+		                mAnBus.readDB();
+		                mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
+		            }
+				});
+			}
+		});
+		btnLamMoi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clearInfo();
+				mAnBus.readDB();
+				mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
+			}
+		});
+		btnXoa.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listenerXoa();
+			}
+		});
+		
 		JPanel pnlbtn = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 0));
 		pnlbtn.add(btnThem);
 		pnlbtn.add(btnSua);
@@ -201,7 +254,39 @@ public class MonAnGUI extends JPanel{
 		pnlMonAnTable = new MyTable();
 		String[] headers = {"Mã món ăn", "Tên món ăn", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
 		pnlMonAnTable.setHeaders(headers);
-		
+		mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
+		pnlMonAnTable.getTable().addMouseListener(new MouseListener() {		
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				tableMouseClicked(e);
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}			
+			@Override
+			public void mouseEntered(MouseEvent e) {				
+			}			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+								
+			}
+		});
+		pnlMonAnTable.addKeyListener(new KeyListener() {			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				tableKeyRelease(e);
+			}		
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlMonAn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTimKiem.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -218,5 +303,126 @@ public class MonAnGUI extends JPanel{
 		this.add(pnlbtn);
 		this.add(Box.createRigidArea(new Dimension(0,3)));
 		this.add(pnlMonAnTable);
+		
 	}
+	
+	 public void showInfo(int selectedIndex) {
+		 if (selectedIndex!=-1) {
+			 String maMA = pnlMonAnTable.getValueAt(selectedIndex, 0);
+			 String tenMA = pnlMonAnTable.getValueAt(selectedIndex, 1);
+			 String soLuong	= pnlMonAnTable.getValueAt(selectedIndex, 2);
+			 String donViTinh	= pnlMonAnTable.getValueAt(selectedIndex, 3);
+			 String donGia	= pnlMonAnTable.getValueAt(selectedIndex, 4);
+			 String Loai	= pnlMonAnTable.getValueAt(selectedIndex, 5);
+			 String path = mAnBus.getHinhAnh(maMA);
+			 setTextForTxt(maMA, tenMA, soLuong, donViTinh, donGia, Loai, path);
+		}
+	 }
+	 
+	 public void clearInfo() {
+		 txtMaMA.setText("");
+		 txtTenMA.setText("");
+		 txtSL.setText("");
+		 txtDonViTinh.setText("");
+		 txtDonGia.setText("");
+		 cbLoai.setText("");
+		 lblHinhAnh.setIcon(null);
+	 }
+	 
+	 public void setTextForTxt(String maMA, String tenMA, String soLuong, String donViTinh, String donGia, String Loai, String path) {
+		 txtMaMA.setText(maMA);
+		 txtTenMA.setText(tenMA);
+		 txtSL.setText(soLuong);
+		 txtDonViTinh.setText(donViTinh);
+		 txtDonGia.setText(donGia);
+		 cbLoai.setText(Loai);
+		 lblHinhAnh.setIcon(loadImage(path, 150, 160));
+	 }
+	 
+	 public void tableMouseClicked(java.awt.event.MouseEvent evt) {
+		 int index = pnlMonAnTable.getTable().getSelectedRow();
+		 showInfo(index);
+	 }
+	 
+	 public void tableKeyRelease(java.awt.event.KeyEvent key) {
+		 if (key.getKeyCode() == KeyEvent.VK_UP || key.getKeyCode() == KeyEvent.VK_DOWN) {
+			 int index = pnlMonAnTable.getTable().getSelectedRow();
+			 showInfo(index);
+		}
+	 }
+	 
+	 public void listenerXoa() {
+		 int index = pnlMonAnTable.getTable().getSelectedRow();
+		 if (index==-1) {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn món ăn cần xóa");
+		}else {
+			if (JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa món ăn","Chú ý",JOptionPane.YES_NO_OPTION)==JOptionPane.OK_OPTION) {
+				mAnBus.xoaMonAn(pnlMonAnTable.getValueAt(index, 0));
+				JOptionPane.showMessageDialog(this, "Xóa thành công");
+				mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
+				clearInfo();
+			}
+		}
+	 }
+	 
+	 public void searchMonAn() {
+		 String request = txtTimKiem.getText();
+		 if (request!=null) {
+			mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
+		}
+		 else {
+			 mAnBus.setDataToTable(mAnBus.searchMonAn(request), pnlMonAnTable);
+		}
+	 }
+	 
+	 public Icon loadImage(String path, int width, int height) {
+	        File file = new File(path);
+	        BufferedImage image = null;
+	        try {
+				image = ImageIO.read(file);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+	        ImageIcon img = new ImageIcon(image);
+	        
+	        int ix = img.getIconWidth();
+	        int iy = img.getIconHeight();
+	        int dx = 0, dy = 0;
+	        if (width / height > ix / iy) {
+	            dy = height;
+	            dx = dy * ix / iy;
+	        } else {
+	            dx = width;
+	            dy = dx * ix / iy;
+	        }
+	        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
+	        return new ImageIcon(imgScale);
+	  }
+	 
+	 private void addDocumentListener(JTextField tx) {
+	        // https://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield
+	        tx.getDocument().addDocumentListener(new DocumentListener() {
+	            @Override
+	            public void changedUpdate(DocumentEvent e) {
+	                txSearchOnChange();
+	            }
+
+				@Override
+	            public void removeUpdate(DocumentEvent e) {
+	                txSearchOnChange();
+	            }
+
+	            @Override
+	            public void insertUpdate(DocumentEvent e) {
+	                txSearchOnChange();
+	            }
+	        });
+	    }
+
+	   private void txSearchOnChange() {
+			mAnBus.setDataToTable(mAnBus.searchMonAn(txtTimKiem.getText()), pnlMonAnTable);
+			
+		}
+
+	
 }

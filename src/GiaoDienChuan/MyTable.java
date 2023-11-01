@@ -22,7 +22,12 @@ public class MyTable extends JPanel{
 		setLayout(new BorderLayout());
 		
 		table = new JTable();
-		model = new DefaultTableModel();
+		model = new DefaultTableModel() {
+				 @Override
+			     public boolean isCellEditable(int row, int column) {
+			        return false;
+			     }
+		};
 		pane = new JScrollPane(table);
 		pane.getVerticalScrollBar().setUnitIncrement(8);
 		
@@ -36,10 +41,15 @@ public class MyTable extends JPanel{
 		table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 		table.setForeground(new Color(0, 0, 0));
 		
+		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		add(pane,BorderLayout.CENTER);
+		
 	}
+	
+     
+
 	
 	public void setHeaders(String[] header) {
 		model.setColumnIdentifiers(header);
@@ -63,6 +73,14 @@ public class MyTable extends JPanel{
 		return model;
 	}
 	
+	public void clear() {
+		model.setRowCount(0);
+	}
+	
+	
+	public String getValueAt(int row, int col) {
+		return String.valueOf(table.getValueAt(row, col));
+	}
 	
 
 }
