@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import DTO.NHANVIEN;
+import DTO.TAIKHOAN;
 import GUI.BanHangGUI;
 import GUI.HoaDonGUI;
 import GUI.KhachHangGUI;
@@ -439,6 +441,7 @@ public class MainLayoutBUS {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
+				
 				f.dispose();
 				new LoginGUI();
 			}

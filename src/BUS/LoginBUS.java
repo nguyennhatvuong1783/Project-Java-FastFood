@@ -14,7 +14,9 @@ import javax.swing.JTextField;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
+import DAO.DaoNhanVien;
 import DAO.DaoTaiKhoan;
+import DTO.NHANVIEN;
 import DTO.TAIKHOAN;
 import GUI.MainLayoutGUI;
 
@@ -43,7 +45,9 @@ public class LoginBUS {
 						        def.put("TabbedPane.background", new Color(190,190,190));
 						        def.put("TabbedPane.tabInsets", new Insets(3,17,3,17));
 
-								new MainLayoutGUI();
+						        NHANVIEN nhanvien = new NHANVIEN(taikhoan.getUserName(), "", "", "", "", "", 1);
+						        nhanvien = DaoNhanVien.getInstance().selectById(nhanvien);
+								new MainLayoutGUI(taikhoan, nhanvien);
 							} catch (Exception ex) {
 								ex.printStackTrace();
 							}

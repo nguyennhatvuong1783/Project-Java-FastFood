@@ -22,8 +22,13 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import BUS.MainLayoutBUS;
+import DTO.NHANVIEN;
+import DTO.TAIKHOAN;
 
 public class MainLayoutGUI {
+	public static TAIKHOAN taikhoan;
+	public static NHANVIEN nhanvien;
+	
 	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	public JFrame f;
@@ -45,7 +50,9 @@ public class MainLayoutGUI {
 	public JTabbedPane tpTaiKhoan;
 	public JLabel lblLogOut;
 	
-	public MainLayoutGUI() {
+	public MainLayoutGUI(TAIKHOAN taikhoan, NHANVIEN nhanvien) {
+		this.taikhoan = taikhoan;
+		this.nhanvien = nhanvien;
 		init();
 		new MainLayoutBUS(f, lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe, pnlContent, tpBanHang, 
@@ -307,7 +314,7 @@ public class MainLayoutGUI {
 	        def.put("TabbedPane.background", new Color(190,190,190));
 	        def.put("TabbedPane.tabInsets", new Insets(3,17,3,17));
 
-			new MainLayoutGUI();
+			new MainLayoutGUI(null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
