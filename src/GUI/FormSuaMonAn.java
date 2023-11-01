@@ -9,13 +9,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -26,23 +25,21 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.microsoft.sqlserver.jdbc.SQLServerXAConnection;
-
 import BUS.MonAnBus;
 import DAO.DaoMonAn;
 import DTO.MONAN;
 import GiaoDienChuan.CancelButton;
 import GiaoDienChuan.FileButton;
+import GiaoDienChuan.SaveButton;
 import GiaoDienChuan.ThemButton;
 
-public class FormThemMonAn extends JFrame{
+public class FormSuaMonAn extends JFrame{
 	MonAnBus monAnBus = new MonAnBus();
 	MONAN monan;
 	private JTextField txtMaMA;
@@ -55,10 +52,25 @@ public class FormThemMonAn extends JFrame{
 	private FileButton btnChonAnh;
 	private String path;
 	
-	public FormThemMonAn() {
+	private String maMA, tenMA, soLuong, donViTinh, donGia, loai, hinhAnh;
+	public FormSuaMonAn() {
 		init();
 	}
 	
+
+	public FormSuaMonAn(String maMA, String tenMA, String soLuong, String donViTinh, String donGia, String loai,
+			String hinhAnh) throws HeadlessException {
+		super();
+		this.maMA = maMA;
+		this.tenMA = tenMA;
+		this.soLuong = soLuong;
+		this.donViTinh = donViTinh;
+		this.donGia = donGia;
+		this.loai = loai;
+		this.hinhAnh = hinhAnh;
+		init();
+	}
+
 
 	public void init() {
 		JPanel inforPanel = new JPanel();
@@ -96,10 +108,6 @@ public class FormThemMonAn extends JFrame{
 		txtDonViTinh = new JTextField();
 		txtDonGia = new JTextField();
 		cbLoai = new JComboBox<String>(new String[] {"Thức ăn", "Đồ uống"});
-				
-		// defaut value
-		txtMaMA.setText(monAnBus.nextId(monAnBus.getLastID()));
-		txtSL.setText("0");
 		
 		
 		gbclbl.ipadx = 9;
@@ -173,25 +181,37 @@ public class FormThemMonAn extends JFrame{
 		
 		//Panel chuc nang
 		JPanel panelChucNang = new JPanel(new FlowLayout(FlowLayout.CENTER,6,0));
-		JButton btnThem = new ThemButton();
+		JButton btnLuu = new SaveButton();
 		JButton btnHuy = new CancelButton();
-		panelChucNang.add(btnThem);
+		btnHuy.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickHuy();
+			}
+		});
+		btnLuu.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickLuu();			
+			}
+		});
+		panelChucNang.add(btnLuu);
 		panelChucNang.add(btnHuy);
-		btnHuy.addActionListener(new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MouseClickHuy();				
-			}
-		});
-		btnThem.addActionListener(new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MouseClickThem();		
-			}
-		});
+		
+		// Set Value
+		txtMaMA.setText(maMA);
+		txtTenMA.setText(tenMA);
+		txtSL.setText(soLuong);
+		txtDonViTinh.setText(donViTinh);
+		txtDonGia.setText(donGia);
+		cbLoai.setSelectedItem(loai);
+		lblHinhAnh.setIcon(loadImage(new File(hinhAnh), 200, 190));
+		path = hinhAnh;
+		
 		this.add(inforPanel,BorderLayout.CENTER);
 		this.add(panelChucNang,BorderLayout.SOUTH);
 		this.setVisible(true);
+		
 	}
 	
 	private void MouseClickChonAnh() {
@@ -201,23 +221,31 @@ public class FormThemMonAn extends JFrame{
 		lblHinhAnh.setIcon(loadImage(file[0], 200, 190));
 	}
 	
-	private void MouseClickThem() {
-		if (checkInput()) {
-			String maMA = txtMaMA.getText();
-			String tenMA = txtTenMA.getText();
-			String donViTinh = txtDonViTinh.getText();
-			String loai = cbLoai.getItemAt(cbLoai.getSelectedIndex());
-			int donGia = Integer.parseInt(txtDonGia.getText());
-			monan = new MONAN(maMA, tenMA, 0, donViTinh, donGia,path , loai, 1);
-		    if (DaoMonAn.getInstance().insert(monan)!=0) {
-		    	JOptionPane.showMessageDialog(this,"Thêm thành công");
-				this.dispose();
-			}
-		}
-	}
-	
 	private void MouseClickHuy() {
 		this.dispose();
+	}
+	
+	private void MouseClickLuu() {
+		if (checkInput()) {
+			String ten = txtTenMA.getText();
+			String donVi = txtDonViTinh.getText();
+			String giaStr = txtDonGia.getText();
+			String imagePath = path;
+			String loaiString = (String) cbLoai.getSelectedItem();
+			int sL = Integer.parseInt(soLuong);
+			int gia = Integer.parseInt(giaStr);
+			if (ten.equals(tenMA) && donVi.equals(donViTinh) && giaStr.equals(donGia) && path.equals(hinhAnh)) {
+				JOptionPane.showMessageDialog(this,"Sửa thành công");
+				this.dispose();
+			}else {
+				monan = new MONAN(maMA, ten, sL, donVi, gia, imagePath, loaiString, 1);
+				if (DaoMonAn.getInstance().update(monan)!=0) {
+					JOptionPane.showMessageDialog(this,"Sửa thành công");
+					this.dispose();
+				}
+				
+			}
+		}
 	}
 	
 	private Boolean checkInput() {
@@ -290,6 +318,5 @@ public class FormThemMonAn extends JFrame{
 	        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
 	        return new ImageIcon(imgScale);
 	  }
-
 
 }
