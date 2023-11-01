@@ -232,6 +232,12 @@ public class MonAnGUI extends JPanel{
 				listenerXoa();
 			}
 		});
+		btnSua.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listenerSua();		
+			}
+		});
 		
 		JPanel pnlbtn = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 0));
 		pnlbtn.add(btnThem);
@@ -350,6 +356,27 @@ public class MonAnGUI extends JPanel{
 				clearInfo();
 			}
 		}
+	 }
+	 
+	 public void listenerSua() {
+		 int index = pnlMonAnTable.getTable().getSelectedRow();
+		 if (index==-1) {
+			 JOptionPane.showMessageDialog(this, "Vui lòng chọn món ăn cần sửa");
+		 }else {
+			 String hinhAnh = mAnBus.getHinhAnh(pnlMonAnTable.getValueAt(index, 0));
+			 if (JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn sửa món ăn","Chú ý",JOptionPane.YES_NO_OPTION)==JOptionPane.OK_OPTION) {
+				 FormSuaMonAn suaMonAn = new FormSuaMonAn(txtMaMA.getText(),txtTenMA.getText(), txtSL.getText(), txtDonViTinh.getText(), txtDonGia.getText(), cbLoai.getText(), hinhAnh);
+				 suaMonAn.addWindowListener(new WindowAdapter() {
+					 @Override
+					 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+						 clearInfo();
+		                mAnBus.readDB();
+		                mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
+		            }
+				});
+			}
+			
+		 }
 	 }
 	 
 	 public void searchMonAn() {
