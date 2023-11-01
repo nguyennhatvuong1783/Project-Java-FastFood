@@ -96,14 +96,7 @@ public class FormThemMonAn extends JFrame{
 		txtDonViTinh = new JTextField();
 		txtDonGia = new JTextField();
 		cbLoai = new JComboBox<String>(new String[] {"Thức ăn", "Đồ uống"});
-		
-		txtMaMA.setPreferredSize(new Dimension(450, 10));
-		txtTenMA.setPreferredSize(new Dimension(450, 10));
-		txtSL.setPreferredSize(new Dimension(450, 10));
-		txtDonViTinh.setPreferredSize(new Dimension(450, 10));
-		txtDonGia.setPreferredSize(new Dimension(450, 10));
-		cbLoai.setPreferredSize(new Dimension(450, 10));
-		
+				
 		// defaut value
 		txtMaMA.setText(monAnBus.nextId(monAnBus.getLastID()));
 		txtSL.setText("0");
@@ -144,21 +137,20 @@ public class FormThemMonAn extends JFrame{
 		gbclbl.gridx = 0;
 		gbclbl.gridy = 5;
 		pnlInfo.add(lblLoai, gbclbl);
-		gbctxt.ipadx = 423;
+		gbctxt.ipadx = 378;
 		gbctxt.ipady = 5;
 		gbctxt.gridx = 1;
 		pnlInfo.add(cbLoai, gbctxt);
 		
-		JPanel pnlImage = new JPanel();
-		BoxLayout layout = new BoxLayout(pnlImage, BoxLayout.Y_AXIS);
-		pnlImage.setLayout(layout);
+		JPanel pnlImage = new JPanel(null);
 		pnlImage.setPreferredSize(new Dimension(450, 200));
 		
 		lblHinhAnh = new JLabel();
 		lblHinhAnh.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		lblHinhAnh.setMaximumSize(new Dimension(160, 150));		
+		lblHinhAnh.setBounds(30, 100, 200, 190);		
 		btnChonAnh = new FileButton();
 		btnChonAnh.setText("Chọn ảnh");
+		btnChonAnh.setBounds(50, 303, 160, 40);
 		btnChonAnh.addActionListener(new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -206,7 +198,7 @@ public class FormThemMonAn extends JFrame{
 		FileDialog fd = new FileDialog(this);
 		fd.setVisible(true);
 		File[] file = fd.getFiles();
-		lblHinhAnh.setIcon(loadImage(file[0], 160, 150));
+		lblHinhAnh.setIcon(loadImage(file[0], 200, 190));
 	}
 	
 	private void MouseClickThem() {

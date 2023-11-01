@@ -55,8 +55,9 @@ public class MonAnBus {
 	
 	public ArrayList<MONAN> searchMonAn(String input) {
 		ArrayList<MONAN> result = new ArrayList<MONAN>();
-		for (MONAN monan : result) {
-			if (monan.getTenMonAn().toLowerCase().contains(input.toLowerCase()) && monan.getTrangThai()!=0) {
+		for (MONAN monan : dsMonAn) {
+			if ((monan.getTenMonAn().toLowerCase().contains(input.toLowerCase()) && monan.getTrangThai()!=0) || 
+					(monan.getMaMonAn().toLowerCase().contains(input.toLowerCase()) && monan.getTrangThai()!=0)) {
 				result.add(monan);
 			}
 		}

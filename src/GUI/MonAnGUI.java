@@ -59,7 +59,6 @@ public class MonAnGUI extends JPanel{
 	public JTextField txtDonGia;
 	public JTextField cbLoai;
 	public JLabel lblHinhAnh;
-	public JButton btnChonAnh;
 	public JButton btnThem;
 	public JButton btnSua;
 	public JButton btnXoa;
@@ -108,11 +107,15 @@ public class MonAnGUI extends JPanel{
 		txtMaMA = new JTextField();
 		txtMaMA.setEditable(false);
 		txtTenMA = new JTextField();
+		txtTenMA.setEditable(false);
 		txtSL = new JTextField();
 		txtSL.setEditable(false);
 		txtDonViTinh = new JTextField();
+		txtDonViTinh.setEditable(false);
 		txtDonGia = new JTextField();
+		txtDonGia.setEditable(false);
 		cbLoai = new JTextField();
+		cbLoai.setEditable(false);
 		
 		txtMaMA.setPreferredSize(new Dimension(300, 25));
 		txtTenMA.setPreferredSize(new Dimension(300, 25));
@@ -160,23 +163,14 @@ public class MonAnGUI extends JPanel{
 		pnlInfo.add(cbLoai, gbctxt);
 		
 		//pnlImage
-		JPanel pnlImage = new JPanel();
-		BoxLayout layout = new BoxLayout(pnlImage, BoxLayout.Y_AXIS);
-		pnlImage.setLayout(layout);
+		JPanel pnlImage = new JPanel(null);
 		pnlImage.setPreferredSize(new Dimension(450, 250));
 		
-		lblHinhAnh = new JLabel();
+		lblHinhAnh = new JLabel("", JLabel.CENTER);
 		lblHinhAnh.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		lblHinhAnh.setMaximumSize(new Dimension(200, 190));		
-		btnChonAnh = new FileButton();
-		btnChonAnh.setText("Chọn ảnh");
-		
-		lblHinhAnh.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnChonAnh.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+		lblHinhAnh.setBounds(5, 20, 200, 190);		
+				
 		pnlImage.add(lblHinhAnh);
-		pnlImage.add(Box.createRigidArea(new Dimension(0, 3)));
-		pnlImage.add(btnChonAnh);
 				
 		pnlMonAn.add(pnlInfo);
 		pnlMonAn.add(pnlImage);
@@ -329,7 +323,7 @@ public class MonAnGUI extends JPanel{
 		 txtDonViTinh.setText(donViTinh);
 		 txtDonGia.setText(donGia);
 		 cbLoai.setText(Loai);
-		 lblHinhAnh.setIcon(loadImage(path, 150, 160));
+		 lblHinhAnh.setIcon(loadImage(path, 200, 190));
 	 }
 	 
 	 public void tableMouseClicked(java.awt.event.MouseEvent evt) {
