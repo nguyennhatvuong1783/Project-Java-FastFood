@@ -298,8 +298,8 @@ public class MainLayoutGUI {
 		return pnlLeftMenu;
 	}
 	
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) throws Exception {
+		try {			
 			UIDefaults def = UIManager.getLookAndFeelDefaults();
 			def.put("TabbedPane.font", new Font("Times New Roman", Font.PLAIN, 17));
 			def.put("TabbedPane.foreground", new Color(255,255,255));
