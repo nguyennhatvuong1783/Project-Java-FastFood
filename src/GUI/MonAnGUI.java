@@ -122,7 +122,7 @@ public class MonAnGUI extends JPanel{
 		txtSL.setPreferredSize(new Dimension(300, 25));
 		txtDonViTinh.setPreferredSize(new Dimension(300, 25));
 		txtDonGia.setPreferredSize(new Dimension(300, 25));
-		cbLoai.setPreferredSize(new Dimension(326, 30));
+		cbLoai.setPreferredSize(new Dimension(300, 25));
 		
 		gbclbl.ipadx = 9;
 		gbclbl.ipady = 5;
