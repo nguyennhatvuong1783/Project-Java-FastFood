@@ -156,8 +156,6 @@ public class MonAnGUI extends JPanel{
 		gbclbl.gridx = 0;
 		gbclbl.gridy = 5;
 		pnlInfo.add(lblLoai, gbclbl);
-		gbctxt.ipadx = 423;
-		gbctxt.ipady = 5;
 		gbctxt.gridx = 1;
 		pnlInfo.add(cbLoai, gbctxt);
 		
