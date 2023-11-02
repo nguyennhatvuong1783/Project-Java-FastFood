@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -16,6 +18,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import GiaoDienChuan.FormatMoney;
 import GiaoDienChuan.MoreButton;
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.RefreshButton;
@@ -158,6 +161,21 @@ public class BanHangGUI extends JPanel{
         txtTienKhachDua.setFont(new Font("Segoe UI", 0, 18)); // txtTienKhachDua
         pnlInfoMonAn.add(txtTienKhachDua);
         txtTienKhachDua.setBounds(20, 450, 360, 30);
+        txtTienKhachDua.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Format Tiền
+//				String tien = (String) txtTienKhachDua.getText();
+//        		if(tien != "") {
+//        			for (int i = 0; i < tien.length(); i++) {
+//        				if(String.valueOf(tien.charAt(i)).matches("\\d+")) {
+//        					txtTienKhachDua.setText(FormatMoney.getFormat(Long.parseLong(tien)));
+//                		}
+//    				}
+//        		}
+			}
+		});
 
         txtMaHD.setEditable(false);
         txtMaHD.setFont(new Font("Segoe UI", 0, 18)); // txtMaHD
