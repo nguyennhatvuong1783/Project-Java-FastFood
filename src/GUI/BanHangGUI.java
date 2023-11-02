@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -249,6 +252,12 @@ public class BanHangGUI extends JPanel{
         txtNgayNhap.setFont(new Font("Segoe UI", 0, 18)); // txtNgayNhap
         pnlInfoMonAn.add(txtNgayNhap);
         txtNgayNhap.setBounds(130, 270, 250, 30);
+        
+        // Ngày nhập
+        Date date = Date.valueOf(LocalDate.now());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = formatter.format(date);
+        txtNgayNhap.setText(strDate);
 
         spnSoLuong.setFont(new Font("Segoe UI", 0, 18)); // spnSoLuong
         pnlInfoMonAn.add(spnSoLuong);
