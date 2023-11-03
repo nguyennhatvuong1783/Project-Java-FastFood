@@ -8,16 +8,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import BUS.BanHangBus;
+import BUS.MonAnBus;
 import GiaoDienChuan.FormatMoney;
 import GiaoDienChuan.MoreButton;
 import GiaoDienChuan.MyTable;
@@ -68,6 +73,9 @@ public class BanHangGUI extends JPanel{
     public JTextField txtTongTien;
     public MyTable pnlTableMonAn;
     public MyTable pnlTableGioHang;
+    
+    MonAnBus monAnBus = new MonAnBus();
+    BanHangBus banHangBus = new BanHangBus();
 	
 	public BanHangGUI() {
 		init();
@@ -118,6 +126,7 @@ public class BanHangGUI extends JPanel{
         String[] headers = {"Mã món ăn", "Tên món ăn", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
         pnlTableMonAn = new MyTable();
         pnlTableMonAn.setHeaders(headers);
+        monAnBus.setDataToTable(monAnBus.getDsMonAn(), pnlTableMonAn);
         pnlTableGioHang = new MyTable();
         pnlTableGioHang.setHeaders(headers);
 
@@ -344,5 +353,124 @@ public class BanHangGUI extends JPanel{
         pnlTable.add(pnlGioHang);
 
         add(pnlTable, BorderLayout.CENTER);
+        
+        // Sự kiện
+        pnlTableMonAn.getTable().addMouseListener(new MouseListener() {		
+			@Override
+			public void mouseReleased(MouseEvent e) {	
+				showInfor();
+			}			
+			@Override
+			public void mousePressed(MouseEvent e) {					
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {				
+			}			
+			@Override
+			public void mouseEntered(MouseEvent e) {				
+			}			
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+			}
+		});
+        
+        btnThem.addActionListener( new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickThem();
+			}
+		});
+        
+        btnXoa.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickXoa();
+			}
+		});
+	}
+	
+	private void getInforToTableMonAn() {
+		int index = pnlTableMonAn.getTable().getSelectedRow();
+		if (index!=-1) {
+			String maMA = pnlTableMonAn.getValueAt(index, 0);
+			String tenMA = pnlTableMonAn.getValueAt(index, 1);
+			String soLuong = String.valueOf(spnSoLuong.getValue());
+			String donViTinh = pnlTableMonAn.getValueAt(index, 3);
+			String donGia = pnlTableMonAn.getValueAt(index, 4);
+			String loai = pnlTableMonAn.getValueAt(index, 5);
+			if (checkInfor()) {
+				banHangBus.addDataToTableBanHang(pnlTableGioHang, maMA, tenMA, soLuong, donViTinh,donGia, loai);
+			}
+		}
+	}
+	
+	private void showInfor() {
+		int index = pnlTableMonAn.getTable().getSelectedRow();
+		if (index!=-1) {
+			String maMA = pnlTableMonAn.getValueAt(index, 0);
+			String tenMA = pnlTableMonAn.getValueAt(index, 1);
+			String donGia = pnlTableMonAn.getValueAt(index, 4);
+			
+			txtMaMA.setText(maMA);
+			txtTenMA.setText(tenMA);
+			txtDonGia.setText(donGia);
+		}
+	}
+	
+	private Boolean checkInfor() {
+		String tmpString = String.valueOf(spnSoLuong.getValue());
+		try {
+			int value = Integer.parseInt(tmpString);
+			if (value == 0) {
+				JOptionPane.showMessageDialog(null, "Chưa nhập số lượng");
+				return false;
+			}else {
+				if (value<0) {
+					JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
+					return false;
+				}else {
+					int soLuongMonAn =Integer.parseInt( pnlTableMonAn.getValueAt(pnlTableMonAn.getTable().getSelectedRow(), 2));
+					if (value>soLuongMonAn) {
+						JOptionPane.showMessageDialog(null, "Số lượng món ăn hiện có không đủ");
+						return false;
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
+			return false;
+		}
+		return true;
+	}
+	
+	private void updateSoLuong() {
+		String tmpString = String.valueOf(spnSoLuong.getValue());
+		String maMA = txtMaMA.getText();
+		int soLuong = Integer.parseInt(tmpString);
+		banHangBus.updateSoLuong(pnlTableMonAn, soLuong, maMA);
+		clearInfor();
+	}
+	
+	private void clearInfor() {
+		txtMaMA.setText("");
+		txtTenMA.setText("");
+		txtDonGia.setText("");
+		spnSoLuong.setValue(0);
+	}
+	
+	private void MouseClickThem() {
+		getInforToTableMonAn();
+		updateSoLuong();		
+		pnlTableMonAn.getTable().setRowSelectionInterval(0, 0);
+	}
+	
+	private void MouseClickXoa() {
+		int index = pnlTableGioHang.getTable().getSelectedRow();
+		String soLuong = pnlTableGioHang.getValueAt(index, 2);
+		String maMA = pnlTableGioHang.getValueAt(index, 0);
+		int sl = Integer.parseInt(soLuong);
+		pnlTableGioHang.getModel().removeRow(index);
+		banHangBus.updateSoLuong2(pnlTableMonAn, sl, maMA);
 	}
 }

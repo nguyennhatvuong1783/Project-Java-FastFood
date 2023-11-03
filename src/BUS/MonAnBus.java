@@ -12,7 +12,6 @@ public class MonAnBus {
 	
 	public MonAnBus() {
 		dsMonAn = monAnDao.selectAll();
-		//fixArr();
 	}
 
 	public ArrayList<MONAN> getDsMonAn(){
