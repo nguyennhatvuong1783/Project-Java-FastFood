@@ -5,10 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,8 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 
 import BUS.MainLayoutBUS;
 import DTO.NHANVIEN;
@@ -31,7 +26,7 @@ public class MainLayoutGUI {
 	
 	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public JFrame f;
+	public static JFrame f;
 	private JPanel pnlTitle;
 	private JPanel pnlLeftMenu;
 	private JPanel pnlContent;
@@ -54,7 +49,7 @@ public class MainLayoutGUI {
 		this.taikhoan = taikhoan;
 		this.nhanvien = nhanvien;
 		init();
-		new MainLayoutBUS(f, lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
+		new MainLayoutBUS(lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe, pnlContent, tpBanHang, 
 				tpNhapHang, tpSanPham, tpTaiKhoan, lblLogOut);
 	}
@@ -303,20 +298,5 @@ public class MainLayoutGUI {
 		pnlLeftMenu.add(pnlMenu, BorderLayout.CENTER);
 		
 		return pnlLeftMenu;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		try {			
-			UIDefaults def = UIManager.getLookAndFeelDefaults();
-			def.put("TabbedPane.font", new Font("Times New Roman", Font.PLAIN, 17));
-			def.put("TabbedPane.foreground", new Color(255,255,255));
-			def.put("TabbedPane.selected", new Color(79,148,205));
-	        def.put("TabbedPane.background", new Color(190,190,190));
-	        def.put("TabbedPane.tabInsets", new Insets(3,17,3,17));
-
-			new MainLayoutGUI(null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

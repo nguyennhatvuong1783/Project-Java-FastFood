@@ -3,10 +3,17 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +21,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import GiaoDienChuan.FormatMoney;
 import GiaoDienChuan.MoreButton;
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.RefreshButton;
@@ -156,6 +164,21 @@ public class BanHangGUI extends JPanel{
         txtTienKhachDua.setFont(new Font("Segoe UI", 0, 18)); // txtTienKhachDua
         pnlInfoMonAn.add(txtTienKhachDua);
         txtTienKhachDua.setBounds(20, 450, 360, 30);
+        txtTienKhachDua.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Format Tiền
+//				String tien = (String) txtTienKhachDua.getText();
+//        		if(tien != "") {
+//        			for (int i = 0; i < tien.length(); i++) {
+//        				if(String.valueOf(tien.charAt(i)).matches("\\d+")) {
+//        					txtTienKhachDua.setText(FormatMoney.getFormat(Long.parseLong(tien)));
+//                		}
+//    				}
+//        		}
+			}
+		});
 
         txtMaHD.setEditable(false);
         txtMaHD.setFont(new Font("Segoe UI", 0, 18)); // txtMaHD
@@ -186,20 +209,18 @@ public class BanHangGUI extends JPanel{
         btnXoa.setBounds(214, 223, 95, 31);
 
         btnHoanThanh.setText("Hoàn thành");
+        btnHoanThanh.setIcon(new ImageIcon(getClass().getResource("/icon_img/icons8-complete-30.png")));
+        
         btnHoanThanh.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
             }
         });
         pnlInfoMonAn.add(btnHoanThanh);
-        btnHoanThanh.setBounds(75, 580, 120, 40);
+        btnHoanThanh.setBounds(55, 580, 140, 40);
 
         btnLamMoi.setText("Làm mới");
-        btnLamMoi.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-            }
-        });
         pnlInfoMonAn.add(btnLamMoi);
-        btnLamMoi.setBounds(205, 580, 120, 40);
+        btnLamMoi.setBounds(205, 580, 140, 40);
         
         lblNhanVien.setFont(new Font("Segoe UI", 1, 18)); // lblNhanVien
         lblNhanVien.setText("Nhân viên");
@@ -220,6 +241,7 @@ public class BanHangGUI extends JPanel{
         txtNhanVien.setFont(new Font("Segoe UI", 0, 18)); // txtNhanVien
         pnlInfoMonAn.add(txtNhanVien);
         txtNhanVien.setBounds(130, 310, 250, 30);
+        txtNhanVien.setText(MainLayoutGUI.nhanvien.getTenNV());
 
         txtKhachHang.setEditable(false);
         txtKhachHang.setFont(new Font("Segoe UI", 0, 18)); // txtKhachHang
@@ -230,6 +252,12 @@ public class BanHangGUI extends JPanel{
         txtNgayNhap.setFont(new Font("Segoe UI", 0, 18)); // txtNgayNhap
         pnlInfoMonAn.add(txtNgayNhap);
         txtNgayNhap.setBounds(130, 270, 250, 30);
+        
+        // Ngày nhập
+        Date date = Date.valueOf(LocalDate.now());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = formatter.format(date);
+        txtNgayNhap.setText(strDate);
 
         spnSoLuong.setFont(new Font("Segoe UI", 0, 18)); // spnSoLuong
         pnlInfoMonAn.add(spnSoLuong);
@@ -237,6 +265,18 @@ public class BanHangGUI extends JPanel{
 
         pnlInfoMonAn.add(btnKhachHang);
         btnKhachHang.setBounds(350, 350, 30, 30);
+        btnKhachHang.addActionListener(new ActionListener() {
+        	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FormChonKH dialog = new FormChonKH(MainLayoutGUI.f, true);
+				Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+				int x = (d.width - dialog.getSize().width) / 2;
+				int y = (d.height - dialog.getSize().height) / 2;
+				dialog.setLocation(x, y);
+                dialog.setVisible(true);
+			}
+		});
 
         btnKhuyenMai.setFont(new Font("Segoe UI", 1, 12)); // btnKhuyenMai
         btnKhuyenMai.setText("Khuyến mãi");

@@ -1,9 +1,9 @@
 package Main;
 
-import GUI.MainLayoutGUI;
+import GUI.LoginGUI;
 
 public class MAIN {
 	public static void main(String[] args) {
-		new MainLayoutGUI(null, null);
+		new LoginGUI();
 	}
 }

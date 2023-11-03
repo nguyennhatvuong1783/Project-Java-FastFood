@@ -3,7 +3,6 @@ package GUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,14 +16,14 @@ import javax.swing.JTextField;
 import BUS.LoginBUS;
 
 public class LoginGUI {
-	private JFrame f;
+	public static JFrame f;
 	private JLabel lblBg, lblLogo, lblTitle, lblUser, lblPass, lblLogin, lblClose;
 	private JTextField txtUser;
 	private JPasswordField txtPass;
 	
 	public LoginGUI() {
 		init();
-		new LoginBUS(f, txtUser, txtPass, lblLogin);
+		new LoginBUS(txtUser, txtPass, lblLogin);
 	}
 	
 	private void init() {
