@@ -170,3 +170,42 @@ VALUES
 ('NV002', 'nv002'),
 ('NV003', 'nv003'),
 ('NV004', 'nv004')
+
+INSERT INTO KHACHHANG(MAKH, TENKH, SDT, DIACHI)
+VALUES
+('KH001', N'Nguyễn Văn Nam', '0123456781', N'Quận 6, Thành phố Hồ Chí Minh'),
+('KH002', N'Trần Thị Thu', '0987654329', N'Quận 7, Thành phố Hồ Chí Minh'),
+('KH003', N'Lê Văn Chiến', '0123123120', N'Quận 8, Thành phố Hồ Chí Minh'),
+('KH004', N'Nguyễn Thị Diễm', '0456456455', N'Quận 9, Thành phố Hồ Chí Minh'),
+('KH005', N'Phan Văn Sang', '0789789781', N'Quận 10, Thành phố Hồ Chí Minh')
+
+INSERT INTO HOADON(MAHD, NGAYLAPHD, TONGTIEN, MANV, MAKH)
+VALUES
+('HD001', '2023-01-15', 165000, 'NV001', 'KH001'),
+('HD002', '2023-03-18', 50000, 'NV003', 'KH003'),
+('HD003', '2023-04-20', 390000, 'NV004', 'KH002'),
+('HD004', '2023-09-26', 90000, 'admin', 'KH005'),
+('HD005', '2023-12-30', 260000, 'NV002', 'KH004')
+
+INSERT INTO MONAN(MAMA, TENMA, SL, DONVITINH, DONGIA, HINHANH, LOAI)
+VALUES
+('MA001', N'Hamburger gà', 20, N'Cái', 35000, '', N'Burger'),
+('MA002', N'Pizza cá hồi', 10, N'Cái', 45000, '', N'Pizza'),
+('MA003', N'CocaCola', 30, N'Chai', 20000, '', N'Nước'),
+('MA004', N'Khoai tây chiên', 35, N'Phần', 30000, '', N'Khác'),
+('MA005', N'Gà rán', 15, N'Miếng', 45000, '', N'Gà')
+
+INSERT INTO CHITIETHOADON(MAHD, MAMA, SL)
+VALUES
+('HD001', 'MA001', 1),
+('HD001', 'MA002', 2),
+('HD001', 'MA003', 2),
+('HD002', 'MA004', 1),
+('HD002', 'MA003', 1),
+('HD003', 'MA001', 3),
+('HD003', 'MA002', 3),
+('HD003', 'MA004', 3),
+('HD003', 'MA003', 3),
+('HD004', 'MA005', 2),
+('HD005', 'MA005', 4),
+('HD005', 'MA003', 4)
