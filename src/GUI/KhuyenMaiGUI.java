@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.XoaButton;
+import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.MyTable;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
@@ -61,6 +62,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
     private ThemButton buttonThem;
     private XoaButton buttonXoa;
     private SuaButton buttonSua;
+    private RefreshButton buttonLamMoi;
     private Border lineBorder = BorderFactory.createLineBorder(Color.black);
     private Border empty = BorderFactory.createEmptyBorder();
     private Border raisedBevel = BorderFactory.createRaisedBevelBorder();
@@ -162,7 +164,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         panel_2_2.add(buttonSua);
         buttonXoa = new XoaButton();
         buttonXoa.addActionListener((ActionListener) this);
-        panel_2_2.add(buttonXoa);
+        panel_2_2.add(buttonXoa);       
         panel_2.add(panel_2_1, BorderLayout.CENTER);
         panel_2.add(panel_2_2, BorderLayout.SOUTH);
 
@@ -173,9 +175,6 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         panel_4.setBorder(new TitledBorder(null, "Danh sách khuyến mãi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panel_4.setLayout(new BorderLayout());
         tableKM = new MyTable();
-        tableKM.setHeaders(new String[]{
-            "Mã khuyến mãi", "Tên khuyến mãi", "Điều kiện", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc"
-        });
         panel_4.add(tableKM, BorderLayout.CENTER);
         khuyenMaiBus = new KhuyenMaiBus(this);
         khuyenMaiBus.LoadDataToTable();
@@ -183,7 +182,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    khuyenMaiBus.SuaKm();
+                    khuyenMaiBus.LoadSuaXoaKm();
                 }
             }
         });
@@ -202,13 +201,6 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     }
 
-    public void addRow(KHUYENMAI km) {
-        if (km.getTrangThai() != 0) {
-            String[] a = {km.getMaKM(), km.getTenKM(), km.getDieuKienKM(), Float.toString(km.getGiamGia()), km.dateBĐToString(), km.dateKTToString()};
-            this.tableKM.addRow(a);
-        }
-    }
-
     public MyTable getTableKM() {
         return this.tableKM;
     }
@@ -224,8 +216,21 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Thêm thất bại!");
             }
         }
+        if (e.getSource() == buttonSua) {
+            if (khuyenMaiBus.SuaKm() == 1) {
+                JOptionPane.showMessageDialog(null, "Sửa thành công!");                
+            } else {
+                JOptionPane.showMessageDialog(null, "Sửa thất bại!");
+            }
+        }
+        if (e.getSource() == buttonXoa) {
+            if (khuyenMaiBus.XoaKm() == 1) {
+                JOptionPane.showMessageDialog(null, "Xóa thành công!");               
+            } else {
+                JOptionPane.showMessageDialog(null, "Xóa thất bại!");
+            }
+        }     
     }
-
 
     public JDateChooser getDate_BĐ() {
         return date_BĐ;
@@ -330,14 +335,4 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
     public void setPanel_4(JPanel panel_4) {
         this.panel_4 = panel_4;
     }
-
-    public static void main(String args[]) {
-        JFrame test = new JFrame();
-        KhuyenMaiGUI a = new KhuyenMaiGUI();
-        test.add(a);
-        test.setLocationRelativeTo(null);
-        test.setSize(1000, 1000);
-        test.setVisible(true);
-    }
-
 }
