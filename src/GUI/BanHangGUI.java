@@ -266,7 +266,6 @@ public class BanHangGUI extends JPanel{
         pnlInfoMonAn.add(btnKhachHang);
         btnKhachHang.setBounds(350, 350, 30, 30);
         btnKhachHang.addActionListener(new ActionListener() {
-        	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FormChonKH dialog = new FormChonKH(MainLayoutGUI.f, true);
