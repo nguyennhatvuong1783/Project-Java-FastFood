@@ -32,7 +32,11 @@ import javax.swing.table.DefaultTableModel;
 import BUS.KhuyenMaiBus;
 import DAO.DaoKhuyenMai;
 import DTO.KHUYENMAI;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
@@ -66,6 +70,9 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
     private Border compoundBorder2 = new CompoundBorder(raisedBevel, new CompoundBorder(raisedBevel, new CompoundBorder(raisedBevel, raisedBevel)));
     private JPanel jp_Center;
     private KhuyenMaiGUI khuyenMaiGui;
+    private JPanel panel_4;
+    private MyTable tableKM;
+    private String id;
 
     public KhuyenMaiGUI() {
         init();
@@ -99,7 +106,6 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         txt_MaKM.setBorder(loweredBevel);
         panel_2_1.add(txt_MaKM);
         txt_MaKM.setColumns(10);
-
         JLabel lblNewLabel_2_2 = new JLabel("Tên khuyến mãi :");
         lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
         lblNewLabel_2_2.setBorder(loweredBevel);
@@ -108,7 +114,6 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         txt_TenKM.setBorder(loweredBevel);
         txt_TenKM.setColumns(10);
         panel_2_1.add(txt_TenKM);
-
         JLabel lblNewLabel_2_3 = new JLabel("Phần trăm giảm:");
         lblNewLabel_2_3.setBorder(loweredBevel);
         lblNewLabel_2_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -132,6 +137,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         lblNewLabel_2_5.setBorder(loweredBevel);
         panel_2_1.add(lblNewLabel_2_5);
         date_BĐ = new JDateChooser();
+
         date_BĐ.setBorder(loweredBevel);
         date_BĐ.setDateFormatString("dd/MM/yyyy");
         //date_BĐ.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -142,31 +148,46 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         lblNewLabel_2_6.setBorder(loweredBevel);
         panel_2_1.add(lblNewLabel_2_6);
         date_KT = new JDateChooser();
+
         date_KT.setBorder(loweredBevel);
         date_KT.setDateFormatString("dd/MM/yyyy");
         //date_KT.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 15));
         date_KT.getDateEditor().getUiComponent().setFont(new Font("Tahoma", Font.PLAIN, 15));
         panel_2_1.add(date_KT);
         buttonThem = new ThemButton();
-        buttonThem.addActionListener(this);
+        buttonThem.addActionListener((ActionListener) this);
         panel_2_2.add(buttonThem);
         buttonSua = new SuaButton();
-        buttonSua.addActionListener(this);
+        buttonSua.addActionListener((ActionListener) this);
         panel_2_2.add(buttonSua);
         buttonXoa = new XoaButton();
-        buttonXoa.addActionListener(this);
+        buttonXoa.addActionListener((ActionListener) this);
         panel_2_2.add(buttonXoa);
         panel_2.add(panel_2_1, BorderLayout.CENTER);
         panel_2.add(panel_2_2, BorderLayout.SOUTH);
 
         //-----------------------------------------------
         //-----------------------------------------------------
-        JPanel panel_4 = new JPanel();
+        panel_4 = new JPanel();
         panel_4.setBorder(raisedBevel);
         panel_4.setBorder(new TitledBorder(null, "Danh sách khuyến mãi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panel_4.setLayout(new BorderLayout());
-        khuyenMaiBus = new KhuyenMaiBus();
-        panel_4.add(khuyenMaiBus.LoadDataToTable(), BorderLayout.CENTER);
+        tableKM = new MyTable();
+        tableKM.setHeaders(new String[]{
+            "Mã khuyến mãi", "Tên khuyến mãi", "Điều kiện", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc"
+        });
+        panel_4.add(tableKM, BorderLayout.CENTER);
+        khuyenMaiBus = new KhuyenMaiBus(this);
+        khuyenMaiBus.LoadDataToTable();
+        this.getTableKM().getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    khuyenMaiBus.SuaKm();
+                }
+            }
+        });
+
         //---------------------------------------------------------------	
         JLabel lblNewLabel = new JLabel("Quản lý khuyến mãi", JLabel.CENTER);
         lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 23));
@@ -181,15 +202,23 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     }
 
-    public MyTable getTable() {
-        return this.getTable();
+    public void addRow(KHUYENMAI km) {
+        if (km.getTrangThai() != 0) {
+            String[] a = {km.getMaKM(), km.getTenKM(), km.getDieuKienKM(), Float.toString(km.getGiamGia()), km.dateBĐToString(), km.dateKTToString()};
+            this.tableKM.addRow(a);
+        }
+    }
+
+    public MyTable getTableKM() {
+        return this.tableKM;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        khuyenMaiBus=new KhuyenMaiBus();
+        khuyenMaiBus = new KhuyenMaiBus(this);
         if (e.getSource() == buttonThem) {
-            if (khuyenMaiBus.themKM()==1) {
+
+            if (khuyenMaiBus.themKM() == 1) {
                 JOptionPane.showMessageDialog(null, "Thêm thành công!");
             } else {
                 JOptionPane.showMessageDialog(null, "Thêm thất bại!");
@@ -197,8 +226,24 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         }
     }
 
+
     public JDateChooser getDate_BĐ() {
         return date_BĐ;
+    }
+
+    public int getDate_BĐDay() {
+        int date = date_BĐ.getDate().getDay();
+        return date;
+    }
+
+    public int getDate_BĐMonth() {
+        int date = date_BĐ.getDate().getMonth();
+        return date;
+    }
+
+    public int getDate_BĐYear() {
+        int date = date_BĐ.getDate().getYear();
+        return date + 1900;
     }
 
     public void setDate_BĐ(JDateChooser date_BĐ) {
@@ -207,6 +252,31 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     public JDateChooser getDate_KT() {
         return date_KT;
+    }
+
+    public int getDate_KTDay() {
+        int date = date_KT.getDate().getDay();
+        return date;
+    }
+
+    public int getDate_KTMonth() {
+        int date = date_KT.getDate().getMonth();
+        return date;
+    }
+
+    public int getDate_KTYear() {
+        int date = date_KT.getDate().getYear();
+        return date + 1900;
+    }
+
+    public String dateBĐToString() {
+        String date = Integer.toString(getDate_BĐDay()) + "/" + Integer.toString(getDate_BĐMonth()) + "/" + Integer.toString(getDate_BĐYear());
+        return date;
+    }
+
+    public String dateKTToString() {
+        String date = Integer.toString(getDate_KTDay()) + "/" + Integer.toString(getDate_KTMonth()) + "/" + Integer.toString(getDate_KTYear());
+        return date;
     }
 
     public void setDate_KT(JDateChooser date_KT) {
@@ -251,6 +321,14 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     public void setTxt_dieuKien(JTextField txt_dieuKien) {
         this.txt_dieuKien = txt_dieuKien;
+    }
+
+    public JPanel getPanel_4() {
+        return panel_4;
+    }
+
+    public void setPanel_4(JPanel panel_4) {
+        this.panel_4 = panel_4;
     }
 
     public static void main(String args[]) {

@@ -27,14 +27,10 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 			pst.setNString(2, t.getTenKM());
 			pst.setNString(3, t.getDieuKienKM());
 			pst.setFloat(4, t.getGiamGia());
-			String ngayBD = t.getNgayBD();
-			String ngayKT = t.getNgayKT();
-			Date date = Date.valueOf(ngayBD);
-			Date date2 = Date.valueOf(ngayKT);
-			pst.setDate(5, date);
-			pst.setDate(6, date2);
-			pst.setInt(7, t.getTrangThai());
-			
+                        
+			pst.setTimestamp(5, new java.sql.Timestamp(t.getNgayBD().getTime()));
+			pst.setTimestamp(6, new java.sql.Timestamp(t.getNgayBD().getTime()));
+			pst.setInt(7, t.getTrangThai());			
 			ketqua = pst.executeUpdate();
 			System.out.println("Bạn đã thực thi " + sql);
 	        System.out.println("Có " + ketqua + " bị thay đổi");
@@ -86,10 +82,9 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 			pst.setNString(1, t.getTenKM());
 			pst.setNString(2, t.getDieuKienKM());
 			pst.setFloat(3, t.getGiamGia());
-			String ngayBD = t.getNgayBD();
-			String ngayKT = t.getNgayKT();
-			Date date = Date.valueOf(ngayBD);
-			Date date2 = Date.valueOf(ngayKT);
+			
+			Date date = (Date) t.getNgayBD();
+			Date date2 = (Date) t.getNgayKT();
 			pst.setDate(4, date);
 			pst.setDate(5, date2);
 			pst.setInt(6, t.getTrangThai());
@@ -123,11 +118,10 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 				Float giamGia = rs.getFloat("GIAMGIA");
 				Date date = rs.getDate("NGAY_BD");
 				Date date2 = rs.getDate("NGAY_KT");
-				String ngayBD = String.valueOf(date);
-				String ngayKT = String.valueOf(date2);
+				
 				int trangThai = rs.getInt("TRANGTHAI");
 				
-			    KHUYENMAI a = new KHUYENMAI(maKM, tenKM, dieuKien, giamGia, ngayBD, ngayKT, trangThai);
+			    KHUYENMAI a = new KHUYENMAI(maKM, tenKM, dieuKien, giamGia, date, date2, trangThai);
 				ketqua.add(a);
 			}
 			connec.closeConnection(c);
@@ -154,11 +148,10 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 				Float giamGia = rs.getFloat("GIAMGIA");
 				Date date = rs.getDate("NGAY_BD");
 				Date date2 = rs.getDate("NGAY_KT");
-				String ngayBD = String.valueOf(date);
-				String ngayKT = String.valueOf(date2);
+				
 				int trangThai = rs.getInt("TRANGTHAI");
 				
-			    ketqua = new KHUYENMAI(maKM, tenKM, dieuKien, giamGia, ngayBD, ngayKT, trangThai);
+			    ketqua = new KHUYENMAI(maKM, tenKM, dieuKien, giamGia, date, date2, trangThai);
 			}
 			connec.closeConnection(c);
 		} catch (SQLException e) {
@@ -183,11 +176,10 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 				Float giamGia = rs.getFloat("GIAMGIA");
 				Date date = rs.getDate("NGAY_BD");
 				Date date2 = rs.getDate("NGAY_KT");
-				String ngayBD = String.valueOf(date);
-				String ngayKT = String.valueOf(date2);
+				
 				int trangThai = rs.getInt("TRANGTHAI");
 				
-			    KHUYENMAI a = new KHUYENMAI(maKM, tenKM, dieuKien, giamGia, ngayBD, ngayKT, trangThai);
+			    KHUYENMAI a = new KHUYENMAI(maKM, tenKM, dieuKien, giamGia, date, date2, trangThai);
 				ketqua.add(a);
 			}
 			connec.closeConnection(c);
