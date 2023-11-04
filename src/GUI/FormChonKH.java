@@ -9,17 +9,24 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import BUS.BanHangBus;
+import DAO.DaoKhachHang;
+import DTO.KHACHHANG;
 import GiaoDienChuan.CancelButton;
 import GiaoDienChuan.MyTable;
 
@@ -47,7 +54,8 @@ public class FormChonKH extends JDialog{
     private JTextField txtTenKH;
     private JTextField txtTimKiem;
 
-	
+    BanHangBus banHangBus = new BanHangBus();
+    String id;	
 	public FormChonKH(JFrame parent, boolean modal) {
 		super(parent, modal);
 		init();
@@ -104,6 +112,12 @@ public class FormChonKH extends JDialog{
         btnChon.setText("Chọn");
         btnChon.setIcon(new ImageIcon(getClass().getResource("/icon_img/icons8-complete-30.png")));
         pnlButton.add(btnChon);
+        btnChon.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickChon();			
+			}
+		});
 
         btnHuy.setText("Hủy");
         pnlButton.add(btnHuy);
@@ -185,6 +199,12 @@ public class FormChonKH extends JDialog{
         jButtonChon.setText("Chọn");
         jButtonChon.setIcon(new ImageIcon(getClass().getResource("/icon_img/icons8-complete-30.png")));
         jPanelButton.add(jButtonChon);
+        jButtonChon.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickChon2();
+			}
+		});
 
         jButtonHuy.setText("Hủy");
         jPanelButton.add(jButtonHuy);
@@ -195,6 +215,8 @@ public class FormChonKH extends JDialog{
 				dispose();
 			}
 		});
+        
+        banHangBus.setDataFormChonKH(pnlTableKH);
 
         pnlNewKH.add(jPanelButton, BorderLayout.SOUTH);
 
@@ -203,5 +225,97 @@ public class FormChonKH extends JDialog{
         getContentPane().add(tpKhachHang, BorderLayout.CENTER);
 
         pack();
+        
+        // sự kiện
+        tpKhachHang.addChangeListener(new ChangeListener() {			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int selectedIndex = tpKhachHang.getSelectedIndex();
+				if (selectedIndex==1) {
+					banHangBus.setMaKH(txtMaKH);
+				}
+				
+			}
+		});
+	}
+	
+	private void getInforKH() {
+		int index = pnlTableKH.getTable().getSelectedRow();
+		if (index!=-1) {
+			id = pnlTableKH.getValueAt(index, 0);
+			dispose();
+		}else {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn khách hàng");
+		}
+	}
+	
+	private Boolean checkInfor() {
+		String tenKH = txtTenKH.getText();
+		String sdt = txtSDT.getText();
+		String diaChi = txtDiaChi.getText();
+		if (tenKH.trim().equals("")) {
+			return showErr(txtTenKH, "Tên khách hàng không được để trống");
+		}else if (checkKyTuDacBiet(tenKH)==false) {
+			return showErr(txtTenKH, "Tên khách hàng không hợp lệ");
+		}else if (checkSDT(sdt)==false) {
+			return false;
+		}else if (diaChi.trim().equals("")) {
+			return showErr(txtDiaChi, "Địa chỉ không được để trống");
+		}else if (checkKyTuDacBiet(diaChi)==false) {
+			return showErr(txtDiaChi, "Địa chỉ không hợp lệ");
+		}
+		return true;
+	}
+	
+	private Boolean showErr(JTextField tx, String erorr) {
+		JOptionPane.showMessageDialog(tx, erorr);
+		tx.requestFocus();
+		return false;
+	}
+	
+	private Boolean checkSDT(String sdt) {
+		if (sdt.trim().equals("")) {
+			return showErr(txtSDT, "Số điện thoại không được để trống");
+		}else {
+			if (checkKyTuDacBiet(sdt)== false) {
+				return showErr(txtSDT, "Số điện thoại không được chứa ký tự đặc biệt");
+			}else {
+				try {
+					int result = Integer.parseInt(sdt);
+					if (result<0) {
+						return showErr(txtSDT, "Số điện thoại không hợp lệ");
+					}else {
+						if (sdt.length()!=10) {
+							return showErr(txtSDT, "Số điện thoại phải 10 số");
+						}
+					}
+				} catch (NumberFormatException e) {
+					return showErr(txtSDT, "Số điện thoại không hợp lệ");
+				}
+			}
+		}
+		return true;
+	}
+
+	private Boolean checkKyTuDacBiet(String tenMA) {
+		Pattern pattern = Pattern.compile("^.*[#?!@$%^&*-]+.*$");
+		for(int i=0; i<tenMA.length(); i++) {
+			if (pattern.matcher(tenMA).find()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void MouseClickChon() {
+		getInforKH();
+	}
+	
+	private void MouseClickChon2() {
+		if (checkInfor()) {
+			id = txtMaKH.getText();
+			DaoKhachHang.getInstance().insert(new KHACHHANG(txtMaKH.getText(), txtTenKH.getText(), txtSDT.getText(), txtDiaChi.getText(), 1));
+			dispose();
+		}
 	}
 }

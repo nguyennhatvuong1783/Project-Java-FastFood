@@ -8,8 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,6 +25,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.plaf.multi.MultiInternalFrameUI;
 
 import BUS.BanHangBus;
 import BUS.MonAnBus;
@@ -76,6 +84,7 @@ public class BanHangGUI extends JPanel{
     
     MonAnBus monAnBus = new MonAnBus();
     BanHangBus banHangBus = new BanHangBus();
+    String maKhString;
 	
 	public BanHangGUI() {
 		init();
@@ -258,6 +267,12 @@ public class BanHangGUI extends JPanel{
         txtNgayNhap.setFont(new Font("Segoe UI", 0, 18)); // txtNgayNhap
         pnlInfoMonAn.add(txtNgayNhap);
         txtNgayNhap.setBounds(130, 270, 250, 30);
+        
+        // Ngày nhập
+        Date date = Date.valueOf(LocalDate.now());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = formatter.format(date);
+        txtNgayNhap.setText(strDate);
 
         spnSoLuong.setFont(new Font("Segoe UI", 0, 18)); // spnSoLuong
         pnlInfoMonAn.add(spnSoLuong);
@@ -265,8 +280,7 @@ public class BanHangGUI extends JPanel{
 
         pnlInfoMonAn.add(btnKhachHang);
         btnKhachHang.setBounds(350, 350, 30, 30);
-        btnKhachHang.addActionListener(new ActionListener() {
-        	
+        btnKhachHang.addActionListener(new ActionListener() {      	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FormChonKH dialog = new FormChonKH(MainLayoutGUI.f, true);
@@ -275,6 +289,8 @@ public class BanHangGUI extends JPanel{
 				int y = (d.height - dialog.getSize().height) / 2;
 				dialog.setLocation(x, y);
                 dialog.setVisible(true);
+                maKhString = dialog.id;
+                banHangBus.setTenKH(txtKhachHang, maKhString);
 			}
 		});
 
@@ -388,6 +404,44 @@ public class BanHangGUI extends JPanel{
 				MouseClickXoa();
 			}
 		});
+        txtTienKhachDua.addKeyListener(new KeyListener() {			
+			@Override
+			public void keyTyped(KeyEvent e) {			
+			}			
+			@Override
+			public void keyReleased(KeyEvent e) {			
+			}			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if (txtTongTien.getText().trim().equals("")==false) {
+						int tongTien = Integer.parseInt(txtTongTien.getText());
+						if (banHangBus.checkTienNhap(txtTienKhachDua, tongTien)) {
+							int tienThoi = Integer.parseInt(txtTienKhachDua.getText()) - tongTien  ;
+							txtTienThoi.setText(String.valueOf(tienThoi));
+							txtTienKhachDua.setText("");
+						}
+					}
+					
+				}
+				
+			}
+		});
+        btnHoanThanh.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickHoanThanh();
+			}
+		});
+        btnLamMoi.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MouseClickRefresh();
+			}
+		});
+        
+        addDocumentListener(txtTimKiem);
+        banHangBus.setMaHD(txtMaHD);
 	}
 	
 	private void getInforToTableMonAn() {
@@ -420,26 +474,32 @@ public class BanHangGUI extends JPanel{
 	
 	private Boolean checkInfor() {
 		String tmpString = String.valueOf(spnSoLuong.getValue());
-		try {
-			int value = Integer.parseInt(tmpString);
-			if (value == 0) {
-				JOptionPane.showMessageDialog(null, "Chưa nhập số lượng");
-				return false;
-			}else {
-				if (value<0) {
-					JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
+		int index = pnlTableMonAn.getTable().getSelectedRow();
+		if (index==-1) {
+			JOptionPane.showMessageDialog(null, "Chưa chọn món ăn ");
+			return false;
+		}else {
+			try {
+				int value = Integer.parseInt(tmpString);
+				if (value == 0) {
+					JOptionPane.showMessageDialog(null, "Chưa nhập số lượng");
 					return false;
 				}else {
-					int soLuongMonAn =Integer.parseInt( pnlTableMonAn.getValueAt(pnlTableMonAn.getTable().getSelectedRow(), 2));
-					if (value>soLuongMonAn) {
-						JOptionPane.showMessageDialog(null, "Số lượng món ăn hiện có không đủ");
+					if (value<0) {
+						JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
 						return false;
+					}else {
+						int soLuongMonAn =Integer.parseInt( pnlTableMonAn.getValueAt(pnlTableMonAn.getTable().getSelectedRow(), 2));
+						if (value>soLuongMonAn) {
+							JOptionPane.showMessageDialog(null, "Số lượng món ăn hiện có không đủ");
+							return false;
+						}
 					}
 				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
+				return false;
 			}
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
-			return false;
 		}
 		return true;
 	}
@@ -449,7 +509,21 @@ public class BanHangGUI extends JPanel{
 		String maMA = txtMaMA.getText();
 		int soLuong = Integer.parseInt(tmpString);
 		banHangBus.updateSoLuong(pnlTableMonAn, soLuong, maMA);
-		clearInfor();
+	}
+	
+	private void updateTongTien() {
+		int donGia = Integer.parseInt(txtDonGia.getText());
+		String tmpString = String.valueOf(spnSoLuong.getValue());
+		int soLuong = Integer.parseInt(tmpString);
+		banHangBus.tongTien(txtTongTien, donGia, soLuong);
+	}
+	
+	private void updateTongTienXoa(int index) {
+		if (index!=-1) {
+			int soLuong = Integer.parseInt(pnlTableGioHang.getValueAt(index, 2));
+			int donGia = Integer.parseInt(pnlTableGioHang.getValueAt(index, 4));
+			banHangBus.tongTienXoa(txtTongTien, donGia, soLuong);
+		}
 	}
 	
 	private void clearInfor() {
@@ -460,17 +534,70 @@ public class BanHangGUI extends JPanel{
 	}
 	
 	private void MouseClickThem() {
-		getInforToTableMonAn();
-		updateSoLuong();		
-		pnlTableMonAn.getTable().setRowSelectionInterval(0, 0);
+		if (checkInfor()) {
+			getInforToTableMonAn();
+			updateSoLuong();
+			updateTongTien();
+			clearInfor();
+			pnlTableMonAn.getTable().setRowSelectionInterval(0, 0);
+		}
 	}
 	
 	private void MouseClickXoa() {
 		int index = pnlTableGioHang.getTable().getSelectedRow();
-		String soLuong = pnlTableGioHang.getValueAt(index, 2);
-		String maMA = pnlTableGioHang.getValueAt(index, 0);
-		int sl = Integer.parseInt(soLuong);
-		pnlTableGioHang.getModel().removeRow(index);
-		banHangBus.updateSoLuong2(pnlTableMonAn, sl, maMA);
+		if (index!=-1) {
+			String soLuong = pnlTableGioHang.getValueAt(index, 2);
+			String maMA = pnlTableGioHang.getValueAt(index, 0);
+			int sl = Integer.parseInt(soLuong);
+			banHangBus.updateSoLuong2(pnlTableMonAn, sl, maMA);
+			updateTongTienXoa(index);
+			pnlTableGioHang.getModel().removeRow(index);
+		}else {
+			JOptionPane.showMessageDialog(null, "Chưa chọn món ăn cần xóa");
+		}
 	}
+	
+	 private void addDocumentListener(JTextField tx) {
+	        // https://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield
+	        tx.getDocument().addDocumentListener(new DocumentListener() {
+	            @Override
+	            public void changedUpdate(DocumentEvent e) {
+	                txSearchOnChange();
+	            }
+
+				@Override
+	            public void removeUpdate(DocumentEvent e) {
+	                txSearchOnChange();
+	            }
+
+	            @Override
+	            public void insertUpdate(DocumentEvent e) {
+	                txSearchOnChange();
+	            }
+	        });
+	}
+	 
+	private void txSearchOnChange() {
+		monAnBus.setDataToTable(monAnBus.searchMonAn(txtTimKiem.getText()), pnlTableMonAn);		
+	}
+	
+	
+	private void MouseClickHoanThanh() {
+		banHangBus.mouseClickBtnHoanThanh(pnlTableGioHang, txtMaHD, txtNgayNhap, txtTongTien, MainLayoutGUI.nhanvien.getMaNV(), txtKhachHang, maKhString, txtKhuyenMai, txtTienThoi);
+	}
+	
+	private void MouseClickRefresh() {
+		monAnBus.readDB();
+		monAnBus.setDataToTable(monAnBus.getDsMonAn(), pnlTableMonAn);
+		banHangBus.setMaHD(txtMaHD);
+		txtKhuyenMai.setText("");
+		txtKhachHang.setText("");
+		txtTongTien.setText("");
+		txtTienThoi.setText("");
+		txtTienKhachDua.setText("");
+		 for (int i = 0; i < pnlTableGioHang.getModel().getRowCount(); i++) {
+			 pnlTableGioHang.getModel().removeRow(i);
+		 }
+	}
+	
 }

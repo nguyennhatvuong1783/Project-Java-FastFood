@@ -371,15 +371,6 @@ public class MonAnGUI extends JPanel{
 		 }
 	 }
 	 
-	 public void searchMonAn() {
-		 String request = txtTimKiem.getText();
-		 if (request!=null) {
-			mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
-		}
-		 else {
-			 mAnBus.setDataToTable(mAnBus.searchMonAn(request), pnlMonAnTable);
-		}
-	 }
 	 
 	 public Icon loadImage(String path, int width, int height) {
 	        File file = new File(path);
