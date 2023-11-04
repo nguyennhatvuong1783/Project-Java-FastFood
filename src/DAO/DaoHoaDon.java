@@ -190,5 +190,42 @@ public class DaoHoaDon implements DaoInterface<HOADON>{
 		}
 		return ketqua;
 	}
-
+	
+	public String selectTenKHbyMaKH(String MaKH) {
+		String ketqua = null;
+		try {
+			Connection c = connec.getConnection();
+			String sql = "SELECT TENKH FROM KHACHHANG WHERE MAKH=?";
+			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setString(1, MaKH);
+			ResultSet rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				ketqua = rs.getString("TENKH");
+			}
+			connec.closeConnection(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ketqua;
+	}
+	
+	public String selectTenNVbyMaNV(String MaNV) {
+		String ketqua = null;
+		try {
+			Connection c = connec.getConnection();
+			String sql = "SELECT TENNV FROM NHANVIEN WHERE MANV=?";
+			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setString(1, MaNV);
+			ResultSet rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				ketqua = rs.getString("TENNV");
+			}
+			connec.closeConnection(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ketqua;
+	}
 }

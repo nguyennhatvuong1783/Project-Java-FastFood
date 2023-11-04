@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import BUS.ChiTietHoaDonBUS;
 import GiaoDienChuan.CancelButton;
 import GiaoDienChuan.ExportExcelButton;
 import GiaoDienChuan.MyTable;
@@ -49,9 +50,10 @@ public class ChiTietHoaDonGUI extends JDialog{
     public JPanel pnlTitle;
 
 	
-	public ChiTietHoaDonGUI(JFrame parent, boolean modal) {
+	public ChiTietHoaDonGUI(JFrame parent, boolean modal, String MaHD) {
 		super(parent, modal);
 		init();
+		new ChiTietHoaDonBUS(pnlTable, lblMaHD, lblTenKH, lblTenNV, lblNgayLap, lblKhuyenMai, lblTongTien, MaHD);
 	}
 
 	private void init() {

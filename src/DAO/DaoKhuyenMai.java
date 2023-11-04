@@ -142,7 +142,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 		KHUYENMAI ketqua = null;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "SELECT * FROM KHUYENMAI WHERE NAKM=?";
+			String sql = "SELECT * FROM KHUYENMAI WHERE MAKM=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getMaKM());
 			ResultSet rs = pst.executeQuery();

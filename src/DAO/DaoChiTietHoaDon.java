@@ -160,7 +160,7 @@ public class DaoChiTietHoaDon implements DaoInterface<CHITIETHOADON> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return ketqua;
 	}
 
 }
