@@ -107,10 +107,18 @@ public class TaoQuyenBUS {
         taoQuyenGUI.getBtnThem().addMouseListener(new MouseAdapter() {
             @Override
             @SuppressWarnings("static-access")
-            public void mouseClicked(MouseEvent e) {                
+            public void mouseClicked(MouseEvent e) {
                 System.out.println("[TaoQuyenBUS]: Them");
-                String ten = taoQuyenGUI.getTxtTenQuyen().getText();
+                String ten;
                 String moTa;
+
+                if (taoQuyenGUI.getTxtTenQuyen().getText().equals("Tên quyền...")) {
+                    JOptionPane warning = new JOptionPane();
+                    warning.showMessageDialog(null, "Tên quyền không được bỏ trống");
+                    return;
+                } else {
+                    ten = taoQuyenGUI.getTxtTenQuyen().getText();
+                }
                 if (taoQuyenGUI.getTxtMoTa().getText().equals("Mô tả...")) {
                     moTa = null;
                 } else {
@@ -120,16 +128,7 @@ public class TaoQuyenBUS {
                 // Them Database Quyen va them (QuyenBUS)listQuyen
                 PHANQUYEN quyen = new PHANQUYEN(taoQuyenGUI.getMaQuyenMoi(), ten, moTa, 0);
                 DaoQuyen.getInstance().insert(quyen);
-                
-                System.out.println("truoc");
-                for(PHANQUYEN pq : taoQuyenGUI.getListQuyen()) {
-                    System.out.println(": " + pq.getMaQuyen() + " " + pq.getTenQuyen());
-                }
                 taoQuyenGUI.getListQuyen().add(quyen);
-                System.out.println("sau");                
-                for(PHANQUYEN pq : taoQuyenGUI.getListQuyen()) {
-                    System.out.println(": " + pq.getMaQuyen() + " " + pq.getTenQuyen());
-                }
 
                 // Them Database ChiTietPhanQuyen
                 ArrayList<CHITIETPHANQUYEN> listPhanQuyen = new ArrayList<>();
@@ -147,12 +146,12 @@ public class TaoQuyenBUS {
                 option.showMessageDialog(taoQuyenGUI, "Thêm thành công");
                 taoQuyenGUI.dispose();
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 taoQuyenGUI.getBtnThem().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 taoQuyenGUI.getBtnThem().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -165,12 +164,12 @@ public class TaoQuyenBUS {
                 System.out.println("[TaoQuyenBUS]: Huy");
                 taoQuyenGUI.dispose();
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 taoQuyenGUI.getBtnHuy().setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 taoQuyenGUI.getBtnHuy().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

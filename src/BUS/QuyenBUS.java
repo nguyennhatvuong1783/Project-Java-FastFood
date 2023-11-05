@@ -31,6 +31,8 @@ public class QuyenBUS {
     private ArrayList<CHUCNANG> listChucNang;
 
     private QuyenGUI quyenGUI;
+    
+    private boolean isRefresh;
 
     public QuyenBUS() {
     }
@@ -42,6 +44,7 @@ public class QuyenBUS {
         this.listPhanQuyen = DaoChiTietPhanQuyen.getInstance().selectAll();
         this.listChucNang = DaoChucNang.getInstance().selectAll();
         this.quyenGUI = quyenGUI;
+        this.isRefresh = true;
         sortListQuyenByMaQuyen(listQuyen);
         addDataToTable();
         event();
@@ -126,6 +129,7 @@ public class QuyenBUS {
                 System.out.println("[QuyenBUS]: Refresh");
                 sortListQuyenByMaQuyen(listQuyen);
                 lamMoi();
+                isRefresh = true;
             }
 
             @Override
@@ -146,6 +150,12 @@ public class QuyenBUS {
             @SuppressWarnings("ResultOfObjectAllocationIgnored")
             public void mouseClicked(MouseEvent e) {
                 System.out.println("[QuyenBUS]: Them");
+                if (!isRefresh) {
+                    sortListQuyenByMaQuyen(listQuyen);
+                    lamMoi();
+                }
+                isRefresh = false;
+                
                 new TaoQuyenGUI(listQuyen, listPhanQuyen, listChucNang);
             }
 
