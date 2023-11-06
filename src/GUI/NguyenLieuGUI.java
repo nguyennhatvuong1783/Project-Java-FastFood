@@ -1,14 +1,297 @@
 package GUI;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import GiaoDienChuan.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class NguyenLieuGUI extends JPanel{
+        public JFrame frame;
+        public JPanel panel1;
+        public JPanel panel2;
+        public ThemButton addbtn;
+        public XoaButton delbtn;
+        public SuaButton modbtn;
+        public ExportExcelButton xuatbtn;
+        public JButton timkiembtn;      
+        public JTable tableNL;        
+        public JScrollPane scrollPane;
+        public JTextField txtsearch;
+        private TableRowSorter<DefaultTableModel> sorter;
+        
+        //dữ liệu cho tùy chỉnh 
+        public String dataMa;
+        public String dataTen;
+        public String dataSoluong;
+        public String dataDonvi;
+        public String dataDongia;
+        public String dataHinhanh;
+        public String dataLoai;
+        public String dataTrangthai;
+            
 	public NguyenLieuGUI() {
 		init();
 	}
 	
 	public void init() {
-		this.add(new JLabel("Nguyên liệu GUI"));
-	}
+            this.add(new JLabel("Nguyên liệu GUI"));
+            DefaultTableModel model =listNL();
+            frame = new JFrame();
+            addbtn = new ThemButton();
+            delbtn = new XoaButton();
+            modbtn = new SuaButton();
+            xuatbtn = new ExportExcelButton();
+            timkiembtn = new JButton("Tìm kiếm");
+            tableNL = new JTable(model);              
+            sorter = new TableRowSorter<>(model);
+            txtsearch = new JTextField();                                            
+                     
+            // Tạo một JScrollPane mới và thêm JTable vào đó
+            tableNL.setRowSorter(sorter);            
+            scrollPane = new JScrollPane(tableNL);
+    
+            // Tạo một JPanel mới với FlowLayout và gridlayout
+            panel1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            panel2 = new JPanel(new GridLayout(1, 0));        
+            
+            // Thêm hai JButton vào JPanel                     
+            panel1.add(panel2);
+            panel2.add(txtsearch); 
+            panel2.add(timkiembtn);
+            panel2.add(addbtn);
+            panel2.add(modbtn);
+            panel2.add(delbtn);           
+            panel2.add(xuatbtn);
+            
+            //Thêm tiêu đề
+            frame.setTitle("Nguyên Liệu GUI");
+            // Thêm scrollpane A.K.A jtable vào JFrame
+            frame.getContentPane().add(scrollPane,BorderLayout.NORTH);
+            // Thêm JLabel vào JFrame
+            frame.getContentPane().add(panel1,BorderLayout.SOUTH);              
+            // Đặt JFrame ở chế độ toàn màn hình
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            // Đặt hành động mặc định khi đóng JFrame
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            // Hiển thị JFrame
+            frame.setVisible(true);
+            
+            //xử lý các jbutton
+            timkiembtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    timkiem();             
+                }            
+            });
+            
+            addbtn.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent arg0){
+                    them(model);
+                }
+            });
+            
+            modbtn.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent arg0){
+                    // Lấy chỉ số của hàng được chọn
+                    int selectedRow = tableNL.getSelectedRow();
+                    
+                    // Kiểm tra xem có hàng nào được chọn không
+                    if (selectedRow >= 0) {
+                       // Lấy dữ liệu từ hàng được chọn
+                        dataMa = tableNL.getValueAt(selectedRow, 0).toString();
+                        dataTen = tableNL.getValueAt(selectedRow, 1).toString();
+                        dataSoluong = tableNL.getValueAt(selectedRow, 2).toString();
+                        dataDonvi = tableNL.getValueAt(selectedRow, 3).toString();
+                        dataDongia = tableNL.getValueAt(selectedRow, 4).toString();
+                        dataHinhanh = tableNL.getValueAt(selectedRow, 5).toString();
+                        dataLoai = tableNL.getValueAt(selectedRow, 6).toString();
+                        dataTrangthai = tableNL.getValueAt(selectedRow, 7).toString();                              
+                        sua(model,dataMa,dataTen,dataSoluong,dataDonvi,dataDongia,dataHinhanh,dataLoai,dataTrangthai);                        
+                    } 
+                    else {
+                        // Hiển thị thông báo nếu không có hàng nào được chọn
+                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để sửa");
+                    }                    
+                }
+            });       
+            
+            delbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xoa(model);
+                }
+            });
+            
+            xuatbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuat(model);
+                }
+            });
+
+	}                             
+                
+        public void timkiem(){
+            String text = txtsearch.getText();//lấy nội dung
+                if (text.length() == 0) {
+                    sorter.setRowFilter(null);// không có bộ lọc được áp dụng
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter(text));// lọc dựa trên nội dung đã nhập
+                }           
+        }
+        
+        public void them(DefaultTableModel model){
+            // Tạo một JTextField cho mỗi cột trong JTable
+            JTextField txtMa = new JTextField();
+            JTextField txtTen = new JTextField();
+            JTextField txtSol = new JTextField();
+            JTextField txtDonvi = new JTextField();
+            JTextField txtDongia = new JTextField();
+            JTextField txtHinhanh = new JTextField();
+            JTextField txtLoai = new JTextField();
+            JTextField txtTrangThai = new JTextField();                       
+
+            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
+            Object[] message = {
+            "Nhập mã nguyên liệu:", txtMa,
+            "Nhập tên nguyên liệu:", txtTen,
+            "Nhập số lượng:", txtSol,
+            "Nhập đơn vị:", txtDonvi,
+            "Nhập đơn giá:", txtDongia,
+            //"Nhập hình ảnh:", txtHinhanh,
+            "Nhập loại:", txtLoai,
+            "Nhập trạng thái:", txtTrangThai,
+            };
+
+            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                // Thêm dòng mới vào model với dữ liệu từ JTextField
+                model.addRow(new Object[]{txtMa.getText(), txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
+            }
+        }
+        
+        public void sua(DefaultTableModel model,String Ma,String Ten,String Soluong,String Donvi,String Dongia,String Hinhanh,String Loai,String Trangthai){
+            // Tạo một JTextField cho mỗi cột trong JTable
+            JTextField txtMa = new JTextField(Ma);
+            JTextField txtTen = new JTextField(Ten);
+            JTextField txtSol = new JTextField(Soluong);
+            JTextField txtDonvi = new JTextField(Donvi);
+            JTextField txtDongia = new JTextField(Dongia);
+            JTextField txtHinhanh = new JTextField(Hinhanh);
+            JTextField txtLoai = new JTextField(Loai);
+            JTextField txtTrangThai = new JTextField(Trangthai);                       
+
+            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
+            Object[] message = {
+            "Nhập mã nguyên liệu:", txtMa,
+            "Nhập tên nguyên liệu:", txtTen,
+            "Nhập số lượng:", txtSol,
+            "Nhập đơn vị:", txtDonvi,
+            "Nhập đơn giá:", txtDongia,
+            //"Nhập hình ảnh:", txtHinhanh,
+            "Nhập loại:", txtLoai,
+            "Nhập trạng thái:", txtTrangThai,
+            };
+
+            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                // Lấy chỉ số của hàng được chọn
+                int selectedRow = tableNL.getSelectedRow();
+                
+                // Cập nhật dữ liệu của hàng được chọn
+                model.setValueAt(txtMa.getText(), selectedRow, 0);
+                model.setValueAt(txtTen.getText(), selectedRow, 1);
+                model.setValueAt(txtSol.getText(), selectedRow, 2);
+                model.setValueAt(txtDonvi.getText(), selectedRow, 3);
+                model.setValueAt(txtDongia.getText(), selectedRow, 4);
+                model.setValueAt(txtHinhanh.getText(), selectedRow, 5);
+                model.setValueAt(txtLoai.getText(), selectedRow, 6);
+                model.setValueAt(txtTrangThai.getText(), selectedRow, 7);
+            }
+        }
+         
+        public void xoa(DefaultTableModel model){
+            // Lấy chỉ số của hàng được chọn
+                    int selectedRow = tableNL.getSelectedRow();
+
+                    // Kiểm tra xem có hàng nào được chọn không
+                    if (selectedRow >= 0) {
+                        // Xóa hàng được chọn từ model
+                        model.removeRow(selectedRow);
+                    } else {
+                        // Hiển thị thông báo nếu không có hàng nào được chọn
+                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xóa");
+                    }
+        }
+        
+        public void xuat(DefaultTableModel model){
+            //đường dẫn lưu file trong ngoặc nha
+            try (FileWriter writer = new FileWriter("NguyenLieu.csv")) {                        
+                // Xuất tiêu đề cột
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    writer.write(model.getColumnName(i) + ",");
+                }
+                writer.write("\n");
+
+                // Xuất dữ liệu từng hàng
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        writer.write(model.getValueAt(i, j).toString() + ",");
+                    }
+                    writer.write("\n");
+                }
+
+                JOptionPane.showMessageDialog(frame, "Dữ liệu đã được xuất thành công!");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+        public DefaultTableModel listNL(){           
+            // Tạo một DefaultTableModel mới với 8 cột
+            String[] columnNames = {"Mã Nguyên Liệu", "Tên Nguyên Liệu", "Số Lượng", "Đơn Vị Tính", "Đơn Giá", "Hình Ảnh", "Loại", "Trạng Thái"};
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+                @Override
+                public Class getColumnClass(int column) {
+                    switch (column) {
+                        case 5:
+                            return ImageIcon.class;
+                        default:
+                            return Object.class;
+                    }
+                }
+            };
+            ImageIcon imageIcon = new ImageIcon("/icon_img/logo-fast-food-40.png");                      
+           
+            //thêm dòng sau khởi tạo
+            model.addRow(new Object[]{"NL01", "Bánh burger", "10","Cái","10000",imageIcon,"Null","còn"});
+            model.addRow(new Object[]{"NL02", "Bánh taco", "11","Cái","12000",imageIcon,"Null","còn"});
+            model.addRow(new Object[]{"NL03", "coca", "15","Chai","10000",imageIcon,"Null","còn"});
+            
+            return model;
+        }
+              
 }
