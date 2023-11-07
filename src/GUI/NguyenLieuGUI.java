@@ -25,6 +25,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import DTO.NGUYENLIEU;
+import BUS.NguyenLieuBUS;
 
 public class NguyenLieuGUI extends JPanel{
         public JFrame frame;
@@ -185,7 +187,20 @@ public class NguyenLieuGUI extends JPanel{
             "Nhập loại:", txtLoai,
             "Nhập trạng thái:", txtTrangThai,
             };
-
+            
+            //Đưa nguyên liệu vào đối tượng và gọi hàm thêm nguyên liệu ở BUS để thêm DL vào database
+            NGUYENLIEU nl = new NGUYENLIEU();
+            nl.setMaNL(txtMa.getText());
+            nl.setTenNL(txtTen.getText());
+            nl.setSoLuong(Integer.parseInt(txtSol.getText()));
+            nl.setDonViTinh(txtDonvi.getText());
+            nl.setDonGia(Integer.parseInt(txtDongia.getText()));
+            nl.setHinhAnh(txtHinhanh.getText());
+            nl.setLoaiNL(txtLoai.getText());
+            nl.setTrangThai(Integer.parseInt(txtTrangThai.getText()));
+            NguyenLieuBUS nlBUS = new NguyenLieuBUS();
+            nlBUS.insertNL(nl);
+            
             int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
             if (option == JOptionPane.OK_OPTION) {
                 // Thêm dòng mới vào model với dữ liệu từ JTextField
@@ -231,20 +246,48 @@ public class NguyenLieuGUI extends JPanel{
                 model.setValueAt(txtLoai.getText(), selectedRow, 6);
                 model.setValueAt(txtTrangThai.getText(), selectedRow, 7);
             }
+            
+            //Cập nhật dữ liệu nguyên liệu mới về database
+            NGUYENLIEU nl = new NGUYENLIEU();
+            nl.setMaNL(txtMa.getText());
+            nl.setTenNL(txtTen.getText());
+            nl.setSoLuong(Integer.parseInt(txtSol.getText()));
+            nl.setDonViTinh(txtDonvi.getText());
+            nl.setDonGia(Integer.parseInt(txtDongia.getText()));
+            nl.setHinhAnh(txtHinhanh.getText());
+            nl.setLoaiNL(txtLoai.getText());
+            nl.setTrangThai(Integer.parseInt(txtTrangThai.getText()));
+            NguyenLieuBUS nlBUS = new NguyenLieuBUS();
+            nlBUS.updateNL(nl);
         }
          
         public void xoa(DefaultTableModel model){
             // Lấy chỉ số của hàng được chọn
-                    int selectedRow = tableNL.getSelectedRow();
+            int selectedRow = tableNL.getSelectedRow();
 
-                    // Kiểm tra xem có hàng nào được chọn không
-                    if (selectedRow >= 0) {
-                        // Xóa hàng được chọn từ model
-                        model.removeRow(selectedRow);
-                    } else {
-                        // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xóa");
-                    }
+            // Kiểm tra xem có hàng nào được chọn không
+            if (selectedRow >= 0) {
+                // Xóa hàng được chọn từ model
+                model.removeRow(selectedRow);
+                
+                //Xóa dữ liệu trong database
+                //Lấy dữ liệu từ hàng được chọn và lưu vào đối tượng
+                NGUYENLIEU nl = new NGUYENLIEU();
+                nl.setMaNL(tableNL.getValueAt(selectedRow, 0).toString());
+                nl.setTenNL(tableNL.getValueAt(selectedRow, 1).toString());
+                nl.setSoLuong(Integer.parseInt(tableNL.getValueAt(selectedRow, 2).toString()));
+                nl.setDonViTinh(tableNL.getValueAt(selectedRow, 3).toString());
+                nl.setDonGia(Integer.parseInt(tableNL.getValueAt(selectedRow, 4).toString()));
+                nl.setHinhAnh(tableNL.getValueAt(selectedRow, 5).toString());
+                nl.setLoaiNL(tableNL.getValueAt(selectedRow, 6).toString());
+                nl.setTrangThai(Integer.parseInt(tableNL.getValueAt(selectedRow, 7).toString())); 
+                NguyenLieuBUS nlBUS = new NguyenLieuBUS();
+                nlBUS.deleteNL(nl);
+                
+            } else {
+                // Hiển thị thông báo nếu không có hàng nào được chọn
+                JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xóa");
+            }
         }
         
         public void xuat(DefaultTableModel model){

@@ -26,6 +26,8 @@ import java.util.Arrays;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 
+import DTO.NGUYENLIEU;
+
 public class NhapHangGUI extends JPanel{
         public JFrame frame;                
         public JButton themnccbtn; 
@@ -92,7 +94,6 @@ public class NhapHangGUI extends JPanel{
             panel.add(themspbtn);           
             panelSPselector.add(txtSLhint);
             panelSPselector.add(txtSL);
-            panelSPselector.add(themspbtn);
             panel.add(panelSPselector);
             panel.add(scrollPaneSP);
             panelSPoption.add(delbtn);
@@ -106,13 +107,23 @@ public class NhapHangGUI extends JPanel{
             
             //Thêm tiêu đề
             frame.setTitle("Phiếu nhập GUI");  
-            frame.add(panel);
+            frame.getContentPane().add(panel);
             // Đặt JFrame ở chế độ toàn màn hình
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             // Đặt hành động mặc định khi đóng JFrame
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Hiển thị JFrame
             frame.setVisible(true);
+            
+            themspbtn.addActionListener(new ActionListener() {
+            	public void actionPerformed(ActionEvent e) {
+            		int selectedRow = tableNCC.getSelectedRow();
+            		if (selectedRow >= 0) {
+            			String maNL = tableNCC.getValueAt(selectedRow, 0).toString();
+            			
+            		}
+            	}
+            });
             
             cb.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {

@@ -1,5 +1,7 @@
 package DTO;
 
+import javax.swing.JTextField;
+
 public class NGUYENLIEU {
 	private String maNL;
 	private String tenNL;
@@ -30,8 +32,8 @@ public class NGUYENLIEU {
 		return maNL;
 	}
 
-	public void setMaNL(String maNL) {
-		this.maNL = maNL;
+	public void setMaNL(String txtMa) {
+		this.maNL = txtMa;
 	}
 
 	public String getTenNL() {

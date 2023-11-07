@@ -190,6 +190,5 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		}
 		return ketqua;
 	}
-	
 
 }
