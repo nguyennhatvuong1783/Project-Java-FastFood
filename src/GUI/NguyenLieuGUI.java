@@ -29,7 +29,7 @@ import DTO.NGUYENLIEU;
 import BUS.NguyenLieuBUS;
 
 public class NguyenLieuGUI extends JPanel{
-        public JFrame frame;
+        //public JFrame frame;
         public JPanel panel1;
         public JPanel panel2;
         //public ThemButton addbtn;
@@ -59,7 +59,7 @@ public class NguyenLieuGUI extends JPanel{
 	public void init() {
             this.add(new JLabel("Nguyên liệu GUI"));
             DefaultTableModel model =listNL();
-            frame = new JFrame();
+            //frame = new JFrame();
             //addbtn = new ThemButton();
             delbtn = new XoaButton();
             modbtn = new SuaButton();
@@ -86,6 +86,7 @@ public class NguyenLieuGUI extends JPanel{
             panel2.add(delbtn);           
             panel2.add(xuatbtn);
             
+            /* 
             //Thêm tiêu đề
             frame.setTitle("Nguyên Liệu GUI");
             // Thêm scrollpane A.K.A jtable vào JFrame
@@ -97,8 +98,9 @@ public class NguyenLieuGUI extends JPanel{
             // Đặt hành động mặc định khi đóng JFrame
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Hiển thị JFrame
-            frame.setVisible(true);
-            
+            frame.setVisible(true);*/
+            this.add(scrollPane);
+            this.add(panel1);
             //xử lý các jbutton
             timkiembtn.addActionListener(new ActionListener() {
                 @Override
@@ -135,7 +137,7 @@ public class NguyenLieuGUI extends JPanel{
                     } 
                     else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để sửa");
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để sửa");
                     }                    
                 }
             });       
@@ -286,7 +288,7 @@ public class NguyenLieuGUI extends JPanel{
                 
             } else {
                 // Hiển thị thông báo nếu không có hàng nào được chọn
-                JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xóa");
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để xóa");
             }
         }
         
@@ -307,7 +309,7 @@ public class NguyenLieuGUI extends JPanel{
                     writer.write("\n");
                 }
 
-                JOptionPane.showMessageDialog(frame, "Dữ liệu đã được xuất thành công!");
+                JOptionPane.showMessageDialog(null, "Dữ liệu đã được xuất thành công!");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

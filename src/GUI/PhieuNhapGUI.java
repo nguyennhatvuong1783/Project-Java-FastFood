@@ -33,7 +33,7 @@ import DTO.PHIEUNHAP;
 
 
 public class PhieuNhapGUI extends JPanel{
-        public JFrame frame;
+        //public JFrame frame;
         public JPanel panel1;
         public JPanel panel2;
         public ExportExcelButton xuatbtn;
@@ -51,7 +51,7 @@ public class PhieuNhapGUI extends JPanel{
 	public void init() {
             this.add(new JLabel("Phiếu nhập GUI"));
             DefaultTableModel model =listNL();
-            frame = new JFrame();            
+            //frame = new JFrame();            
             xuatbtn = new ExportExcelButton();
             chitietbtn = new JButton("Chi tiết");
             timkiembtn = new JButton("Tìm kiếm");
@@ -73,7 +73,7 @@ public class PhieuNhapGUI extends JPanel{
             panel2.add(timkiembtn);
             panel2.add(chitietbtn);                     
             panel2.add(xuatbtn);
-            
+            /* 
             //Thêm tiêu đề
             frame.setTitle("Phiếu nhập GUI");
             // Thêm scrollpane A.K.A jtable vào JFrame
@@ -86,7 +86,9 @@ public class PhieuNhapGUI extends JPanel{
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Hiển thị JFrame
             frame.setVisible(true);
-            
+            */
+            this.add(scrollPane);
+            this.add(panel1);
             //xử lý các jbutton
             timkiembtn.addActionListener(new ActionListener() {
                 @Override
@@ -135,7 +137,7 @@ public class PhieuNhapGUI extends JPanel{
                 JOptionPane.showMessageDialog(null, "Mã Phiếu Nhập: " + maPhieuNhap + "\nMã Nguyên Liệu: " + maNguyenLieu + "\nSố Lượng: " + soLuong);
             } else {
                 // Hiển thị thông báo nếu không có hàng nào được chọn
-                JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xem chi tiết");
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để xem chi tiết");
             }               
         }             
         
@@ -156,7 +158,7 @@ public class PhieuNhapGUI extends JPanel{
                     writer.write("\n");
                 }
 
-                JOptionPane.showMessageDialog(frame, "Dữ liệu đã được xuất thành công!");
+                JOptionPane.showMessageDialog(null, "Dữ liệu đã được xuất thành công!");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
