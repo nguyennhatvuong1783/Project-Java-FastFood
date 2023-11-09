@@ -38,6 +38,7 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
@@ -97,7 +98,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         panel_2_1 = new JPanel();
         panel_2_1.setLayout(new GridLayout(6, 2));
         panel_2_2 = new JPanel();
-        panel_2_2.setLayout(new GridLayout(1, 3));
+        panel_2_2.setLayout(new GridLayout(1, 4));
         panel_2.setBorder(new TitledBorder(raisedBevel, "Thông tin khuyến mãi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panel_2_2.setBorder(loweredBevel);
         JLabel lblNewLabel_2_1 = new JLabel("Mã khuyến mãi :");
@@ -105,6 +106,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         lblNewLabel_2_1.setBorder(loweredBevel);
         panel_2_1.add(lblNewLabel_2_1);
         txt_MaKM = new JTextField();
+        txt_MaKM.setEnabled(false);
         txt_MaKM.setBorder(loweredBevel);
         panel_2_1.add(txt_MaKM);
         txt_MaKM.setColumns(10);
@@ -164,7 +166,10 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         panel_2_2.add(buttonSua);
         buttonXoa = new XoaButton();
         buttonXoa.addActionListener((ActionListener) this);
-        panel_2_2.add(buttonXoa);       
+        panel_2_2.add(buttonXoa);
+        buttonLamMoi = new RefreshButton();
+        buttonLamMoi.addActionListener((ActionListener) this);
+        panel_2_2.add(buttonLamMoi);
         panel_2.add(panel_2_1, BorderLayout.CENTER);
         panel_2.add(panel_2_2, BorderLayout.SOUTH);
 
@@ -182,7 +187,8 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    khuyenMaiBus.LoadSuaXoaKm();
+                    buttonThem.setEnabled(false);
+                    khuyenMaiBus.LoadThongTinKm();
                 }
             }
         });
@@ -207,7 +213,6 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        khuyenMaiBus = new KhuyenMaiBus(this);
         if (e.getSource() == buttonThem) {
 
             if (khuyenMaiBus.themKM() == 1) {
@@ -218,18 +223,28 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         }
         if (e.getSource() == buttonSua) {
             if (khuyenMaiBus.SuaKm() == 1) {
-                JOptionPane.showMessageDialog(null, "Sửa thành công!");                
+                JOptionPane.showMessageDialog(null, "Sửa thành công!");
             } else {
                 JOptionPane.showMessageDialog(null, "Sửa thất bại!");
             }
         }
         if (e.getSource() == buttonXoa) {
             if (khuyenMaiBus.XoaKm() == 1) {
-                JOptionPane.showMessageDialog(null, "Xóa thành công!");               
+                JOptionPane.showMessageDialog(null, "Xóa thành công!");
             } else {
                 JOptionPane.showMessageDialog(null, "Xóa thất bại!");
             }
-        }     
+        }
+        if (e.getSource() == buttonLamMoi) {
+            this.getTxt_MaKM().setText("");
+            this.getTxt_TenKM().setText("");
+            this.getTxt_dieuKien().setText("");
+            this.getTxt_phanTram().setText("");
+            this.getDate_BĐ().setDate(null);
+            this.getDate_KT().setDate(null);
+            buttonThem.setEnabled(true);
+            khuyenMaiBus.LoadDataToTable();
+        }
     }
 
     public JDateChooser getDate_BĐ() {
@@ -308,6 +323,14 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         return txt_MaKMCT;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setTxt_MaKMCT(JTextField txt_MaKMCT) {
         this.txt_MaKMCT = txt_MaKMCT;
     }
@@ -334,5 +357,16 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     public void setPanel_4(JPanel panel_4) {
         this.panel_4 = panel_4;
+    }
+
+    public static void main(String[] args) {
+        KhuyenMaiGUI jp = new KhuyenMaiGUI();
+        JFrame jf = new JFrame();
+        jf.setSize(600, 600);
+        jf.setVisible(true);
+        jf.setLayout(new BorderLayout());
+        jf.add(jp, BorderLayout.CENTER);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.setLocationRelativeTo(null);
     }
 }

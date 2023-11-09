@@ -25,6 +25,7 @@ public class KhuyenMaiBus {
     private KhuyenMaiGUI khuyenMaiGui;
     private MyTable tableKM;
     private String id;
+
     private DefaultTableModel model;
 
     public KhuyenMaiBus(KhuyenMaiGUI khuyenMaiGui) {
@@ -33,23 +34,32 @@ public class KhuyenMaiBus {
 
     public void LoadDataToTable() {
         daoKhuyenMai = new DaoKhuyenMai();
-        String[] header = {"Mã khuyến mãi", "Tên khuyến mãi", "Điều kiện", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc"};
+        String[] header = {"Mã khuyến mãi", "Tên khuyến mãi", "Điều kiện", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái"};
         model = new DefaultTableModel(header, 0);
         khuyenMaiGui.getTableKM().getTable().setModel(model);
         for (KHUYENMAI km : daoKhuyenMai.selectAll()) {
             if (km.getTrangThai() == 1) {
-                String[] a = {km.getMaKM(), km.getTenKM(), km.getDieuKienKM(), Float.toString(km.getGiamGia()), km.dateBĐToString(), km.dateKTToString()};
-                model.addRow(a);
+                String[] a = {km.getMaKM(), km.getTenKM(), km.getDieuKienKM(), Float.toString(km.getGiamGia()), km.dateBĐToString(), km.dateKTToString(), "Còn hiệu lực"};
+                String[] b = {km.getMaKM(), km.getTenKM(), km.getDieuKienKM(), Float.toString(km.getGiamGia()), km.dateBĐToString(), km.dateKTToString(), "Hết hạn"};
+                if (new Date().before(km.getNgayKT())) {
+                    model.addRow(a);
+                } else {
+                    model.addRow(b);
+                }
             }
-        }
 
+        }
+    }
+    
+
+    public int maKhuyenMaiMoiNhat() {
+        daoKhuyenMai = new DaoKhuyenMai();
+        return daoKhuyenMai.selectAll().size();
     }
 
     public int themKM() {
-        boolean flag = false;
         daoKhuyenMai = new DaoKhuyenMai();
-        if ((khuyenMaiGui.getTxt_MaKM().getText() == "")
-                || (khuyenMaiGui.getTxt_TenKM().getText() == "")
+        if ((khuyenMaiGui.getTxt_TenKM().getText() == "")
                 || (khuyenMaiGui.getTxt_dieuKien().getText() == "")
                 || (khuyenMaiGui.getTxt_phanTram().getText() == "")) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!");
@@ -77,15 +87,11 @@ public class KhuyenMaiBus {
         } else if (khuyenMaiGui.getDate_KT().getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày kết thức hoặc kiểm tra lại ngày kết thúc nếu đã nhập");
             return 0;
-        } else if (khuyenMaiGui.getTxt_MaKM().getText().matches("[0-9a-zA-Z]{1,}") == false) {
-            JOptionPane.showMessageDialog(null, "Mã khuyến mãi không chứa dấu và kí tự đặc biệt!");
         } else {
             daoKhuyenMai = new DaoKhuyenMai();
-            for (KHUYENMAI km1 : daoKhuyenMai.selectAll()) {
-                if (khuyenMaiGui.getTxt_MaKM().getText().equals(km1.getMaKM())&& km1.getTrangThai()==1) {
-                    JOptionPane.showMessageDialog(null, "Mã khuyến mãi đã tồn tại!");
-                    return 0;
-                }
+            if (!khuyenMaiGui.getTxt_dieuKien().getText().matches("^TONGTIEN >= [1-9]{1}[0,9]{1,}")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập điều kiện có dạng: TONGTIEN >= x với x là 1 số tiền");
+                return 0;
             }
 
             if (new Date().after(khuyenMaiGui.getDate_BĐ().getDate())) {
@@ -99,52 +105,31 @@ public class KhuyenMaiBus {
             }
 
             int trangThai = 1;
-            KHUYENMAI km = new KHUYENMAI(khuyenMaiGui.getTxt_MaKM().getText(),
+            String maKM = String.valueOf(this.maKhuyenMaiMoiNhat() + 1);
+            KHUYENMAI km = new KHUYENMAI(maKM,
                     khuyenMaiGui.getTxt_TenKM().getText(),
                     khuyenMaiGui.getTxt_dieuKien().getText(),
                     Float.valueOf(khuyenMaiGui.getTxt_phanTram().getText()),
                     khuyenMaiGui.getDate_BĐ().getDate(),
                     khuyenMaiGui.getDate_KT().getDate(),
                     trangThai);
-            for (KHUYENMAI km1 : daoKhuyenMai.selectAll()) {
-                if (km1.getMaKM().equals(km.getMaKM())) {
-                    flag = true;
-                }
-            }
-            if (flag == false) {
-                if (daoKhuyenMai.insert(km) != 0) {
-                    this.LoadDataToTable();
-                    khuyenMaiGui.getTxt_MaKM().setText("");
-                    khuyenMaiGui.getTxt_TenKM().setText("");
-                    khuyenMaiGui.getTxt_dieuKien().setText("");
-                    khuyenMaiGui.getTxt_phanTram().setText("");
-                    khuyenMaiGui.getDate_BĐ().setDate(null);
-                    khuyenMaiGui.getDate_KT().setDate(null);
-                    return 1;
-                } else {
-                    return 0;
-                }
+
+            if (daoKhuyenMai.insert(km) != 0) {
+                this.LoadDataToTable();
+                khuyenMaiGui.getTxt_MaKM().setText("");
+                khuyenMaiGui.getTxt_TenKM().setText("");
+                khuyenMaiGui.getTxt_dieuKien().setText("");
+                khuyenMaiGui.getTxt_phanTram().setText("");
+                khuyenMaiGui.getDate_BĐ().setDate(null);
+                khuyenMaiGui.getDate_KT().setDate(null);
+                return 1;
             } else {
-                if (daoKhuyenMai.update(km) != 0) {
-                    this.LoadDataToTable();
-                    khuyenMaiGui.getTxt_MaKM().setText("");
-                    khuyenMaiGui.getTxt_TenKM().setText("");
-                    khuyenMaiGui.getTxt_dieuKien().setText("");
-                    khuyenMaiGui.getTxt_phanTram().setText("");
-                    khuyenMaiGui.getDate_BĐ().setDate(null);
-                    khuyenMaiGui.getDate_KT().setDate(null);
-                    return 1;
-                } else {
-                    return 0;
-                }
+                return 0;
             }
-
         }
-        return 0;
-
     }
 
-    public void LoadSuaXoaKm() {
+    public void LoadThongTinKm() {
         int seclectedRow = khuyenMaiGui.getTableKM().getTable().getSelectedRow();
         if (seclectedRow != -1) {
             id = (String) khuyenMaiGui.getTableKM().getTable().getValueAt(seclectedRow, 0);
@@ -156,7 +141,6 @@ public class KhuyenMaiBus {
             for (KHUYENMAI km : daoKhuyenMai.selectAll()) {
                 if (id.equals(km.getMaKM())) {
                     khuyenMaiGui.getTxt_MaKM().setText(km.getMaKM());
-                    khuyenMaiGui.getTxt_MaKM().setEnabled(false);
                     khuyenMaiGui.getTxt_TenKM().setText(km.getTenKM());
                     khuyenMaiGui.getTxt_dieuKien().setText(km.getDieuKienKM());
                     String giamgia = Float.toString(km.getGiamGia());
@@ -170,9 +154,12 @@ public class KhuyenMaiBus {
     }
 
     public int SuaKm() {
+        if (id == null) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi muốn sửa!");
+            return 0;
+        }
         daoKhuyenMai = new DaoKhuyenMai();
-        if ((khuyenMaiGui.getTxt_MaKM().getText() == "")
-                || (khuyenMaiGui.getTxt_TenKM().getText() == "")
+        if ((khuyenMaiGui.getTxt_TenKM().getText() == "")
                 || (khuyenMaiGui.getTxt_dieuKien().getText() == "")
                 || (khuyenMaiGui.getTxt_phanTram().getText() == "")) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!");
@@ -200,10 +187,12 @@ public class KhuyenMaiBus {
         } else if (khuyenMaiGui.getDate_KT().getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày kết thức hoặc kiểm tra lại ngày kết thúc nếu đã nhập");
             return 0;
-        } else if (khuyenMaiGui.getTxt_MaKM().getText().matches("[0-9a-zA-Z]{1,}") == false) {
-            JOptionPane.showMessageDialog(null, "Mã khuyến mãi không chứa dấu và kí tự đặc biệt!");
         } else {
             daoKhuyenMai = new DaoKhuyenMai();
+            if (!khuyenMaiGui.getTxt_dieuKien().getText().matches("^TONGTIEN >= [1-9]{1}[0,9]{1,}")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập điều kiện có dạng: TONGTIEN >= x với x là 1 số tiền");
+                return 0;
+            }
 
             if (new Date().after(khuyenMaiGui.getDate_BĐ().getDate())) {
                 JOptionPane.showMessageDialog(null, "Ngày bắt đầu phải sau ngày hiện tại!");
@@ -226,7 +215,6 @@ public class KhuyenMaiBus {
             if (daoKhuyenMai.update(km) != 0) {
                 this.LoadDataToTable();
                 khuyenMaiGui.getTxt_MaKM().setText("");
-                khuyenMaiGui.getTxt_MaKM().setEnabled(true);
                 khuyenMaiGui.getTxt_TenKM().setText("");
                 khuyenMaiGui.getTxt_dieuKien().setText("");
                 khuyenMaiGui.getTxt_phanTram().setText("");
@@ -237,10 +225,13 @@ public class KhuyenMaiBus {
                 return 0;
             }
         }
-        return 0;
     }
 
     public int XoaKm() {
+        if (id == null) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi muốn xóa");
+            return 0;
+        }
         daoKhuyenMai = new DaoKhuyenMai();
         int trangThai = 0;
         KHUYENMAI km = new KHUYENMAI(khuyenMaiGui.getTxt_MaKM().getText(),
@@ -255,7 +246,6 @@ public class KhuyenMaiBus {
                 if (daoKhuyenMai.delete(km) != 0) {
                     this.LoadDataToTable();
                     khuyenMaiGui.getTxt_MaKM().setText("");
-                    khuyenMaiGui.getTxt_MaKM().setEnabled(true);
                     khuyenMaiGui.getTxt_TenKM().setText("");
                     khuyenMaiGui.getTxt_dieuKien().setText("");
                     khuyenMaiGui.getTxt_phanTram().setText("");
@@ -271,4 +261,5 @@ public class KhuyenMaiBus {
         return 0;
 
     }
+
 }
