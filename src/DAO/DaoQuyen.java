@@ -162,6 +162,5 @@ public class DaoQuyen implements DaoInterface<PHANQUYEN>{
 		}
 		return ketqua;
 	}
-	
 
 }

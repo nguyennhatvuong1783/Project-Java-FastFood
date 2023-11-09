@@ -1,6 +1,7 @@
 package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
+
 import BUS.NhapHangBUS;
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.SuaButton;
@@ -32,8 +33,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 
 import DTO.NGUYENLIEU;
+import DTO.NHACUNGCAP;
 import DTO.PHIEUNHAP;
-import DAO.DaoPhieuNhap;
+import BUS.PhieuNhapBUS;
+import BUS.NhaCungCapBUS;
 
 public class NhapHangGUI extends JPanel{
         public JFrame frame;                
@@ -189,7 +192,14 @@ public class NhapHangGUI extends JPanel{
 	}
         
         public void ComboBoxNCC() {        
-            String[] NCC = {"Chọn nhà cung cấp","Nhà cung cấp 1", "Nhà cung cấp 2", "Nhà cung cấp 3", "Nhà cung cấp 4", "Nhà cung cấp 5"};
+        	NhaCungCapBUS nccbus = new NhaCungCapBUS();
+        	ArrayList<NHACUNGCAP> ncclist = new ArrayList<NHACUNGCAP>();
+        	int list_count = ncclist.size()-1;
+        	ncclist = nccbus.selectAllNCC();
+            String[] NCC = new String[ncclist.size()];
+            for(int i=0; i < ncclist.size(); i++) {
+            	NCC[i] = ncclist.get(i).getTenNCC();
+            }
             cb = new JComboBox(NCC);    
         }
         
@@ -299,7 +309,8 @@ public class NhapHangGUI extends JPanel{
         	for(int i=0; i < tableSP.getRowCount(); i++) {
         		String maNCC = getMaNCC(tableSP.getValueAt(i, 5).toString());
         		String manv = getMaNV(txtMANV.getText());
-        		String tongtien = txtTongtien.getText();
+        		String tt = txtTongtien.getText();
+        		int tongtien = Integer.parseInt(tt);
         		
         		String maPN = null;
         		
@@ -310,14 +321,15 @@ public class NhapHangGUI extends JPanel{
                 int count = LaySLMaPN();
                 maPN = "PN" + (count+1);
                 
+                PHIEUNHAP pn = new PHIEUNHAP(maPN, dateString, tongtien, manv, maNCC);
                 
         	}
         }
         
         //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập
         public int LaySLMaPN() {
-        	DaoPhieuNhap pn = new DaoPhieuNhap();
-        	ArrayList<PHIEUNHAP> listpn = pn.selectAll();
+        	PhieuNhapBUS bus = new PhieuNhapBUS();
+        	ArrayList<PHIEUNHAP> listpn = bus.selectAllPN();
         	int count = listpn.size();
         	return count;
         }

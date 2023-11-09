@@ -163,4 +163,5 @@ public class DaoChiTietHoaDon implements DaoInterface<CHITIETHOADON> {
 		return ketqua;
 	}
 
+
 }

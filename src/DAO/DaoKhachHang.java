@@ -169,6 +169,7 @@ public class DaoKhachHang implements DaoInterface<KHACHHANG>{
 		}
 		return ketqua;	
 	}
-	
+
+
 
 }

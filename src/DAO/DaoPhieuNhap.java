@@ -178,11 +178,4 @@ public class DaoPhieuNhap implements DaoInterface<PHIEUNHAP>{
 		return ketqua;
 	}
 
-	@Override
-	public int updateSL(String manl, int sl) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-
 }

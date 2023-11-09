@@ -196,5 +196,4 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI>{
 		}
 		return ketqua;
 	}
-
 }

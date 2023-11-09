@@ -17,7 +17,6 @@ public interface DaoInterface<T> {
 
      public ArrayList<T> selectByCondition(String condition);
 
-	 int updateSL(String manl, int sl);
 
 
 }

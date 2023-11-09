@@ -104,7 +104,6 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		return ketqua;
 	}
 	
-	@Override
 	public int updateSL(String manl, int sl) {
 		int ketqua = 0;
 		try {

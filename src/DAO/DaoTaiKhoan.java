@@ -165,6 +165,5 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN>{
 		}
 		return ketqua;
 	}
-	
 
 }
