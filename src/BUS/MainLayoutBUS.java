@@ -30,6 +30,7 @@ public class MainLayoutBUS {
     private JPanel pnlContent;
     private CardLayout cardLayout = new CardLayout();
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public MainLayoutBUS(JLabel lblBanHang, JLabel lblNhapHang, JLabel lblSanPham,
             JLabel lblNhanVien, JLabel lblKhachHang, JLabel lblNhaCungCap, JLabel lblKhuyenMai,
             JLabel lblTaiKhoan, JLabel lblThongKe, JPanel pnlContent, JTabbedPane tpBanHang,
@@ -370,6 +371,7 @@ public class MainLayoutBUS {
                     if (flag[i] == 2) {
                         flag[i] = 1;
                         lblList[i].setBackground(new Color(62, 78, 94));
+                        
                         break;
                     }
                 }

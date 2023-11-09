@@ -221,3 +221,37 @@ delete CHITIETPHANQUYEN where MAQUYEN = 'Q1'
 
 USE THUCANNHANH
 delete QUYEN where MAQUYEN = 'Q1'
+
+use THUCANNHANH	
+delete TAIKHOAN where TAIKHOAN.USERNAME = 'NV5'
+
+use THUCANNHANH	
+delete NHANVIEN where NHANVIEN.MANV = 'NV5'
+
+use THUCANNHANH	
+insert into TAIKHOAN
+values
+('NV3', 'pass3', 1, null),
+('NV5', 'pass5', 1, null)
+
+use THUCANNHANH
+update TAIKHOAN
+set MATKHAU = 'ha2', TRANGTHAI = 'True'
+where USERNAME = 'NV2'
+
+use THUCANNHANH
+insert into CHUCNANG
+values
+('CN01', N'Bán hàng', null),
+('CN02', N'Hóa đơn', null),
+('CN03', N'Nhập hàng', null),
+('CN04', N'Phiếu nhập', null),
+('CN05', N'Món ăn', null),
+('CN06', N'Nguyên liệu', null),
+('CN07', N'Nhân viên', null),
+('CN08', N'Khách hàng', null),
+('CN09', N'Nhà cung cấp', null),
+('CN10', N'Khuyến mãi', null),
+('CN11', N'Tài khoản', null),
+('CN12', N'Phân quyền', null),
+('CN13', N'Thống kê', null)

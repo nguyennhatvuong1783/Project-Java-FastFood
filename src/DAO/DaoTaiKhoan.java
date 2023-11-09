@@ -22,7 +22,7 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN> {
         try {
             Connection c = connec.getConnection();
             String sql = "INSERT INTO TAIKHOAN(USERNAME, MATKHAU, TRANGTHAI, MAQUYEN) "
-                    + " VALUES(?,?,?)";
+                    + " VALUES(?,?,?,?)";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, t.getUserName());
             pst.setString(2, t.getMatKhau());
@@ -30,13 +30,11 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN> {
             pst.setString(4, t.getMaQuyen());
             ketqua = pst.executeUpdate();
 
-            System.out.println("Bạn đã thực thi " + sql);
-            System.out.println("Có " + ketqua + " bị thay đổi");
+            System.out.println("[DaoTaiKhoan]: " + sql);
+            System.out.println("[DaoTaiKhoan]: " + ketqua + " dong bi thay doi");
 
             connec.closeConnection(c);
-
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return ketqua;
     }
@@ -52,13 +50,11 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN> {
             pst.setString(1, t.getUserName());
             ketqua = pst.executeUpdate();
 
-            System.out.println("Bạn đã thực thi " + sql);
-            System.out.println("Có " + ketqua + " bị thay đổi");
+            System.out.println("[DaoTaiKhoan]: " + sql);
+            System.out.println("[DaoTaiKhoan]: " + ketqua + " dong bi thay doi");
 
             connec.closeConnection(c);
-
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return ketqua;
     }
@@ -70,17 +66,16 @@ public class DaoTaiKhoan implements DaoInterface<TAIKHOAN> {
             Connection c = connec.getConnection();
             String sql = "UPDATE TAIKHOAN "
                     + " SET MATKHAU=?"
-                    + ", TRANGTHAI=?"
-                    + " WHERE MACN=?";
+                    + ", MAQUYEN=?"
+                    + " WHERE USERNAME=?";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setString(1, t.getUserName());
-            pst.setString(2, t.getMatKhau());
-            pst.setInt(3, t.getTrangThai());
-            pst.setString(4, t.getMaQuyen());
+            pst.setString(1, t.getMatKhau());
+            pst.setString(2, t.getMaQuyen());
+            pst.setString(3, t.getUserName());
             ketqua = pst.executeUpdate();
 
-            System.out.println("Bạn đã thực thi " + sql);
-            System.out.println("Có " + ketqua + " bị thay đổi");
+            System.out.println("[DaoTaiKhoan]: " + sql);
+            System.out.println("[DaoTaiKhoan]: " + ketqua + " dong bi thay doi");
 
             connec.closeConnection(c);
 

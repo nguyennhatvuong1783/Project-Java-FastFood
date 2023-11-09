@@ -96,17 +96,17 @@ public class QuyenBUS {
                 } else {
                     findText = quyenGUI.getTxtTimKiem().getText() + e.getKeyChar();
                 }
-                System.out.println("[QuyenBUS: txtTimKiem]:" + findText);
+                findText = findText.toLowerCase();
+                System.out.println("[QuyenBUS: txtTimKiem.toLower]:" + findText);
 
                 if (findText.replaceAll("\\s", "").equals("")) {
                     // Truong hop txtTimKiem trong
                     listTimKiem.removeAll(listTimKiem);
                 } else {
-                    System.out.println("this case");
                     listTimKiem.removeAll(listTimKiem);
                     // Tim kiem theo ma quyen va ten quyen
                     for (PHANQUYEN pq : listQuyen) {
-                        if (pq.getMaQuyen().indexOf(findText) >= 0 || pq.getTenQuyen().indexOf(findText) >= 0) {
+                        if (pq.getMaQuyen().toLowerCase().indexOf(findText) >= 0 || pq.getTenQuyen().toLowerCase().indexOf(findText) >= 0) {
                             listTimKiem.add(pq);
                         }
                     }
@@ -182,7 +182,7 @@ public class QuyenBUS {
 
                 if (selectedRow == -1) {
                     JOptionPane option = new JOptionPane();
-                    option.showMessageDialog(null, "Chọn quyền cần sửa");
+                    option.showMessageDialog(null, "Chọn quyền cần sửa!");
                 } else {
                     for (int i = 0; i < quyenGUI.getTbQuyen().getTable().getColumnCount(); i++) {
                         Object value = quyenGUI.getTbQuyen().getTable().getValueAt(selectedRow, i);
