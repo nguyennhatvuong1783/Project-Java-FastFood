@@ -39,7 +39,7 @@ import BUS.PhieuNhapBUS;
 import BUS.NhaCungCapBUS;
 
 public class NhapHangGUI extends JPanel{
-        public JFrame frame;                
+        //public JFrame frame;                
         public JButton themnccbtn; 
         public JButton themspbtn;   
         public JPanel panel;
@@ -73,7 +73,7 @@ public class NhapHangGUI extends JPanel{
 	
 	public void init() {
             this.add(new JLabel("Nhập hàng GUI"));                                      
-            frame = new JFrame();           
+            //frame = new JFrame();           
             themnccbtn = new JButton("Chọn nhà cung cấp");
             themspbtn = new JButton("Thêm sản phẩm");  
             ComboBoxNCC(); 
@@ -115,9 +115,8 @@ public class NhapHangGUI extends JPanel{
             panelLastoption.add(txtTongtien);
             panelLastoption.add(thanhtoanbtn);
             panel.add(panelLastoption);
-            
-            //Thêm tiêu đề
-            frame.setTitle("Phiếu nhập GUI");  
+            /* 
+            //Thêm tiêu đề             
             frame.getContentPane().add(panel);
             // Đặt JFrame ở chế độ toàn màn hình
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -125,6 +124,8 @@ public class NhapHangGUI extends JPanel{
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Hiển thị JFrame
             frame.setVisible(true);
+            */
+            this.add(panel);
             
             themspbtn.addActionListener(new ActionListener() {
             	public void actionPerformed(ActionEvent e) {
@@ -138,7 +139,7 @@ public class NhapHangGUI extends JPanel{
                     txtSL.setText("0");
                     } else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để thêm");
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để thêm");
                     }
             	}
             });
@@ -173,7 +174,7 @@ public class NhapHangGUI extends JPanel{
                     } 
                     else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để sửa");
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để sửa");
                     }                    
                 }
             });
@@ -182,7 +183,7 @@ public class NhapHangGUI extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent arg0){
                     if(txtMANV.getText().equals("")){
-                        JOptionPane.showMessageDialog(frame, "Vui lòng nhập mã nhân viên");
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhập mã nhân viên");
                     }
                     else{
                         showtt_thanhtoan();
@@ -253,7 +254,7 @@ public class NhapHangGUI extends JPanel{
                         txtTongtien.setText(calculateColumnTotal(tableSP));
                     } else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xóa");
+                        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để xóa");
                     }
         }
         
@@ -293,7 +294,7 @@ public class NhapHangGUI extends JPanel{
                     thanhtoan();
                 } 
         }
-        
+         
         public void thanhtoan() {
         	//Lưu số lượng nguyên liệu mới nhập
         	for(int i=0; i < tableSP.getRowCount(); i++) {
@@ -325,7 +326,7 @@ public class NhapHangGUI extends JPanel{
                 
         	}
         }
-        
+         
         //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập
         public int LaySLMaPN() {
         	PhieuNhapBUS bus = new PhieuNhapBUS();

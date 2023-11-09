@@ -130,6 +130,6 @@ public class LoginGUI {
 	}
 	
 	public static void main(String[] args) {
-		new NhapHangGUI();
+		new BanHangGUI();
 	}
 }
