@@ -160,6 +160,26 @@ public class DaoNhanVien implements DaoInterface<NHANVIEN>{
 		}
 		return ketqua;	
 	}
+	
+	public String selectByName(String manv) {
+		NHANVIEN ketqua = null;
+		String maNV = null;
+		try {
+			Connection c = connec.getConnection();
+			String sql = "SELECT MANV FROM NHANVIEN WHERE TENNV=?";
+			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setString(1, manv);
+			ResultSet rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				maNV = rs.getString("MANV");
+			}
+			connec.closeConnection(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maNV;	
+	}
 
 	@Override
 	public ArrayList<NHANVIEN> selectByCondition(String condition) {
@@ -188,6 +208,12 @@ public class DaoNhanVien implements DaoInterface<NHANVIEN>{
 			e.printStackTrace();
 		}
 		return ketqua;	
+	}
+
+	@Override
+	public int updateSL(String manl, int sl) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

@@ -49,7 +49,7 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "DELETE FROM NGUYENLIRU " +
+			String sql = "DELETE FROM NGUYENLIEU " +
 			             " WHERE MANL=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getMaNL());
@@ -72,7 +72,7 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "UPDATE NGUYENLIRU " +
+			String sql = "UPDATE NGUYENLIEU " +
 			             " SET TENNL=? "+
 					     ", SL=? "+
 			             ", DONVITINH "+
@@ -103,13 +103,37 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		}
 		return ketqua;
 	}
+	
+	@Override
+	public int updateSL(String manl, int sl) {
+		int ketqua = 0;
+		try {
+			Connection c = connec.getConnection();
+			String sql = "UPDATE NGUYENLIEU " +
+					     ", SL=? "+
+					     " WHERE MANL=?";
+			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setInt(2, sl);
+			
+			ketqua = pst.executeUpdate();
+			
+			System.out.println("Bạn đã thực thi " + sql);
+	        System.out.println("Có " + ketqua + " bị thay đổi");
+	        
+	        connec.closeConnection(c);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ketqua;
+	}
 
 	@Override
 	public ArrayList<NGUYENLIEU> selectAll() {
 		ArrayList<NGUYENLIEU> ketqua = new ArrayList<NGUYENLIEU>();
 		try {
 			Connection c = connec.getConnection();
-			String sql = "SELECT * FROM MONAN";
+			String sql = "SELECT * FROM NGUYENLIEU";
 			PreparedStatement pst = c.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 			
@@ -138,7 +162,7 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		NGUYENLIEU ketqua = null;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "SELECT * FROM MONAN WHERE MANL=?";
+			String sql = "SELECT * FROM NGUYENLIEU WHERE MANL=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getMaNL());
 			ResultSet rs = pst.executeQuery();
@@ -167,7 +191,7 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		ArrayList<NGUYENLIEU> ketqua = new ArrayList<NGUYENLIEU>();
 		try {
 			Connection c = connec.getConnection();
-			String sql = "SELECT * FROM MONAN WHERE " + condition;
+			String sql = "SELECT * FROM NGUYENLIEU WHERE " + condition;
 			PreparedStatement pst = c.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 			
@@ -190,5 +214,6 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		}
 		return ketqua;
 	}
+
 
 }

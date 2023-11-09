@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Connection.connec;
+import DTO.NGUYENLIEU;
 import DTO.PHIEUNHAP;
 
 public class DaoPhieuNhap implements DaoInterface<PHIEUNHAP>{
@@ -175,6 +176,12 @@ public class DaoPhieuNhap implements DaoInterface<PHIEUNHAP>{
 			e.printStackTrace();
 		}
 		return ketqua;
+	}
+
+	@Override
+	public int updateSL(String manl, int sl) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

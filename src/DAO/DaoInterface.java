@@ -2,6 +2,8 @@ package DAO;
 
 import java.util.ArrayList;
 
+import DTO.NGUYENLIEU;
+
 public interface DaoInterface<T> {
 	 public int insert(T t);
 
@@ -14,6 +16,8 @@ public interface DaoInterface<T> {
      public T selectById(T t);
 
      public ArrayList<T> selectByCondition(String condition);
+
+	 int updateSL(String manl, int sl);
 
 
 }

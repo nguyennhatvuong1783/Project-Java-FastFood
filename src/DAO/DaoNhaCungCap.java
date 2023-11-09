@@ -145,6 +145,26 @@ public class DaoNhaCungCap implements DaoInterface<NHACUNGCAP>{
 		}
 		return ketqua;	
 	}
+	
+	public String selectByName(String tennnc) {
+		NHACUNGCAP ketqua = null;
+		String maNCC = null;
+		try {
+			Connection c = connec.getConnection();
+			String sql = "SELECT MANNC FROM NHACUNGCAP WHERE TENNNC=?";
+			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setString(1, tennnc);
+			ResultSet rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				maNCC = rs.getString("MANCC");
+			}
+			connec.closeConnection(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maNCC;	
+	}
 
 	@Override
 	public ArrayList<NHACUNGCAP> selectByCondition(String condition) {
@@ -171,6 +191,12 @@ public class DaoNhaCungCap implements DaoInterface<NHACUNGCAP>{
 			e.printStackTrace();
 		}
 		return ketqua;	
+	}
+
+	@Override
+	public int updateSL(String manl, int sl) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

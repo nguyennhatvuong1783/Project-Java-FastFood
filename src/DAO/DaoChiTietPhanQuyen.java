@@ -151,4 +151,10 @@ public class DaoChiTietPhanQuyen implements DaoInterface<CHITIETPHANQUYEN>{
 		return ketqua;
 	}
 
+	@Override
+	public int updateSL(String manl, int sl) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

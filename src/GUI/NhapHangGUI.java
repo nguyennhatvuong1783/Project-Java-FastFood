@@ -1,6 +1,7 @@
 package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
+import BUS.NhapHangBUS;
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
@@ -10,6 +11,10 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,6 +32,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 
 import DTO.NGUYENLIEU;
+import DTO.PHIEUNHAP;
+import DAO.DaoPhieuNhap;
 
 public class NhapHangGUI extends JPanel{
         public JFrame frame;                
@@ -121,8 +128,8 @@ public class NhapHangGUI extends JPanel{
             		int selectedRow = tableNCC.getSelectedRow();
             		if (selectedRow >= 0) {
                     //thêm vào bảng mới
-                    modelSP.addRow(new Object[] {selectedRow, tableNCC.getValueAt(selectedRow, 0).toString(),tableNCC.getValueAt(selectedRow, 1).toString(),txtSL.getText()
-                    ,tableNCC.getValueAt(selectedRow, 3).toString(),tableNCC.getValueAt(selectedRow, 4).toString(),(String) cb.getSelectedItem()});
+                    modelSP.addRow(new Object[] {tableNCC.getValueAt(selectedRow, 0), tableNCC.getValueAt(selectedRow, 1), txtSL.getText()
+                    ,tableNCC.getValueAt(selectedRow, 3), tableNCC.getValueAt(selectedRow, 4),(String) cb.getSelectedItem()});
                     //cập nhật giá
                     txtTongtien.setText(calculateColumnTotal(tableSP));
                     txtSL.setText("0");
@@ -175,7 +182,7 @@ public class NhapHangGUI extends JPanel{
                         JOptionPane.showMessageDialog(frame, "Vui lòng nhập mã nhân viên");
                     }
                     else{
-                        thanhtoan(txtMANV.getText(), txtTongtien.getText());
+                        showtt_thanhtoan();
                     }
                 }
             });
@@ -192,8 +199,17 @@ public class NhapHangGUI extends JPanel{
             modelNCC = new DefaultTableModel(data,columnNamesNCC);
             tableNCC = new JTable(modelNCC);
 
+            /*
             modelNCC.addRow(new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","10000"});
             modelNCC.addRow(new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","20000"});
+            */
+            
+            //Đổ dữ liệu lên bảng NCC
+            NhapHangBUS nhap = new NhapHangBUS();
+            ArrayList<NGUYENLIEU> listnl = nhap.selectAll();
+            for(NGUYENLIEU nl : listnl) {
+            	modelNCC.addRow(new Object[] {nl.getMaNL(), nl.getTenNL(), nl.getSoLuong(), nl.getLoaiNL(), nl.getDonGia()});
+            }
             
             String[] columnNamesSP = {"Mã sản phẩm", "Tên sản phẩm","Số lượng nhập","Loại", "Đơn Giá","Nhà cung cấp"};
             modelSP = new DefaultTableModel(data,columnNamesSP);
@@ -249,9 +265,9 @@ public class NhapHangGUI extends JPanel{
             }
         }
         
-        public void thanhtoan(String Ma, String Tong){
-                JTextField txtManv = new JTextField(Ma);
-                JTextField txtTong = new JTextField(Tong);
+        public void showtt_thanhtoan(){
+                JTextField txtManv = new JTextField(txtMANV.getText());
+                JTextField txtTong = new JTextField(txtTongtien.getText());
                 //không biết chức năng này sẽ ra cái gì nên chưa làm 
                 Object[] options = {"OK", "Cancel"};
                 Object[] message = {
@@ -264,8 +280,56 @@ public class NhapHangGUI extends JPanel{
                 null, options, options[0]);
                 if (option == 0) {
                     // Người dùng nhấn OK
-                    
+                    thanhtoan();
                 } 
+        }
+        
+        public void thanhtoan() {
+        	//Lưu số lượng nguyên liệu mới nhập
+        	for(int i=0; i < tableSP.getRowCount(); i++) {
+        		String sltxt = tableSP.getValueAt(i, 2).toString();
+        		int sl = Integer.parseInt(sltxt);
+        		NhapHangBUS nhap = new NhapHangBUS();
+        		nhap.updateSL_NL(tableSP.getValueAt(i, 0).toString(), sl);
+        	}
+        	
+        	//Tạo phiếu nhập cho mỗi phiên nhập hàng
+        	//Nếu nhập hàng từ 2 NNC trở lên sẽ xuất ra số lượng phiếu nhập sẽ tương ứng
+        	
+        	for(int i=0; i < tableSP.getRowCount(); i++) {
+        		String maNCC = getMaNCC(tableSP.getValueAt(i, 5).toString());
+        		String manv = getMaNV(txtMANV.getText());
+        		String tongtien = txtTongtien.getText();
+        		
+        		String maPN = null;
+        		
+        		//Lệnh tạo ngày tháng tạo phiếu nhập
+        		LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String dateString = currentDate.format(formatter);
+                int count = LaySLMaPN();
+                maPN = "PN" + (count+1);
+                
+                
+        	}
+        }
+        
+        //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập
+        public int LaySLMaPN() {
+        	DaoPhieuNhap pn = new DaoPhieuNhap();
+        	ArrayList<PHIEUNHAP> listpn = pn.selectAll();
+        	int count = listpn.size();
+        	return count;
+        }
+        
+        public String getMaNCC(String tennnc) {
+        	NhapHangBUS bus = new NhapHangBUS();
+        	return bus.getMaNCC_BUS(tennnc);
+        }
+        
+        public String getMaNV(String tennv) {
+        	NhapHangBUS bus = new NhapHangBUS();
+        	return bus.getMaNV_BUS(tennv);
         }
 
         public String calculateColumnTotal(JTable table) {
