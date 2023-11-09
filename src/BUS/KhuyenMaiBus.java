@@ -29,7 +29,7 @@ public class KhuyenMaiBus {
     private DefaultTableModel model;
 
     public KhuyenMaiBus(KhuyenMaiGUI khuyenMaiGui) {
-        this.khuyenMaiGui = khuyenMaiGui;
+        this.khuyenMaiGui = khuyenMaiGui ;
     }
 
     public void LoadDataToTable() {

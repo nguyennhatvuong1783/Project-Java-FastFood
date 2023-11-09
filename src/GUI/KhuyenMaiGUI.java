@@ -35,6 +35,8 @@ import DAO.DaoKhuyenMai;
 import DTO.KHUYENMAI;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -75,7 +77,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
     private KhuyenMaiGUI khuyenMaiGui;
     private JPanel panel_4;
     private MyTable tableKM;
-    private String id;
+    private int id;
 
     public KhuyenMaiGUI() {
         init();
@@ -186,9 +188,9 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         this.getTableKM().getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    buttonThem.setEnabled(false);
+                if (!e.getValueIsAdjusting()) {                  
                     khuyenMaiBus.LoadThongTinKm();
+                    buttonThem.setEnabled(false);
                 }
             }
         });
@@ -241,9 +243,9 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
             this.getTxt_dieuKien().setText("");
             this.getTxt_phanTram().setText("");
             this.getDate_BĐ().setDate(null);
-            this.getDate_KT().setDate(null);
-            buttonThem.setEnabled(true);
+            this.getDate_KT().setDate(null);                                   
             khuyenMaiBus.LoadDataToTable();
+            buttonThem.setEnabled(true);
         }
     }
 
@@ -323,13 +325,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         return txt_MaKMCT;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+   
 
     public void setTxt_MaKMCT(JTextField txt_MaKMCT) {
         this.txt_MaKMCT = txt_MaKMCT;
@@ -357,16 +353,5 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     public void setPanel_4(JPanel panel_4) {
         this.panel_4 = panel_4;
-    }
-
-    public static void main(String[] args) {
-        KhuyenMaiGUI jp = new KhuyenMaiGUI();
-        JFrame jf = new JFrame();
-        jf.setSize(600, 600);
-        jf.setVisible(true);
-        jf.setLayout(new BorderLayout());
-        jf.add(jp, BorderLayout.CENTER);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setLocationRelativeTo(null);
     }
 }
