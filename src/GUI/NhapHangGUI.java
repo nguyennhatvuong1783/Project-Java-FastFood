@@ -2,6 +2,7 @@ package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
 
+
 import BUS.NhapHangBUS;
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.SuaButton;
@@ -36,7 +37,9 @@ import DTO.NGUYENLIEU;
 import DTO.NHACUNGCAP;
 import DTO.PHIEUNHAP;
 import BUS.PhieuNhapBUS;
+import BUS.ChiTietPhieuNhapBUS;
 import BUS.NhaCungCapBUS;
+import DTO.CHITIETPHIEUNHAP;
 
 public class NhapHangGUI extends JPanel{
         public JFrame frame;                
@@ -301,29 +304,38 @@ public class NhapHangGUI extends JPanel{
         		int sl = Integer.parseInt(sltxt);
         		NhapHangBUS nhap = new NhapHangBUS();
         		nhap.updateSL_NL(tableSP.getValueAt(i, 0).toString(), sl);
+        		
+        		System.out.println(sl);
         	}
         	
         	//Tạo phiếu nhập cho mỗi phiên nhập hàng
-        	//Nếu nhập hàng từ 2 NNC trở lên sẽ xuất ra số lượng phiếu nhập sẽ tương ứng
-        	
+        	String maNCC = getMaNCC(tableSP.getValueAt(0, 5).toString());
+        	String manv = txtMANV.getText();
+    		String tt = txtTongtien.getText();
+    		int tongtien = Integer.parseInt(tt);
+    		
+    		System.out.println(manv);
+    		
+    		String maPN = null;
+    		
+    		//Lệnh tạo ngày tháng tạo phiếu nhập
+    		LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String dateString = currentDate.format(formatter);
+            int count = LaySLMaPN();
+            maPN = "PN" + (count+1);
+            
+            
+            PHIEUNHAP pn = new PHIEUNHAP(maPN, dateString, tongtien, manv, maNCC);
+            PhieuNhapBUS bus = new PhieuNhapBUS();
+            bus.insertPN(pn);
         	for(int i=0; i < tableSP.getRowCount(); i++) {
-        		String maNCC = getMaNCC(tableSP.getValueAt(i, 5).toString());
-        		String manv = getMaNV(txtMANV.getText());
-        		String tt = txtTongtien.getText();
-        		int tongtien = Integer.parseInt(tt);
-        		
-        		String maPN = null;
-        		
-        		//Lệnh tạo ngày tháng tạo phiếu nhập
-        		LocalDate currentDate = LocalDate.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                String dateString = currentDate.format(formatter);
-                int count = LaySLMaPN();
-                maPN = "PN" + (count+1);
-                
-                PHIEUNHAP pn = new PHIEUNHAP(maPN, dateString, tongtien, manv, maNCC);
-                
+                //Lưu thông tin chi tiết phiếu nhập
+            	CHITIETPHIEUNHAP ctpn = new CHITIETPHIEUNHAP(maPN, tableSP.getValueAt(i, 0).toString(), Integer.parseInt(tableSP.getValueAt(i, 2).toString()));
+            	ChiTietPhieuNhapBUS ctpnbus = new ChiTietPhieuNhapBUS();
+            	ctpnbus.insertCTPN(ctpn);
         	}
+        	
         }
         
         //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập
@@ -345,11 +357,12 @@ public class NhapHangGUI extends JPanel{
         }
 
         public String calculateColumnTotal(JTable table) {
-            double total = 0;
+            int total = 0;
             for (int i = 0; i < table.getRowCount(); i++) {
                 String value = table.getValueAt(i, 4).toString();
                 String soluong = table.getValueAt(i, 2).toString();
-                total += Double.parseDouble(value)*Double.parseDouble(soluong);
+                total += Integer.parseInt(value)*Integer.parseInt(soluong);
+                //total += Double.parseDouble(value)*Double.parseDouble(soluong);
             }
             return String.valueOf(total);
         }

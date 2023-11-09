@@ -1,4 +1,4 @@
-package DAO;
+	package DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,10 +109,11 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 		try {
 			Connection c = connec.getConnection();
 			String sql = "UPDATE NGUYENLIEU " +
-					     ", SL=? "+
-					     " WHERE MANL=?";
+					     "SET SL = SL + ? "+
+					     "WHERE MANL=?";
 			PreparedStatement pst = c.prepareStatement(sql);
-			pst.setInt(2, sl);
+			pst.setInt(1, sl);
+			pst.setString(2, manl);
 			
 			ketqua = pst.executeUpdate();
 			

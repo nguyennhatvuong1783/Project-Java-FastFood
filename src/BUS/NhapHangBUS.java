@@ -31,4 +31,6 @@ public class NhapHangBUS {
 		String TenNV = nv.selectByName(tennv);
 		return TenNV;
 	}
+	
+	
 }

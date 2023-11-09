@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +27,9 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
+import BUS.PhieuNhapBUS;
+import DTO.PHIEUNHAP;
 
 
 public class PhieuNhapGUI extends JPanel{
@@ -163,9 +168,12 @@ public class PhieuNhapGUI extends JPanel{
             DefaultTableModel model = new DefaultTableModel(columnNames, 0);                                        
            
             //thêm dòng sau khởi tạo
-            model.addRow(new Object[]{"PN01", "24/11/2003","10000","NV01","NCC007"});
-            model.addRow(new Object[]{"PN02", "24/11/2003","12000","NV06","NCC008"});
-            model.addRow(new Object[]{"PN03", "24/11/2003","10000","NV08","NCC003"});
+            ArrayList<PHIEUNHAP> pnlist = new ArrayList<PHIEUNHAP>();
+            PhieuNhapBUS pnbus = new PhieuNhapBUS();
+            pnlist = pnbus.selectAllPN();
+            for(PHIEUNHAP pn : pnlist) {
+            	model.addRow(new Object[] {pn.getMaPN(), pn.getNgayNhap(), pn.getTongTien(), pn.getMaNV(), pn.getMaNCC()});
+            }
             
             return model;
         }

@@ -151,7 +151,7 @@ public class DaoNhaCungCap implements DaoInterface<NHACUNGCAP>{
 		String maNCC = null;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "SELECT MANNC FROM NHACUNGCAP WHERE TENNNC=?";
+			String sql = "SELECT MANCC FROM NHACUNGCAP WHERE TENNCC=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, tennnc);
 			ResultSet rs = pst.executeQuery();

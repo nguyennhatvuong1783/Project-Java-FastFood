@@ -20,7 +20,7 @@ public class DaoChiTietPhieuNhap implements DaoInterface<CHITIETPHIEUNHAP>{
 		try {
 			Connection c = connec.getConnection();
 			String sql = "INSERT INTO CHITIETPHIEUNHAP(MAPN, MANL, SL) " +
-			             " VALUES(?,?,?,?)";
+			             " VALUES(?,?,?)";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getMaPN());
 			pst.setString(2, t.getMaNL());
@@ -44,7 +44,7 @@ public class DaoChiTietPhieuNhap implements DaoInterface<CHITIETPHIEUNHAP>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "DELETE FROM CHITIETPHIEUNHAP " +
+			String sql = "DELETE * FROM CHITIETPHIEUNHAP " +
 			             " WHERE MAPN=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getMaPN());
