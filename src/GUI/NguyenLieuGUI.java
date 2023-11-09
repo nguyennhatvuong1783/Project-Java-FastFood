@@ -32,7 +32,7 @@ public class NguyenLieuGUI extends JPanel{
         public JFrame frame;
         public JPanel panel1;
         public JPanel panel2;
-        public ThemButton addbtn;
+        //public ThemButton addbtn;
         public XoaButton delbtn;
         public SuaButton modbtn;
         public ExportExcelButton xuatbtn;
@@ -60,7 +60,7 @@ public class NguyenLieuGUI extends JPanel{
             this.add(new JLabel("Nguyên liệu GUI"));
             DefaultTableModel model =listNL();
             frame = new JFrame();
-            addbtn = new ThemButton();
+            //addbtn = new ThemButton();
             delbtn = new XoaButton();
             modbtn = new SuaButton();
             xuatbtn = new ExportExcelButton();
@@ -81,7 +81,7 @@ public class NguyenLieuGUI extends JPanel{
             panel1.add(panel2);
             panel2.add(txtsearch); 
             panel2.add(timkiembtn);
-            panel2.add(addbtn);
+            //panel2.add(addbtn);
             panel2.add(modbtn);
             panel2.add(delbtn);           
             panel2.add(xuatbtn);
@@ -107,12 +107,12 @@ public class NguyenLieuGUI extends JPanel{
                 }            
             });
             
-            addbtn.addActionListener(new ActionListener(){
+            /*addbtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent arg0){
                     them(model);
                 }
-            });
+            });*/
             
             modbtn.addActionListener(new ActionListener(){
                 @Override
@@ -336,5 +336,4 @@ public class NguyenLieuGUI extends JPanel{
             
             return model;
         }
-              
 }

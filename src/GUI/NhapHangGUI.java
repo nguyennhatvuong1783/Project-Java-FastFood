@@ -74,7 +74,7 @@ public class NhapHangGUI extends JPanel{
             panelSPselector = new JPanel(new FlowLayout());
             panelSPoption = new JPanel(new FlowLayout());
             panelLastoption = new JPanel(new FlowLayout());
-            txtSL=new JTextField(20);            
+            txtSL=new JTextField("0",20);            
             txtSLhint=new JLabel("Nhập số lượng");
             scrollPaneNCC = new JScrollPane(tableNCC);
             scrollPaneSP = new JScrollPane(tableSP);
@@ -82,7 +82,7 @@ public class NhapHangGUI extends JPanel{
             modbtn = new SuaButton();
             txtMANV=new JTextField(20);
             txtMANVhint = new JLabel("Nhập mã nhân viên: ");
-            txtTongtien=new JLabel();
+            txtTongtien=new JLabel("0");
             txtTongtienhint=new JLabel("Tổng số tiền: ");
             thanhtoanbtn = new JButton("Thanh toán");
             
@@ -90,11 +90,11 @@ public class NhapHangGUI extends JPanel{
             panelNCCselector.add(themnccbtn);                
             panelNCCselector.add(cb);
             panel.add(panelNCCselector);
-            panel.add(scrollPaneNCC);  
-            panel.add(themspbtn);           
+            panel.add(scrollPaneNCC);             
             panelSPselector.add(txtSLhint);
             panelSPselector.add(txtSL);
             panel.add(panelSPselector);
+            panel.add(themspbtn);
             panel.add(scrollPaneSP);
             panelSPoption.add(delbtn);
             panelSPoption.add(modbtn);
@@ -103,6 +103,7 @@ public class NhapHangGUI extends JPanel{
             panelLastoption.add(txtMANV);
             panelLastoption.add(txtTongtienhint);
             panelLastoption.add(txtTongtien);
+            panelLastoption.add(thanhtoanbtn);
             panel.add(panelLastoption);
             
             //Thêm tiêu đề
@@ -119,22 +120,30 @@ public class NhapHangGUI extends JPanel{
             	public void actionPerformed(ActionEvent e) {
             		int selectedRow = tableNCC.getSelectedRow();
             		if (selectedRow >= 0) {
-            			String maNL = tableNCC.getValueAt(selectedRow, 0).toString();
-            			
-            		}
+                    //thêm vào bảng mới
+                    modelSP.addRow(new Object[] {selectedRow, tableNCC.getValueAt(selectedRow, 0).toString(),tableNCC.getValueAt(selectedRow, 1).toString(),txtSL.getText()
+                    ,tableNCC.getValueAt(selectedRow, 3).toString(),tableNCC.getValueAt(selectedRow, 4).toString(),(String) cb.getSelectedItem()});
+                    //cập nhật giá
+                    txtTongtien.setText(calculateColumnTotal(tableSP));
+                    txtSL.setText("0");
+                    } else {
+                        // Hiển thị thông báo nếu không có hàng nào được chọn
+                        JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để thêm");
+                    }
             	}
             });
             
+            /*đây là chức năng hiển thị sp theo ncc được chọn 
             cb.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     hienthisanpham();
                 }
-            });
+            });*/
             
             delbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    xoa((DefaultTableModel)tableSP.getModel());
+                    xoa(modelSP);
                 }
             });   
             
@@ -149,6 +158,8 @@ public class NhapHangGUI extends JPanel{
                        // Lấy dữ liệu từ hàng được chọn                        
                         dataSoluong = tableSP.getValueAt(selectedRow, 2).toString();  
                         sua(modelSP,dataSoluong);
+                        //cập nhật giá
+                        txtTongtien.setText(calculateColumnTotal(tableSP));
                     } 
                     else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
@@ -160,13 +171,18 @@ public class NhapHangGUI extends JPanel{
             thanhtoanbtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent arg0){
-                    //không biết chức năng này sẽ ra cái gì nên chưa làm 
+                    if(txtMANV.getText().equals("")){
+                        JOptionPane.showMessageDialog(frame, "Vui lòng nhập mã nhân viên");
+                    }
+                    else{
+                        thanhtoan(txtMANV.getText(), txtTongtien.getText());
+                    }
                 }
             });
 	}
         
         public void ComboBoxNCC() {        
-            String[] NCC = {"Nhà cung cấp 1", "Nhà cung cấp 2", "Nhà cung cấp 3", "Nhà cung cấp 4", "Nhà cung cấp 5"};
+            String[] NCC = {"Chọn nhà cung cấp","Nhà cung cấp 1", "Nhà cung cấp 2", "Nhà cung cấp 3", "Nhà cung cấp 4", "Nhà cung cấp 5"};
             cb = new JComboBox(NCC);    
         }
         
@@ -175,14 +191,16 @@ public class NhapHangGUI extends JPanel{
             String[] columnNamesNCC = {"Mã sản phẩm", "Tên sản phẩm","Số lượng tồn kho","Loại", "Đơn Giá"};
             modelNCC = new DefaultTableModel(data,columnNamesNCC);
             tableNCC = new JTable(modelNCC);
+
+            modelNCC.addRow(new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","10000"});
+            modelNCC.addRow(new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","20000"});
             
             String[] columnNamesSP = {"Mã sản phẩm", "Tên sản phẩm","Số lượng nhập","Loại", "Đơn Giá","Nhà cung cấp"};
             modelSP = new DefaultTableModel(data,columnNamesSP);
             tableSP = new JTable(modelSP);  
                      
-            Object[] row = new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","Dữ liệu cột 5","Dữ liệu cột 6"};
-            modelSP.addRow(row);
         }
+
         //reset lại bảng sau khi có dữ liệu tương ứng với NCC
         public void hienthisanpham(){
             String[] columnNames = {"Mã sản phẩm", "Tên sản phẩm","Số lượng tồn kho","Loại", "Đơn Giá"};
@@ -205,6 +223,8 @@ public class NhapHangGUI extends JPanel{
                     if (selectedRow >= 0) {
                         // Xóa hàng được chọn từ model
                         model.removeRow(selectedRow);
+                        //cập nhật giá
+                        txtTongtien.setText(calculateColumnTotal(tableSP));
                     } else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
                         JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xóa");
@@ -228,5 +248,33 @@ public class NhapHangGUI extends JPanel{
                 model.setValueAt(txtSol.getText(), selectedRow, 2);              
             }
         }
-               
+        
+        public void thanhtoan(String Ma, String Tong){
+                JTextField txtManv = new JTextField(Ma);
+                JTextField txtTong = new JTextField(Tong);
+                //không biết chức năng này sẽ ra cái gì nên chưa làm 
+                Object[] options = {"OK", "Cancel"};
+                Object[] message = {
+                    "Mã nhân viên: ", txtManv,
+                    "Tổng số tiền: ", txtTong,   
+                    scrollPaneSP                   
+                };
+                        
+                int option = JOptionPane.showOptionDialog(null, message, "Thông tin",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                null, options, options[0]);
+                if (option == 0) {
+                    // Người dùng nhấn OK
+                    
+                } 
+        }
+
+        public String calculateColumnTotal(JTable table) {
+            double total = 0;
+            for (int i = 0; i < table.getRowCount(); i++) {
+                String value = table.getValueAt(i, 4).toString();
+                String soluong = table.getValueAt(i, 2).toString();
+                total += Double.parseDouble(value)*Double.parseDouble(soluong);
+            }
+            return String.valueOf(total);
+        }
 }

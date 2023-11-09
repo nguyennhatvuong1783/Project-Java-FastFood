@@ -26,11 +26,11 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+
 public class PhieuNhapGUI extends JPanel{
         public JFrame frame;
         public JPanel panel1;
         public JPanel panel2;
-        public ThemButton addbtn;
         public ExportExcelButton xuatbtn;
         public JButton timkiembtn; 
         public JButton chitietbtn;
@@ -46,8 +46,7 @@ public class PhieuNhapGUI extends JPanel{
 	public void init() {
             this.add(new JLabel("Phiếu nhập GUI"));
             DefaultTableModel model =listNL();
-            frame = new JFrame();
-            addbtn = new ThemButton();            
+            frame = new JFrame();            
             xuatbtn = new ExportExcelButton();
             chitietbtn = new JButton("Chi tiết");
             timkiembtn = new JButton("Tìm kiếm");
@@ -67,8 +66,7 @@ public class PhieuNhapGUI extends JPanel{
             panel1.add(panel2);
             panel2.add(txtsearch); 
             panel2.add(timkiembtn);
-            panel2.add(chitietbtn);
-            panel2.add(addbtn);                     
+            panel2.add(chitietbtn);                     
             panel2.add(xuatbtn);
             
             //Thêm tiêu đề
@@ -99,13 +97,6 @@ public class PhieuNhapGUI extends JPanel{
                 }
             });
             
-            addbtn.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent arg0){
-                    them(model);
-                }
-            });
-            
             xuatbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -131,7 +122,7 @@ public class PhieuNhapGUI extends JPanel{
 
             // Kiểm tra xem có hàng nào được chọn không
             if (selectedRow >= 0) {                
-                String maPhieuNhap = "PN01"; // Thay "PN01" bằng mã phiếu nhập thực tế
+                String maPhieuNhap = (String)table.getModel().getValueAt(selectedRow, 0); // Lấy mã phiếu nhập được chọn
                 String maNguyenLieu = "NL01"; // Thay "NL01" bằng mã nguyên liệu thực tế
                 String soLuong = "10"; // Thay "10" bằng số lượng thực tế
 
@@ -141,31 +132,7 @@ public class PhieuNhapGUI extends JPanel{
                 // Hiển thị thông báo nếu không có hàng nào được chọn
                 JOptionPane.showMessageDialog(frame, "Vui lòng chọn một hàng để xem chi tiết");
             }               
-        }
-        
-        public void them(DefaultTableModel model){
-            // Tạo một JTextField cho mỗi cột trong JTable
-            JTextField txtMaPN = new JTextField();
-            JTextField txtDate = new JTextField();
-            JTextField txtTongtien = new JTextField();
-            JTextField txtMaNV = new JTextField();
-            JTextField txtMaNCC = new JTextField();
-           
-            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
-            Object[] message = {
-            "Nhập mã phiếu nhập:", txtMaPN,
-            "Nhập ngày lập phiếu:", txtDate,
-            "Nhập tổng số tiền:", txtTongtien,
-            "Nhập mã nhân viên lập phiếu:", txtMaNV,
-            "Nhập mã nhà cung cấp:", txtMaNCC   ,           
-            };
-
-            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
-                // Thêm dòng mới vào model với dữ liệu từ JTextField
-                model.addRow(new Object[]{txtMaPN.getText(), txtDate.getText(),txtTongtien.getText(),txtMaNV.getText(),txtMaNCC.getText()});
-            }
-        }                              
+        }             
         
         public void xuat(DefaultTableModel model){
             //đường dẫn lưu file trong ngoặc nha
@@ -201,9 +168,5 @@ public class PhieuNhapGUI extends JPanel{
             model.addRow(new Object[]{"PN03", "24/11/2003","10000","NV08","NCC003"});
             
             return model;
-        }
-        
-        public static void main(String[] args){
-            new NguyenLieuGUI();
         }
 }
