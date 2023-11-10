@@ -43,7 +43,8 @@ import BUS.NhaCungCapBUS;
 import DTO.CHITIETPHIEUNHAP;
 
 public class NhapHangGUI extends JPanel{
-        //public JFrame frame;                
+        //public JFrame frame;  
+	
         public JButton themnccbtn; 
         public JButton themspbtn;   
         public JPanel panel;
@@ -79,8 +80,11 @@ public class NhapHangGUI extends JPanel{
 	
 	public void init() {
             this.add(new JLabel("Nhập hàng GUI")); 
-            this.setLayout(new BorderLayout());                                     
-            //frame = new JFrame();           
+            this.setLayout(new BorderLayout());    
+            
+            //fix
+            //frame = new JFrame();      
+            
             themnccbtn = new JButton("Chọn nhà cung cấp");
             themspbtn = new JButton("Thêm sản phẩm"); 
             tableNCC = new MyTable();
@@ -142,7 +146,8 @@ public class NhapHangGUI extends JPanel{
             panel.add(panelLastoption);
 
             this.add(panel,BorderLayout.CENTER);
-            /* 
+            
+            /*
             //Thêm tiêu đề             
             frame.getContentPane().add(panel);
             // Đặt JFrame ở chế độ toàn màn hình
@@ -153,6 +158,7 @@ public class NhapHangGUI extends JPanel{
             frame.setVisible(true);
             */
             
+           
             themspbtn.addActionListener(new ActionListener() {
             	public void actionPerformed(ActionEvent e) {
             		int selectedRow = tableNCC.getTable().getSelectedRow();

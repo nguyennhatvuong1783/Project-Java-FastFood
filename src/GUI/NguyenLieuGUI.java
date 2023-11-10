@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import GiaoDienChuan.*;
@@ -14,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -30,13 +33,17 @@ import DTO.NGUYENLIEU;
 import BUS.NguyenLieuBUS;
 
 public class NguyenLieuGUI extends JPanel{
+	
         //public JFrame frame;
+	
         public JPanel panel1;
         public JPanel panel2;
         public JPanel tablepnl;
         public JPanel optionpnl;
         public JPanel searchpnl;
+        
         //public ThemButton addbtn;
+        
         public XoaButton delbtn;
         public SuaButton modbtn;
         public ExportExcelButton xuatbtn;
@@ -61,20 +68,28 @@ public class NguyenLieuGUI extends JPanel{
 	}
 	
 	public void init() {
-            this.setLayout(new BorderLayout());
+            this.setLayout(new BorderLayout(0, 5));
             //frame = new JFrame();
             //addbtn = new ThemButton();
+            
+            
             delbtn = new XoaButton();
             modbtn = new SuaButton();
             xuatbtn = new ExportExcelButton();
             timkiembtn = new JButton("Tìm kiếm");
+            
             tableNL = new MyTable();
             String[] columnNames = {"Mã Nguyên Liệu", "Tên Nguyên Liệu", "Số Lượng", "Đơn Vị Tính", "Đơn Giá", "Hình Ảnh", "Loại", "Trạng Thái"};
             tableNL.setHeaders(columnNames);
+            
             //thêm dòng sau khởi tạo
-            tableNL.addRow(new String[]{"NL01", "Bánh burger", "10","Cái","10000","","Null","còn"});
-            tableNL.addRow(new String[]{"NL02", "Bánh taco", "11","Cái","12000","","Null","còn"});
-            tableNL.addRow(new String[]{"NL03", "coca", "15","Chai","10000","","Null","còn"});
+            ArrayList<NGUYENLIEU> listnl = new ArrayList<NGUYENLIEU>();
+            NguyenLieuBUS bus = new NguyenLieuBUS();
+            listnl = bus.selectAllNL();
+            for(NGUYENLIEU nl : listnl) {
+            	tableNL.getModel().addRow(new Object[] {nl.getMaNL(), nl.getTenNL(), nl.getSoLuong(), nl.getDonViTinh(), 
+            			nl.getDonGia(), nl.getHinhAnh(), nl.getLoaiNL(), nl.getTrangThai()});
+            }
             
             sorter = new TableRowSorter<>(tableNL.getModel());
             txtsearch = new JTextField(30);                                            
@@ -97,13 +112,16 @@ public class NguyenLieuGUI extends JPanel{
             optionpnl.add(searchpnl,BorderLayout.NORTH);
             optionpnl.add(panel1,BorderLayout.CENTER);
             panel1.add(panel2);
+            
             //panel2.add(addbtn);
+            
             panel2.add(modbtn);
             panel2.add(delbtn);           
             panel2.add(xuatbtn);
             
             tablepnl.add(scrollPane);
-            /* 
+            
+            /*
             //Thêm tiêu đề
             frame.setTitle("Nguyên Liệu GUI");
             // Thêm scrollpane A.K.A jtable vào JFrame
@@ -115,7 +133,9 @@ public class NguyenLieuGUI extends JPanel{
             // Đặt hành động mặc định khi đóng JFrame
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Hiển thị JFrame
-            frame.setVisible(true);*/
+            frame.setVisible(true);
+            */
+            
             this.add(tablepnl,BorderLayout.NORTH);
             this.add(optionpnl,BorderLayout.CENTER);
             //xử lý các jbutton
