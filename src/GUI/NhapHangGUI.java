@@ -42,7 +42,7 @@ import BUS.NhaCungCapBUS;
 import DTO.CHITIETPHIEUNHAP;
 
 public class NhapHangGUI extends JPanel{
-        //public JFrame frame;                
+        public JFrame frame;                
         public JButton themnccbtn; 
         public JButton themspbtn;   
         public JPanel panel;
@@ -76,7 +76,7 @@ public class NhapHangGUI extends JPanel{
 	
 	public void init() {
             this.add(new JLabel("Nhập hàng GUI"));                                      
-            //frame = new JFrame();           
+            frame = new JFrame();           
             themnccbtn = new JButton("Chọn nhà cung cấp");
             themspbtn = new JButton("Thêm sản phẩm");  
             ComboBoxNCC(); 
@@ -118,17 +118,17 @@ public class NhapHangGUI extends JPanel{
             panelLastoption.add(txtTongtien);
             panelLastoption.add(thanhtoanbtn);
             panel.add(panelLastoption);
-            /* 
+            
             //Thêm tiêu đề             
             frame.getContentPane().add(panel);
             // Đặt JFrame ở chế độ toàn màn hình
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             // Đặt hành động mặc định khi đóng JFrame
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            // Hiển thị JFrame
+            //Hiển thị JFrame
             frame.setVisible(true);
-            */
-            this.add(panel);
+            
+            //this.add(panel);
             
             themspbtn.addActionListener(new ActionListener() {
             	public void actionPerformed(ActionEvent e) {
@@ -147,12 +147,12 @@ public class NhapHangGUI extends JPanel{
             	}
             });
             
-            /*đây là chức năng hiển thị sp theo ncc được chọn 
+            //đây là chức năng hiển thị sp theo ncc được chọn 
             cb.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     hienthisanpham();
                 }
-            });*/
+            });
             
             delbtn.addActionListener(new ActionListener() {
                 @Override
@@ -282,7 +282,7 @@ public class NhapHangGUI extends JPanel{
         public void showtt_thanhtoan(){
                 JTextField txtManv = new JTextField(txtMANV.getText());
                 JTextField txtTong = new JTextField(txtTongtien.getText());
-                //không biết chức năng này sẽ ra cái gì nên chưa làm 
+                
                 Object[] options = {"OK", "Cancel"};
                 Object[] message = {
                     "Mã nhân viên: ", txtManv,
