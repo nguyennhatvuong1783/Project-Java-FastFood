@@ -337,6 +337,9 @@ public class NhapHangGUI extends JPanel{
             	ctpnbus.insertCTPN(ctpn);
         	}
         	
+        	//Reset lại bảng giỏ hàng
+        	DefaultTableModel model = (DefaultTableModel) tableSP.getModel();
+        	model.setRowCount(0);
         }
          
         //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập
