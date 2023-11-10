@@ -7,6 +7,6 @@ import GUI.NhapHangGUI;
 
 public class MAIN {
 	public static void main(String[] args) {
-		new NhapHangGUI();
+		new LoginGUI();
 	}
 }

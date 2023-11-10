@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import GiaoDienChuan.*;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -32,12 +33,15 @@ public class NguyenLieuGUI extends JPanel{
         //public JFrame frame;
         public JPanel panel1;
         public JPanel panel2;
+        public JPanel tablepnl;
+        public JPanel optionpnl;
+        public JPanel searchpnl;
         //public ThemButton addbtn;
         public XoaButton delbtn;
         public SuaButton modbtn;
         public ExportExcelButton xuatbtn;
         public JButton timkiembtn;      
-        public JTable tableNL;        
+        public MyTable tableNL;        
         public JScrollPane scrollPane;
         public JTextField txtsearch;
         private TableRowSorter<DefaultTableModel> sorter;
@@ -57,35 +61,48 @@ public class NguyenLieuGUI extends JPanel{
 	}
 	
 	public void init() {
-            this.add(new JLabel("Nguyên liệu GUI"));
-            DefaultTableModel model =listNL();
+            this.setLayout(new BorderLayout());
             //frame = new JFrame();
             //addbtn = new ThemButton();
             delbtn = new XoaButton();
             modbtn = new SuaButton();
             xuatbtn = new ExportExcelButton();
             timkiembtn = new JButton("Tìm kiếm");
-            tableNL = new JTable(model);              
-            sorter = new TableRowSorter<>(model);
-            txtsearch = new JTextField();                                            
+            tableNL = new MyTable();
+            String[] columnNames = {"Mã Nguyên Liệu", "Tên Nguyên Liệu", "Số Lượng", "Đơn Vị Tính", "Đơn Giá", "Hình Ảnh", "Loại", "Trạng Thái"};
+            tableNL.setHeaders(columnNames);
+            //thêm dòng sau khởi tạo
+            tableNL.addRow(new String[]{"NL01", "Bánh burger", "10","Cái","10000","","Null","còn"});
+            tableNL.addRow(new String[]{"NL02", "Bánh taco", "11","Cái","12000","","Null","còn"});
+            tableNL.addRow(new String[]{"NL03", "coca", "15","Chai","10000","","Null","còn"});
+            
+            sorter = new TableRowSorter<>(tableNL.getModel());
+            txtsearch = new JTextField(30);                                            
                      
             // Tạo một JScrollPane mới và thêm JTable vào đó
-            tableNL.setRowSorter(sorter);            
+            tableNL.getTable().setRowSorter(sorter);            
             scrollPane = new JScrollPane(tableNL);
     
             // Tạo một JPanel mới với FlowLayout và gridlayout
-            panel1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            panel2 = new JPanel(new GridLayout(1, 0));        
+            panel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            panel2 = new JPanel(new GridLayout(1, 0));  
+            tablepnl = new JPanel(new BorderLayout());
+            tablepnl.setPreferredSize(new Dimension(0,200)) ; 
+            optionpnl = new JPanel(new BorderLayout());    
+            searchpnl = new JPanel(new FlowLayout(FlowLayout.CENTER));
             
             // Thêm hai JButton vào JPanel                     
+            searchpnl.add(txtsearch); 
+            searchpnl.add(timkiembtn);
+            optionpnl.add(searchpnl,BorderLayout.NORTH);
+            optionpnl.add(panel1,BorderLayout.CENTER);
             panel1.add(panel2);
-            panel2.add(txtsearch); 
-            panel2.add(timkiembtn);
             //panel2.add(addbtn);
             panel2.add(modbtn);
             panel2.add(delbtn);           
             panel2.add(xuatbtn);
             
+            tablepnl.add(scrollPane);
             /* 
             //Thêm tiêu đề
             frame.setTitle("Nguyên Liệu GUI");
@@ -99,8 +116,8 @@ public class NguyenLieuGUI extends JPanel{
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Hiển thị JFrame
             frame.setVisible(true);*/
-            this.add(scrollPane);
-            this.add(panel1);
+            this.add(tablepnl,BorderLayout.NORTH);
+            this.add(optionpnl,BorderLayout.CENTER);
             //xử lý các jbutton
             timkiembtn.addActionListener(new ActionListener() {
                 @Override
@@ -120,7 +137,7 @@ public class NguyenLieuGUI extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent arg0){
                     // Lấy chỉ số của hàng được chọn
-                    int selectedRow = tableNL.getSelectedRow();
+                    int selectedRow = tableNL.getTable().getSelectedRow();
                     
                     // Kiểm tra xem có hàng nào được chọn không
                     if (selectedRow >= 0) {
@@ -133,7 +150,7 @@ public class NguyenLieuGUI extends JPanel{
                         dataHinhanh = tableNL.getValueAt(selectedRow, 5).toString();
                         dataLoai = tableNL.getValueAt(selectedRow, 6).toString();
                         dataTrangthai = tableNL.getValueAt(selectedRow, 7).toString();                              
-                        sua(model,dataMa,dataTen,dataSoluong,dataDonvi,dataDongia,dataHinhanh,dataLoai,dataTrangthai);                        
+                        sua(tableNL.getModel(),dataMa,dataTen,dataSoluong,dataDonvi,dataDongia,dataHinhanh,dataLoai,dataTrangthai);                        
                     } 
                     else {
                         // Hiển thị thông báo nếu không có hàng nào được chọn
@@ -145,14 +162,14 @@ public class NguyenLieuGUI extends JPanel{
             delbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    xoa(model);
+                    xoa(tableNL.getModel());
                 }
             });
             
             xuatbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    xuat(model);
+                    xuat(tableNL.getModel());
                 }
             });
 
@@ -236,7 +253,7 @@ public class NguyenLieuGUI extends JPanel{
             int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
             if (option == JOptionPane.OK_OPTION) {
                 // Lấy chỉ số của hàng được chọn
-                int selectedRow = tableNL.getSelectedRow();
+                int selectedRow = tableNL.getTable().getSelectedRow();
                 
                 // Cập nhật dữ liệu của hàng được chọn
                 model.setValueAt(txtMa.getText(), selectedRow, 0);
@@ -265,7 +282,7 @@ public class NguyenLieuGUI extends JPanel{
          
         public void xoa(DefaultTableModel model){
             // Lấy chỉ số của hàng được chọn
-            int selectedRow = tableNL.getSelectedRow();
+            int selectedRow = tableNL.getTable().getSelectedRow();
 
             // Kiểm tra xem có hàng nào được chọn không
             if (selectedRow >= 0) {
@@ -313,29 +330,5 @@ public class NguyenLieuGUI extends JPanel{
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }
-        
-        public DefaultTableModel listNL(){           
-            // Tạo một DefaultTableModel mới với 8 cột
-            String[] columnNames = {"Mã Nguyên Liệu", "Tên Nguyên Liệu", "Số Lượng", "Đơn Vị Tính", "Đơn Giá", "Hình Ảnh", "Loại", "Trạng Thái"};
-            DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-                @Override
-                public Class getColumnClass(int column) {
-                    switch (column) {
-                        case 5:
-                            return ImageIcon.class;
-                        default:
-                            return Object.class;
-                    }
-                }
-            };
-            ImageIcon imageIcon = new ImageIcon("/icon_img/logo-fast-food-40.png");                      
-           
-            //thêm dòng sau khởi tạo
-            model.addRow(new Object[]{"NL01", "Bánh burger", "10","Cái","10000",imageIcon,"Null","còn"});
-            model.addRow(new Object[]{"NL02", "Bánh taco", "11","Cái","12000",imageIcon,"Null","còn"});
-            model.addRow(new Object[]{"NL03", "coca", "15","Chai","10000",imageIcon,"Null","còn"});
-            
-            return model;
         }
 }
