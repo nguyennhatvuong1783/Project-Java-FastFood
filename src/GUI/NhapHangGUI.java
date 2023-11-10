@@ -179,7 +179,7 @@ public class NhapHangGUI extends JPanel{
             //đây là chức năng hiển thị sp theo ncc được chọn 
             cb.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    hienthisanpham();
+                    //hienthisanpham();
                 }
             });
             
@@ -261,15 +261,15 @@ public class NhapHangGUI extends JPanel{
         public void hienthisanpham(){
             String[] columnNames = {"Mã sản phẩm", "Tên sản phẩm","Số lượng tồn kho","Loại", "Đơn Giá"};
             String nhaCungCapChon = (String) cb.getItemAt(cb.getSelectedIndex());
-            String[][] sanPham = getSanPhamTheoNhaCungCap(nhaCungCapChon);
-            tableNCC.getTable().setModel(new DefaultTableModel(sanPham, columnNames));
+            //String[][] sanPham = getSanPhamTheoNhaCungCap(nhaCungCapChon);
+            //tableNCC.getTable().setModel(new DefaultTableModel(sanPham, columnNames));
         }
-        
+        /* 
         private String[][] getSanPhamTheoNhaCungCap(String nhaCungCap) {
             // Thực hiện truy vấn dữ liệu từ cơ sở dữ liệu hoặc nguồn dữ liệu khác tại đây
             // và trả về một mảng 2 chiều chứa thông tin sản phẩm
             return new String[][]{};
-        }
+        }*/
         
         public void xoa(DefaultTableModel model){
             // Lấy chỉ số của hàng được chọn
