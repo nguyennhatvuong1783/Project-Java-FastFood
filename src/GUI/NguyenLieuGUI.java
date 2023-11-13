@@ -42,7 +42,7 @@ public class NguyenLieuGUI extends JPanel{
         public JPanel optionpnl;
         public JPanel searchpnl;
         
-        //public ThemButton addbtn;
+        public ThemButton addbtn;
         
         public XoaButton delbtn;
         public SuaButton modbtn;
@@ -70,7 +70,7 @@ public class NguyenLieuGUI extends JPanel{
 	public void init() {
             this.setLayout(new BorderLayout(0, 5));
             //frame = new JFrame();
-            //addbtn = new ThemButton();
+            addbtn = new ThemButton();
             
             
             delbtn = new XoaButton();
@@ -113,7 +113,7 @@ public class NguyenLieuGUI extends JPanel{
             optionpnl.add(panel1,BorderLayout.CENTER);
             panel1.add(panel2);
             
-            //panel2.add(addbtn);
+            panel2.add(addbtn);
             
             panel2.add(modbtn);
             panel2.add(delbtn);           
@@ -146,12 +146,12 @@ public class NguyenLieuGUI extends JPanel{
                 }            
             });
             
-            /*addbtn.addActionListener(new ActionListener(){
+            addbtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent arg0){
-                    them(model);
+                    them(tableNL.getModel());
                 }
-            });*/
+            });
             
             modbtn.addActionListener(new ActionListener(){
                 @Override
