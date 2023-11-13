@@ -79,8 +79,7 @@ public class HoaDonBUS {
 					ChiTietHoaDonGUI dialog = new ChiTietHoaDonGUI(MainLayoutGUI.f, true, MaHD);
 					Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 					int x = (d.width - dialog.getSize().width) / 2;
-					int y = (d.height - dialog.getSize().height) / 2;
-					dialog.setLocation(x, y);
+					dialog.setLocation(x, 10);
 	                dialog.setVisible(true);
 	                tableHD.clearSelection();
 				}

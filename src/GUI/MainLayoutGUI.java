@@ -44,6 +44,7 @@ public class MainLayoutGUI {
 	public JTabbedPane tpSanPham;
 	public JTabbedPane tpTaiKhoan;
 	public JLabel lblLogOut;
+	public JPanel pnlMenu;
 	
 	public MainLayoutGUI(TAIKHOAN taikhoan, NHANVIEN nhanvien) {
 		this.taikhoan = taikhoan;
@@ -51,7 +52,7 @@ public class MainLayoutGUI {
 		init();
 		new MainLayoutBUS(lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe, pnlContent, tpBanHang, 
-				tpNhapHang, tpSanPham, tpTaiKhoan, lblLogOut);
+				tpNhapHang, tpSanPham, tpTaiKhoan, lblLogOut, taikhoan, pnlMenu);
 	}
 	
 	private void init() {
@@ -61,7 +62,7 @@ public class MainLayoutGUI {
 		f.setUndecorated(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
-		f.setSize(new Dimension(1200, 800));
+		f.setSize(new Dimension(1200, 750));
 		int x = (d.width - f.getSize().width) / 2;
 		int y = (d.height - f.getSize().height) / 2;
 		f.setLocation(x, y);
@@ -130,7 +131,7 @@ public class MainLayoutGUI {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 	        	if(f.getSize().width == d.width && f.getSize().height == d.height) {
-	        		f.setSize(new Dimension(1200, 800));
+	        		f.setSize(new Dimension(1200, 750));
 	        		int x = (d.width - f.getSize().width) / 2;
 	        		int y = (d.height - f.getSize().height) / 2;
 	        		f.setLocation(x, y);
@@ -218,7 +219,7 @@ public class MainLayoutGUI {
 				"/icon_img/logo-fast-food-150.png")));
 		lblLogo.setPreferredSize(new Dimension(215, 170));
 		
-		JPanel pnlMenu = new JPanel(new GridLayout(9, 1));
+		pnlMenu = new JPanel(new GridLayout(9, 1));
 		pnlMenu.setBackground(new Color(62,78,94));
 		
 		lblBanHang = new JLabel("Bán hàng", JLabel.CENTER);
@@ -293,7 +294,7 @@ public class MainLayoutGUI {
 		pnlMenu.add(lblKhuyenMai);
 		pnlMenu.add(lblTaiKhoan);
 		pnlMenu.add(lblThongKe);
-		
+				
 		pnlLeftMenu.add(lblLogo, BorderLayout.NORTH);
 		pnlLeftMenu.add(pnlMenu, BorderLayout.CENTER);
 		

@@ -4,11 +4,15 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import DAO.DaoChiTietPhanQuyen;
+import DTO.CHITIETPHANQUYEN;
+import DTO.TAIKHOAN;
 import GUI.BanHangGUI;
 import GUI.HoaDonGUI;
 import GUI.KhachHangGUI;
@@ -30,13 +34,17 @@ public class MainLayoutBUS {
 	private int flag[] = new int[9];
 	private JPanel pnlContent;
 	private CardLayout cardLayout = new CardLayout();
+	private ArrayList<CHITIETPHANQUYEN> listCN;
 	
 	public MainLayoutBUS(JLabel lblBanHang, JLabel lblNhapHang, JLabel lblSanPham, 
 			JLabel lblNhanVien, JLabel lblKhachHang, JLabel lblNhaCungCap, JLabel lblKhuyenMai, 
 			JLabel lblTaiKhoan, JLabel lblThongKe, JPanel pnlContent, JTabbedPane tpBanHang, 
-			JTabbedPane tpNhapHang, JTabbedPane tpSanPham, JTabbedPane tpTaiKhoan, JLabel lblLogOut) {
+			JTabbedPane tpNhapHang, JTabbedPane tpSanPham, JTabbedPane tpTaiKhoan, JLabel lblLogOut, 
+			TAIKHOAN taikhoan, JPanel pnlMenu) {
 		JLabel list[] = {lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, 
 				lblNhaCungCap, lblKhuyenMai, lblTaiKhoan, lblThongKe};
+		listCN = DaoChiTietPhanQuyen.getInstance()
+				.selectByCondition("MAQUYEN='" + taikhoan.getMaQuyen() + "'");
 		lblList = list;
 		this.pnlContent = pnlContent;
 		this.pnlContent.setLayout(cardLayout);
@@ -50,9 +58,76 @@ public class MainLayoutBUS {
 		EventTaiKhoan(lblTaiKhoan, tpTaiKhoan);
 		EventThongKe(lblThongKe);
 		EventLogOut(lblLogOut);
+		CheckQuyen(lblBanHang, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, lblNhaCungCap, lblKhuyenMai, 
+				lblTaiKhoan, lblThongKe, lblLogOut, listCN, pnlMenu);
 		pnlContent.add(new JPanel(), "null");
 	}
 	
+	public void CheckQuyen(JLabel lblBanHang, JLabel lblNhapHang, JLabel lblSanPham, JLabel lblNhanVien,
+			JLabel lblKhachHang, JLabel lblNhaCungCap, JLabel lblKhuyenMai, JLabel lblTaiKhoan, JLabel lblThongKe,
+			JLabel lblLogOut, ArrayList<CHITIETPHANQUYEN> listCN, JPanel pnlMenu) {
+		
+		int tmpBanHang=0, tmpNhapHang=0, tmpSanPham=0, tmpNhanVien=0, tmpKhachHang=0, tmpNhaCungCap=0, 
+				tmpKhuyenMai=0, tmpTaiKhoan=0, tmpThongKe=0;
+		for (CHITIETPHANQUYEN cn : listCN) {
+			if(cn.getMaChucNang().equals("CN01")) {
+				tmpBanHang++;
+			}else if (cn.getMaChucNang().equals("CN02")) {
+				tmpBanHang++;
+			}else if (cn.getMaChucNang().equals("CN03")) {
+				tmpNhapHang++;
+			}else if (cn.getMaChucNang().equals("CN04")) {
+				tmpNhapHang++;
+			}else if (cn.getMaChucNang().equals("CN05")) {
+				tmpSanPham++;
+			}else if (cn.getMaChucNang().equals("CN06")) {
+				tmpSanPham++;
+			}else if (cn.getMaChucNang().equals("CN07")) {
+				tmpNhanVien++;
+			}else if (cn.getMaChucNang().equals("CN08")) {
+				tmpKhachHang++;
+			}else if (cn.getMaChucNang().equals("CN09")) {
+				tmpNhaCungCap++;
+			}else if (cn.getMaChucNang().equals("CN10")) {
+				tmpKhuyenMai++;
+			}else if (cn.getMaChucNang().equals("CN11")) {
+				tmpTaiKhoan++;
+			}else if (cn.getMaChucNang().equals("CN12")) {
+				tmpTaiKhoan++;
+			}else if (cn.getMaChucNang().equals("CN13")) {
+				tmpThongKe++;
+			}
+		}
+		
+		if(tmpBanHang == 0) {
+			pnlMenu.remove(lblBanHang);
+		}
+		if (tmpNhapHang == 0) {
+			pnlMenu.remove(lblNhapHang);
+		}
+		if (tmpSanPham == 0) {
+			pnlMenu.remove(lblSanPham);
+		}
+		if (tmpNhanVien == 0) {
+			pnlMenu.remove(lblNhanVien);
+		}
+		if (tmpKhachHang == 0) {
+			pnlMenu.remove(lblKhachHang);
+		}
+		if (tmpNhaCungCap == 0) {
+			pnlMenu.remove(lblNhaCungCap);
+		}
+		if (tmpKhuyenMai == 0) {
+			pnlMenu.remove(lblKhuyenMai);
+		}
+		if (tmpTaiKhoan == 0) {
+			pnlMenu.remove(lblTaiKhoan);
+		}
+		if (tmpThongKe == 0) {
+			pnlMenu.remove(lblThongKe);
+		}
+	}
+
 	public void EventBanHang(JLabel lblBanHang, JTabbedPane tpBanHang) {
 		lblBanHang.addMouseListener(new MouseAdapter() {
 			@Override
@@ -81,10 +156,15 @@ public class MainLayoutBUS {
 				}
 				
 				if(flag[0] == 0) {
-					JPanel pnlBanHang = new BanHangGUI();
-					JPanel pnlHoaDon = new HoaDonGUI();
-					tpBanHang.add("Bán hàng", pnlBanHang);
-					tpBanHang.add("Hóa đơn", pnlHoaDon);
+					for (CHITIETPHANQUYEN cn : listCN) {
+						if(cn.getMaChucNang().equals("CN01")) {
+							JPanel pnlBanHang = new BanHangGUI();
+							tpBanHang.add("Bán hàng", pnlBanHang);
+						}else if(cn.getMaChucNang().equals("CN02")) {
+							JPanel pnlHoaDon = new HoaDonGUI();
+							tpBanHang.add("Hóa đơn", pnlHoaDon);
+						}
+					}
 					pnlContent.add(tpBanHang, "0");
 					cardLayout.show(pnlContent, "0");
 				}else {
@@ -125,10 +205,15 @@ public class MainLayoutBUS {
 				}
 				
 				if(flag[1] == 0) {
-					JPanel pnlNhapHang = new NhapHangGUI();
-					JPanel pnlPhieuNhap = new PhieuNhapGUI();
-					tpNhapHang.add("Nhập hàng", pnlNhapHang);
-					tpNhapHang.add("Phiếu Nhập", pnlPhieuNhap);
+					for (CHITIETPHANQUYEN cn : listCN) {
+						if(cn.getMaChucNang().equals("CN03")) {
+							JPanel pnlNhapHang = new NhapHangGUI();
+							tpNhapHang.add("Nhập hàng", pnlNhapHang);
+						}else if(cn.getMaChucNang().equals("CN04")) {
+							JPanel pnlPhieuNhap = new PhieuNhapGUI();
+							tpNhapHang.add("Phiếu Nhập", pnlPhieuNhap);
+						}
+					}
 					pnlContent.add(tpNhapHang, "1");
 					cardLayout.show(pnlContent, "1");
 				}else {
@@ -169,10 +254,15 @@ public class MainLayoutBUS {
 				}
 				
 				if(flag[2] == 0) {
-					JPanel pnlMonAn = new MonAnGUI();
-					JPanel pnlNguyenLieu = new NguyenLieuGUI();
-					tpSanPham.add("Món ăn", pnlMonAn);
-					tpSanPham.add("Nguyên liệu", pnlNguyenLieu);
+					for (CHITIETPHANQUYEN cn : listCN) {
+						if(cn.getMaChucNang().equals("CN05")) {
+							JPanel pnlMonAn = new MonAnGUI();
+							tpSanPham.add("Món ăn", pnlMonAn);
+						}else if(cn.getMaChucNang().equals("CN06")) {
+							JPanel pnlNguyenLieu = new NguyenLieuGUI();
+							tpSanPham.add("Nguyên liệu", pnlNguyenLieu);
+						}
+					}
 					pnlContent.add(tpSanPham, "2");
 					cardLayout.show(pnlContent, "2");
 				}else {
@@ -377,10 +467,15 @@ public class MainLayoutBUS {
 				}
 				
 				if(flag[7] == 0) {
-					JPanel pnlTaiKhoan = new TaiKhoanGUI();
-					JPanel pnlQuyen = new QuyenGUI();
-					tpTaiKhoan.add("Tài khoản", pnlTaiKhoan);
-					tpTaiKhoan.add("Quyền", pnlQuyen);
+					for (CHITIETPHANQUYEN cn : listCN) {
+						if(cn.getMaChucNang().equals("CN11")) {
+							JPanel pnlTaiKhoan = new TaiKhoanGUI();
+							tpTaiKhoan.add("Tài khoản", pnlTaiKhoan);
+						}else if(cn.getMaChucNang().equals("CN12")) {
+							JPanel pnlQuyen = new QuyenGUI();
+							tpTaiKhoan.add("Quyền", pnlQuyen);
+						}
+					}
 					pnlContent.add(tpTaiKhoan, "7");
 					cardLayout.show(pnlContent, "7");
 				}else {
