@@ -373,19 +373,11 @@ public class MonAnGUI extends JPanel{
 	 
 	 
 	 public Icon loadImage(String path, int width, int height) {
-	       if (path!=null || path.equals("")==false) {
-	    	   File file = new File(path);
-		        BufferedImage image = null;
-		        try {
-					image = ImageIO.read(file);
-					
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Hình ảnh chưa có");
-				}
-		        
-		        if (image!=null) {
-		        	ImageIcon img = new ImageIcon(image);
-		        	int ix = img.getIconWidth();
+		 if (path!=null) {
+			 ImageIcon img;
+			try {
+				img = new ImageIcon(getClass().getResource("/image_monan/" + path));
+				 int ix = img.getIconWidth();
 			        int iy = img.getIconHeight();
 			        int dx = 0, dy = 0;
 			        if (width / height > ix / iy) {
@@ -397,11 +389,12 @@ public class MonAnGUI extends JPanel{
 			        }
 			        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
 			        return new ImageIcon(imgScale);
-				}
-		        
-		        
-		  }
-	       return null;
+			} catch (Exception e) {
+				return null;
+			}
+		        	       
+		 } 
+		 return null;
 	  }
 	 
 	 private void addDocumentListener(JTextField tx) {

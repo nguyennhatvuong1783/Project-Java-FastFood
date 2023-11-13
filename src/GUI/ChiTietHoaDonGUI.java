@@ -83,7 +83,7 @@ public class ChiTietHoaDonGUI extends JDialog{
         btnDong = new CancelButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(720, 900));
+        setPreferredSize(new Dimension(720, 810));
         setUndecorated(true);
         getRootPane().setBorder(BorderFactory.createLineBorder(new Color(0,0,0), 2));
         

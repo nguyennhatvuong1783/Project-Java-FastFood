@@ -155,6 +155,22 @@ ALTER TABLE CHITIETMONAN ADD CONSTRAINT CTMA_MAMA_FK FOREIGN KEY (MAMA) REFERENC
 
 ALTER TABLE CHITIETMONAN ADD CONSTRAINT CTMA_MANL_FK FOREIGN KEY (MANL) REFERENCES NGUYENLIEU (MANL)
 
+INSERT INTO CHUCNANG(MACN, TENCN)
+VALUES
+('CN01', N'Bán hàng'),
+('CN02', N'Hóa đơn'),
+('CN03', N'Nhập hàng'),
+('CN04', N'Phiếu nhập'),
+('CN05', N'Món ăn'),
+('CN06', N'Nguyên liệu'),
+('CN07', N'Nhân viên'),
+('CN08', N'Khách hàng'),
+('CN09', N'Nhà cung cấp'),
+('CN10', N'Khuyến mãi'),
+('CN11', N'Tài khoản'),
+('CN12', N'Phân quyền'),
+('CN13', N'Thống kê')
+
 INSERT INTO NHANVIEN(MANV, TENNV, GIOITINH, NGAYSINH, DIACHI, SDT)
 VALUES
 ('admin', N'Nguyễn Văn A', N'nam', '2003-08-17', N'Quận 1, Thành phố Hồ Chí Minh', '0123456789'),
@@ -163,13 +179,13 @@ VALUES
 ('NV003', N'Nguyễn Thị D', N'nữ', '1999-11-20', N'Quận 4, Thành phố Hồ Chí Minh', '0456456456'),
 ('NV004', N'Phan Văn E', N'nam', '2000-12-21', N'Quận 5, Thành phố Hồ Chí Minh', '0789789789')
 
-INSERT INTO TAIKHOAN(USERNAME, MATKHAU)
+INSERT INTO TAIKHOAN(USERNAME, MATKHAU, MAQUYEN)
 VALUES
-('admin', 'admin'),
-('NV001', 'nv001'),
-('NV002', 'nv002'),
-('NV003', 'nv003'),
-('NV004', 'nv004')
+('admin', 'admin', 'Q01'),
+('NV001', 'nv001', 'Q02'),
+('NV002', 'nv002', 'Q03'),
+('NV003', 'nv003', 'Q04'),
+('NV004', 'nv004', 'Q05')
 
 INSERT INTO KHACHHANG(MAKH, TENKH, SDT, DIACHI)
 VALUES
@@ -189,11 +205,11 @@ VALUES
 
 INSERT INTO MONAN(MAMA, TENMA, SL, DONVITINH, DONGIA, HINHANH, LOAI, TRANGTHAI)
 VALUES
-('MA001', N'Hamburger gà', 20, N'Cái', 35000, '', N'Burger',1),
-('MA002', N'Pizza cá hồi', 10, N'Cái', 45000, '', N'Pizza',1),
-('MA003', N'CocaCola', 30, N'Chai', 20000, '', N'Nước',1),
-('MA004', N'Khoai tây chiên', 35, N'Phần', 30000, '', N'Khác',1),
-('MA005', N'Gà rán', 15, N'Miếng', 45000, '', N'Gà',1)
+('MA001', N'Hamburger gà', 20, N'Cái', 35000, 'burger.jpg', N'Burger',1),
+('MA002', N'Pizza cá hồi', 10, N'Cái', 45000, 'pizza_ca_hoi.jpg', N'Pizza',1),
+('MA003', N'CocaCola', 30, N'Chai', 20000, 'coke.jpg', N'Nước',1),
+('MA004', N'Khoai tây chiên', 35, N'Phần', 30000, 'khoaitay.jpg', N'Khác',1),
+('MA005', N'Gà rán', 15, N'Miếng', 45000, 'chicken.jpg', N'Gà',1)
 
 INSERT INTO CHITIETHOADON(MAHD, MAMA, SL)
 VALUES
@@ -209,3 +225,51 @@ VALUES
 ('HD004', 'MA005', 2),
 ('HD005', 'MA005', 4),
 ('HD005', 'MA003', 4)
+
+INSERT INTO QUYEN(MAQUYEN, TENQUYEN)
+VALUES
+('Q01', N'Admin'),
+('Q02', N'Quản lý'),
+('Q03', N'Nhân viên kiểm kê'),
+('Q04', N'Nhân viên bán hàng'),
+('Q05', N'Nhân viên nhập hàng')
+
+INSERT INTO CHITIETPHANQUYEN(MAQUYEN, MACN)
+VALUES
+('Q01', 'CN01'),
+('Q01', 'CN02'),
+('Q01', 'CN03'),
+('Q01', 'CN04'),
+('Q01', 'CN05'),
+('Q01', 'CN06'),
+('Q01', 'CN07'),
+('Q01', 'CN08'),
+('Q01', 'CN09'),
+('Q01', 'CN10'),
+('Q01', 'CN11'),
+('Q01', 'CN12'),
+('Q01', 'CN13'),
+('Q02', 'CN02'),
+('Q02', 'CN04'),
+('Q02', 'CN05'),
+('Q02', 'CN06'),
+('Q02', 'CN07'),
+('Q02', 'CN08'),
+('Q02', 'CN09'),
+('Q02', 'CN10'),
+('Q02', 'CN11'),
+('Q02', 'CN12'),
+('Q02', 'CN13'),
+('Q03', 'CN02'),
+('Q03', 'CN04'),
+('Q03', 'CN13'),
+('Q04', 'CN01'),
+('Q04', 'CN02'),
+('Q04', 'CN05'),
+('Q04', 'CN08'),
+('Q04', 'CN10'),
+('Q05', 'CN03'),
+('Q05', 'CN04'),
+('Q05', 'CN06'),
+('Q05', 'CN09')
+

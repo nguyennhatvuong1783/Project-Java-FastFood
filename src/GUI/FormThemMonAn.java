@@ -14,8 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -26,14 +30,12 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.microsoft.sqlserver.jdbc.SQLServerXAConnection;
 
 import BUS.MonAnBus;
 import DAO.DaoMonAn;
@@ -54,6 +56,7 @@ public class FormThemMonAn extends JFrame{
 	private JLabel lblHinhAnh;
 	private FileButton btnChonAnh;
 	private String path;
+	private FileDialog fd;
 	
 	public FormThemMonAn() {
 		init();
@@ -195,7 +198,7 @@ public class FormThemMonAn extends JFrame{
 	}
 	
 	private void MouseClickChonAnh() {
-		FileDialog fd = new FileDialog(this);
+		fd = new FileDialog(this);
 		fd.setVisible(true);
 		File[] file = fd.getFiles();
 		if (file.length != 0) {
@@ -210,6 +213,7 @@ public class FormThemMonAn extends JFrame{
 			String donViTinh = txtDonViTinh.getText();
 			String loai = cbLoai.getItemAt(cbLoai.getSelectedIndex());
 			int donGia = Integer.parseInt(txtDonGia.getText());
+			copyFile(fd);
 			monan = new MONAN(maMA, tenMA, 0, donViTinh, donGia,path , loai, 1);
 		    if (DaoMonAn.getInstance().insert(monan)!=0) {
 		    	JOptionPane.showMessageDialog(this,"Thêm thành công");
@@ -270,28 +274,58 @@ public class FormThemMonAn extends JFrame{
 	
 	 public Icon loadImage(File file, int width, int height) {
 	        System.out.println(file.getAbsolutePath());
-	        path = file.getAbsolutePath();
-	        BufferedImage image = null;
-	        try {
-				image = ImageIO.read(file);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-	        ImageIcon img = new ImageIcon(image);
-	        
-	        int ix = img.getIconWidth();
-	        int iy = img.getIconHeight();
-	        int dx = 0, dy = 0;
-	        if (width / height > ix / iy) {
-	            dy = height;
-	            dx = dy * ix / iy;
-	        } else {
-	            dx = width;
-	            dy = dx * ix / iy;
-	        }
-	        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
-	        return new ImageIcon(imgScale);
+	    	   path = file.getAbsolutePath();
+		        BufferedImage image = null;
+		        try {
+					image = ImageIO.read(file);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+		        ImageIcon img = new ImageIcon(image);
+		        
+		        int ix = img.getIconWidth();
+		        int iy = img.getIconHeight();
+		        int dx = 0, dy = 0;
+		        if (width / height > ix / iy) {
+		            dy = height;
+		            dx = dy * ix / iy;
+		        } else {
+		            dx = width;
+		            dy = dx * ix / iy;
+		        }
+		        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
+		        return new ImageIcon(imgScale);
+			
+		   
 	  }
+	 
+	 private void copyFile(FileDialog file) {
+		 String fileName = file.getFile();
+		 File fileSrc = new File(file.getDirectory());
+		 File fileDest = new File(new File("src/image_monan").getAbsolutePath());
+		 File file1 = new File(fileSrc,fileName);
+			File file2 = new File(fileDest,fileName);
+			try {
+				InputStream in = new FileInputStream(file1);
+				OutputStream out = new FileOutputStream(file2);
+				
+				byte[] buffer = new byte[1024];
+				int lenghth;
+				while ((lenghth= in.read(buffer)) > 0) {
+					out.write(buffer,0,lenghth);
+				}
+				
+				in.close();
+				out.close();
+				System.out.println("File được copy from " + fileSrc + " đến " + fileDest);
+				path = fileName;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	 }
 
 
 }

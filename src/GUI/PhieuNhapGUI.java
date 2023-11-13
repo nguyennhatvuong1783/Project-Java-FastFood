@@ -1,11 +1,12 @@
 package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
-
+import GiaoDienChuan.MyTable;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -36,10 +37,13 @@ public class PhieuNhapGUI extends JPanel{
         //public JFrame frame;
         public JPanel panel1;
         public JPanel panel2;
+        public JPanel tablePnl;
+        public JPanel optionPnl;
+        public JPanel searchPnl;
         public ExportExcelButton xuatbtn;
         public JButton timkiembtn; 
         public JButton chitietbtn;
-        public JTable table;        
+        public MyTable table;        
         public JScrollPane scrollPane;
         public JTextField txtsearch;
         private TableRowSorter<DefaultTableModel> sorter;               
@@ -49,30 +53,40 @@ public class PhieuNhapGUI extends JPanel{
 	}
 	
 	public void init() {
-            this.add(new JLabel("Phiếu nhập GUI"));
-            DefaultTableModel model =listNL();
+            this.add(new JLabel("Phiếu nhập GUI"));  
+            this.setLayout(new BorderLayout());     
             //frame = new JFrame();            
             xuatbtn = new ExportExcelButton();
             chitietbtn = new JButton("Chi tiết");
             timkiembtn = new JButton("Tìm kiếm");
-            table = new JTable(model);              
-            sorter = new TableRowSorter<>(model);
-            txtsearch = new JTextField();                                            
+            txtsearch = new JTextField(30);
+            table = new MyTable();       
+            String[] columnNames = {"Mã phiếu nhập", "Ngày lập", "Tổng tiền", "Mã nhân viên", "Mã nhà cung cấp"};   
+            table.setHeaders(columnNames);    
+            listNL(); 
+            sorter = new TableRowSorter<>(table.getModel());                                         
                      
             // Tạo một JScrollPane mới và thêm JTable vào đó
-            table.setRowSorter(sorter);            
+            table.getTable().setRowSorter(sorter);            
             scrollPane = new JScrollPane(table);
     
-            // Tạo một JPanel mới với FlowLayout và gridlayout
-            panel1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            panel2 = new JPanel(new GridLayout(1, 0));        
+            // Tạo một JPanel mới 
+            panel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            panel2 = new JPanel(new GridLayout(1, 0));      
+            tablePnl = new JPanel(new BorderLayout());
+            tablePnl.setPreferredSize(new Dimension(0,200)) ;
+            optionPnl = new JPanel(new BorderLayout());
+            searchPnl=new JPanel(new FlowLayout(FlowLayout.CENTER));
             
             // Thêm hai JButton vào JPanel                     
             panel1.add(panel2);
-            panel2.add(txtsearch); 
-            panel2.add(timkiembtn);
+            searchPnl.add(txtsearch); 
+            searchPnl.add(timkiembtn);
             panel2.add(chitietbtn);                     
             panel2.add(xuatbtn);
+            tablePnl.add(scrollPane);
+            optionPnl.add(searchPnl,BorderLayout.NORTH);
+            optionPnl.add(panel1,BorderLayout.CENTER);
             /* 
             //Thêm tiêu đề
             frame.setTitle("Phiếu nhập GUI");
@@ -87,8 +101,8 @@ public class PhieuNhapGUI extends JPanel{
             // Hiển thị JFrame
             frame.setVisible(true);
             */
-            this.add(scrollPane);
-            this.add(panel1);
+            this.add(tablePnl,BorderLayout.NORTH);
+            this.add(optionPnl,BorderLayout.CENTER);
             //xử lý các jbutton
             timkiembtn.addActionListener(new ActionListener() {
                 @Override
@@ -107,7 +121,7 @@ public class PhieuNhapGUI extends JPanel{
             xuatbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    xuat(model);
+                    xuat(table.getModel());
                 }
             });
 
@@ -125,7 +139,7 @@ public class PhieuNhapGUI extends JPanel{
         public void chitiet(){//không hiểu phần chi tiết này lắm nên làm tượng trưng thôi nha (:
             // Tạo thông tin hóa đơn
             // Lấy chỉ số của hàng được chọn
-            int selectedRow =table.getSelectedRow();
+            int selectedRow =table.getTable().getSelectedRow();
 
             // Kiểm tra xem có hàng nào được chọn không
             if (selectedRow >= 0) {                
@@ -164,19 +178,13 @@ public class PhieuNhapGUI extends JPanel{
             }
         }
         
-        public DefaultTableModel listNL(){           
-            // Tạo một DefaultTableModel mới với 8 cột
-            String[] columnNames = {"Mã phiếu nhập", "Ngày lập", "Tổng tiền", "Mã nhân viên", "Mã nhà cung cấp"};
-            DefaultTableModel model = new DefaultTableModel(columnNames, 0);                                        
-           
+        public void listNL(){          
             //thêm dòng sau khởi tạo
             ArrayList<PHIEUNHAP> pnlist = new ArrayList<PHIEUNHAP>();
             PhieuNhapBUS pnbus = new PhieuNhapBUS();
             pnlist = pnbus.selectAllPN();
             for(PHIEUNHAP pn : pnlist) {
-            	model.addRow(new Object[] {pn.getMaPN(), pn.getNgayNhap(), pn.getTongTien(), pn.getMaNV(), pn.getMaNCC()});
+            	table.getModel().addRow(new Object[] {pn.getMaPN(), pn.getNgayNhap(), pn.getTongTien(), pn.getMaNV(), pn.getMaNCC()});
             }
-            
-            return model;
         }
 }
