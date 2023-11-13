@@ -198,7 +198,9 @@ public class FormThemMonAn extends JFrame{
 		FileDialog fd = new FileDialog(this);
 		fd.setVisible(true);
 		File[] file = fd.getFiles();
-		lblHinhAnh.setIcon(loadImage(file[0], 200, 190));
+		if (file.length != 0) {
+			lblHinhAnh.setIcon(loadImage(file[0], 200, 190));
+		}
 	}
 	
 	private void MouseClickThem() {

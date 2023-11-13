@@ -373,27 +373,35 @@ public class MonAnGUI extends JPanel{
 	 
 	 
 	 public Icon loadImage(String path, int width, int height) {
-	        File file = new File(path);
-	        BufferedImage image = null;
-	        try {
-				image = ImageIO.read(file);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-	        ImageIcon img = new ImageIcon(image);
-	        
-	        int ix = img.getIconWidth();
-	        int iy = img.getIconHeight();
-	        int dx = 0, dy = 0;
-	        if (width / height > ix / iy) {
-	            dy = height;
-	            dx = dy * ix / iy;
-	        } else {
-	            dx = width;
-	            dy = dx * ix / iy;
-	        }
-	        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
-	        return new ImageIcon(imgScale);
+	       if (path!=null || path.equals("")==false) {
+	    	   File file = new File(path);
+		        BufferedImage image = null;
+		        try {
+					image = ImageIO.read(file);
+					
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Hình ảnh chưa có");
+				}
+		        
+		        if (image!=null) {
+		        	ImageIcon img = new ImageIcon(image);
+		        	int ix = img.getIconWidth();
+			        int iy = img.getIconHeight();
+			        int dx = 0, dy = 0;
+			        if (width / height > ix / iy) {
+			            dy = height;
+			            dx = dy * ix / iy;
+			        } else {
+			            dx = width;
+			            dy = dx * ix / iy;
+			        }
+			        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
+			        return new ImageIcon(imgScale);
+				}
+		        
+		        
+		  }
+	       return null;
 	  }
 	 
 	 private void addDocumentListener(JTextField tx) {

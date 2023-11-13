@@ -218,7 +218,10 @@ public class FormSuaMonAn extends JFrame{
 		FileDialog fd = new FileDialog(this);
 		fd.setVisible(true);
 		File[] file = fd.getFiles();
-		lblHinhAnh.setIcon(loadImage(file[0], 200, 190));
+		if (file.length != 0) {
+			lblHinhAnh.setIcon(loadImage(file[0], 200, 190));
+			
+		}
 	}
 	
 	private void MouseClickHuy() {
@@ -303,20 +306,24 @@ public class FormSuaMonAn extends JFrame{
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-	        ImageIcon img = new ImageIcon(image);
-	        
-	        int ix = img.getIconWidth();
-	        int iy = img.getIconHeight();
-	        int dx = 0, dy = 0;
-	        if (width / height > ix / iy) {
-	            dy = height;
-	            dx = dy * ix / iy;
-	        } else {
-	            dx = width;
-	            dy = dx * ix / iy;
-	        }
-	        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
-	        return new ImageIcon(imgScale);
+	       if (image != null) {
+	    	   ImageIcon img = new ImageIcon(image);
+		        
+		        int ix = img.getIconWidth();
+		        int iy = img.getIconHeight();
+		        int dx = 0, dy = 0;
+		        if (width / height > ix / iy) {
+		            dy = height;
+		            dx = dy * ix / iy;
+		        } else {
+		            dx = width;
+		            dy = dx * ix / iy;
+		        }
+		        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
+		        return new ImageIcon(imgScale);
+			
+		    }
+	       return null;
 	  }
 
 }
