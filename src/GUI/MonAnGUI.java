@@ -41,6 +41,7 @@ import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
+import WorkExcel.XuatExcel;
 
 public class MonAnGUI extends JPanel{
 	public static MyTable pnlMonAnTable;
@@ -228,6 +229,13 @@ public class MonAnGUI extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listenerSua();		
+			}
+		});
+		btnXuat.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				XuatExcel xuatExcel = new XuatExcel();
+				xuatExcel.xuatFileExcelMonAn();				
 			}
 		});
 		

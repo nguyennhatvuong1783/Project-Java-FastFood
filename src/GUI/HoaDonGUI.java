@@ -41,7 +41,7 @@ public class HoaDonGUI extends JPanel{
 	
 	public HoaDonGUI() {
 		init();
-		new HoaDonBUS(pnlTable, cbTimKiem, txtTimKiem, dcTuNgay, dcDenNgay, txtTongTienTu, txtTongTienDen, btnLamMoi);
+		new HoaDonBUS(pnlTable, cbTimKiem, txtTimKiem, dcTuNgay, dcDenNgay, txtTongTienTu, txtTongTienDen, btnLamMoi, btnXuat);
 	}
 	
 	public void init() {

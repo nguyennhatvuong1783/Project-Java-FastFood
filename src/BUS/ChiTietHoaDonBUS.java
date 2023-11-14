@@ -23,6 +23,9 @@ public class ChiTietHoaDonBUS {
 	private HOADON hoadon;
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
+	public ChiTietHoaDonBUS() {
+	}
+	
 	public ChiTietHoaDonBUS(MyTable pnlTable, JLabel lblMaHD, JLabel lblTenKH, JLabel lblTenNV, JLabel lblNgayLap, JLabel lblKhuyenMai, 
 			JLabel lblTongTien, String MaHD) {
 		UploadHD(lblMaHD, lblTenKH, lblTenNV, lblNgayLap, lblKhuyenMai, lblTongTien, MaHD);
@@ -63,5 +66,16 @@ public class ChiTietHoaDonBUS {
 			dtm.addRow(new Object[]{monan.getMaMonAn(), monan.getTenMonAn(), CTHD.getSoLuong(), monan.getDonViTinh(), 
 					monan.getDonGia(), monan.getLoai()});
 		}
+	}
+	
+	public ArrayList<CHITIETHOADON> getAllChiTietHD(String maHD) {
+		ArrayList<CHITIETHOADON> chitiethoadons = DaoChiTietHoaDon.getInstance().selectAll();
+		ArrayList<CHITIETHOADON> result = new ArrayList<CHITIETHOADON>();
+		for (CHITIETHOADON chitiethoadon : chitiethoadons) {
+			if (chitiethoadon.getMaHD().equals(maHD)) {
+				result.add(chitiethoadon);
+			}
+		}
+		return result;
 	}
 }

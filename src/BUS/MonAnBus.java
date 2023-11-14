@@ -82,5 +82,25 @@ public class MonAnBus {
 		}
 	}
 	
+	public MONAN getMonAn(String maMA) {
+		MONAN result = null;
+		for (MONAN monan : dsMonAn) {
+			if (monan.getMaMonAn().equals(maMA)) {
+				result = monan;
+			}
+		}
+		return result;
+	}
+	
+	public int getDonGia(String maMA) {
+		int donGia = 0;
+		for (MONAN monan : dsMonAn) {
+			if (monan.getMaMonAn().equals(maMA)) {
+				donGia = monan.getDonGia();
+			}
+		}
+		return donGia;
+	}
+	
 	
 }

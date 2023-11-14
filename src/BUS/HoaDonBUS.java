@@ -34,6 +34,7 @@ import GUI.ChiTietHoaDonGUI;
 import GUI.MainLayoutGUI;
 import GiaoDienChuan.FormatMoney;
 import GiaoDienChuan.MyTable;
+import WorkExcel.XuatExcel;
 
 public class HoaDonBUS {
 	private ArrayList<HOADON> DSHD;
@@ -42,7 +43,7 @@ public class HoaDonBUS {
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public HoaDonBUS(MyTable pnlTable, JComboBox<String> cbTimKiem, JTextField txtTimKiem, JDateChooser dcTuNgay, JDateChooser dcDenNgay, 
-			JTextField txtTongTienTu, JTextField txtTongTienDen, JButton btnLamMoi) {
+			JTextField txtTongTienTu, JTextField txtTongTienDen, JButton btnLamMoi, JButton btnXuat) {
 		dtm = pnlTable.getModel();
 		UploadData(pnlTable);
 		showCTHD(pnlTable);
@@ -50,6 +51,7 @@ public class HoaDonBUS {
 		FilterByNgayLap(pnlTable, dcTuNgay, dcDenNgay);
 		FilterByTongTien(pnlTable, txtTongTienTu, txtTongTienDen);
 		LamMoi(pnlTable, txtTimKiem, dcTuNgay, dcDenNgay, txtTongTienTu, txtTongTienDen, btnLamMoi);
+		xuatFileExcel(btnXuat);
 	}
 	
 	public void UploadData(MyTable pnlTable) {
@@ -315,6 +317,16 @@ public class HoaDonBUS {
 				txtTongTienTu.setText(null);
 				txtTongTienDen.setText(null);
 				UploadData(pnlTable);
+			}
+		});
+	}
+	
+	public void xuatFileExcel(JButton btnXuat) {
+		btnXuat.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				XuatExcel xuatExcel = new XuatExcel();
+				xuatExcel.xuatFileExcelHoaDon();
 			}
 		});
 	}
