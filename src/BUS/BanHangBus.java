@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import DAO.DaoChiTietHoaDon;
 import DAO.DaoHoaDon;
 import DAO.DaoKhachHang;
 import DAO.DaoMonAn;
+import DTO.CHITIETHOADON;
 import DTO.HOADON;
 import DTO.KHACHHANG;
 import DTO.MONAN;
@@ -201,6 +203,7 @@ public class BanHangBus {
 							soLuongMoi = monan.getSoLuong() - soLuongBan;
 							monan.setSoLuong(soLuongMoi);
 							DaoMonAn.getInstance().update(monan);
+							DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
 						}else {
 							j++;
 						}

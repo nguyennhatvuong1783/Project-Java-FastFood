@@ -374,10 +374,17 @@ public class MonAnGUI extends JPanel{
 	 
 	 public Icon loadImage(String path, int width, int height) {
 		 if (path!=null) {
-			 ImageIcon img;
-			try {
-				img = new ImageIcon(getClass().getResource("/image_monan/" + path));
-				 int ix = img.getIconWidth();
+			 BufferedImage image = null;
+			 File file = new File(path);
+		        try {
+					image = ImageIO.read(file);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+		       if (image != null) {
+		    	   ImageIcon img = new ImageIcon(image);
+			        
+			        int ix = img.getIconWidth();
 			        int iy = img.getIconHeight();
 			        int dx = 0, dy = 0;
 			        if (width / height > ix / iy) {
@@ -389,13 +396,11 @@ public class MonAnGUI extends JPanel{
 			        }
 			        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
 			        return new ImageIcon(imgScale);
-			} catch (Exception e) {
-				return null;
-			}
-		        	       
-		 } 
+				
+			    }
+	        }
 		 return null;
-	  }
+	 }
 	 
 	 private void addDocumentListener(JTextField tx) {
 	        // https://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield

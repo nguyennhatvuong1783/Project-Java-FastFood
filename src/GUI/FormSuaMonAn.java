@@ -212,7 +212,7 @@ public class FormSuaMonAn extends JFrame{
 		txtDonViTinh.setText(donViTinh);
 		txtDonGia.setText(donGia);
 		cbLoai.setSelectedItem(loai);
-		lblHinhAnh.setIcon(loadImage2(hinhAnh, 200, 190));
+		lblHinhAnh.setIcon(loadImage(new File(hinhAnh), 200, 190));
 		path = hinhAnh;
 		
 		this.add(inforPanel,BorderLayout.CENTER);
@@ -237,7 +237,6 @@ public class FormSuaMonAn extends JFrame{
 	
 	private void MouseClickLuu() {
 		if (checkInput()) {
-			copyFile(fd);
 			String ten = txtTenMA.getText();
 			String donVi = txtDonViTinh.getText();
 			String giaStr = txtDonGia.getText();
@@ -333,57 +332,5 @@ public class FormSuaMonAn extends JFrame{
 		    }
 	       return null;
 	  }	
-	 public Icon loadImage2(String path, int width, int height) {
-		 if (path!=null) {
-			 ImageIcon img;
-			try {
-				img = new ImageIcon(getClass().getResource("/image_monan/" + path));
-				 int ix = img.getIconWidth();
-			        int iy = img.getIconHeight();
-			        int dx = 0, dy = 0;
-			        if (width / height > ix / iy) {
-			            dy = height;
-			            dx = dy * ix / iy;
-			        } else {
-			            dx = width;
-			            dy = dx * ix / iy;
-			        }
-			        Image imgScale = img.getImage().getScaledInstance(dx, dy, Image.SCALE_SMOOTH);
-			        return new ImageIcon(imgScale);
-			} catch (Exception e) {
-				return null;
-			}
-		        	       
-		 } 
-		 return null;
-	  }
-	 
-	 private void copyFile(FileDialog file) {
-		 String fileName = file.getFile();
-		 File fileSrc = new File(file.getDirectory());
-		 File fileDest = new File(new File("src/image_monan").getAbsolutePath());
-		 File file1 = new File(fileSrc,fileName);
-			File file2 = new File(fileDest,fileName);
-			try {
-				InputStream in = new FileInputStream(file1);
-				OutputStream out = new FileOutputStream(file2);
-				
-				byte[] buffer = new byte[1024];
-				int lenghth;
-				while ((lenghth= in.read(buffer)) > 0) {
-					out.write(buffer,0,lenghth);
-				}
-				
-				in.close();
-				out.close();
-				System.out.println("File được copy from " + fileSrc + " đến " + fileDest);
-				path = fileName;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	 }
 
 }

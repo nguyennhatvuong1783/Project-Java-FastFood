@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -213,7 +214,6 @@ public class FormThemMonAn extends JFrame{
 			String donViTinh = txtDonViTinh.getText();
 			String loai = cbLoai.getItemAt(cbLoai.getSelectedIndex());
 			int donGia = Integer.parseInt(txtDonGia.getText());
-			copyFile(fd);
 			monan = new MONAN(maMA, tenMA, 0, donViTinh, donGia,path , loai, 1);
 		    if (DaoMonAn.getInstance().insert(monan)!=0) {
 		    	JOptionPane.showMessageDialog(this,"Thêm thành công");
@@ -299,33 +299,6 @@ public class FormThemMonAn extends JFrame{
 		   
 	  }
 	 
-	 private void copyFile(FileDialog file) {
-		 String fileName = file.getFile();
-		 File fileSrc = new File(file.getDirectory());
-		 File fileDest = new File(new File("src/image_monan").getAbsolutePath());
-		 File file1 = new File(fileSrc,fileName);
-			File file2 = new File(fileDest,fileName);
-			try {
-				InputStream in = new FileInputStream(file1);
-				OutputStream out = new FileOutputStream(file2);
-				
-				byte[] buffer = new byte[1024];
-				int lenghth;
-				while ((lenghth= in.read(buffer)) > 0) {
-					out.write(buffer,0,lenghth);
-				}
-				
-				in.close();
-				out.close();
-				System.out.println("File được copy from " + fileSrc + " đến " + fileDest);
-				path = fileName;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	 }
-
+	
 
 }

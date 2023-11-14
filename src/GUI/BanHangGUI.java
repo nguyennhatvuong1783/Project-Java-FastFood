@@ -289,8 +289,11 @@ public class BanHangGUI extends JPanel{
 				int y = (d.height - dialog.getSize().height) / 2;
 				dialog.setLocation(x, y);
                 dialog.setVisible(true);
-                maKhString = dialog.id;
-                banHangBus.setTenKH(txtKhachHang, maKhString);
+               if (txtKhachHang.getText().trim().equals("")) {
+            	   maKhString = dialog.id;
+                   banHangBus.setTenKH(txtKhachHang, maKhString);
+				
+			   }
 			}
 		});
 
