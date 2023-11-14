@@ -123,7 +123,7 @@ public class NguyenLieuGUI extends JPanel{
             
             tablepnl.add(scrollPane);
             
-            /*
+            /* 
             //Thêm tiêu đề
             frame.setTitle("Nguyên Liệu GUI");
             // Thêm scrollpane A.K.A jtable vào JFrame

@@ -205,11 +205,11 @@ VALUES
 
 INSERT INTO MONAN(MAMA, TENMA, SL, DONVITINH, DONGIA, HINHANH, LOAI, TRANGTHAI)
 VALUES
-('MA001', N'Hamburger gà', 20, N'Cái', 35000, 'burger.jpg', N'Burger',1),
-('MA002', N'Pizza cá hồi', 10, N'Cái', 45000, 'pizza_ca_hoi.jpg', N'Pizza',1),
-('MA003', N'CocaCola', 30, N'Chai', 20000, 'coke.jpg', N'Nước',1),
-('MA004', N'Khoai tây chiên', 35, N'Phần', 30000, 'khoaitay.jpg', N'Khác',1),
-('MA005', N'Gà rán', 15, N'Miếng', 45000, 'chicken.jpg', N'Gà',1)
+('MA001', N'Hamburger gà', 20, N'Cái', 35000, '', N'Burger',1),
+('MA002', N'Pizza cá hồi', 10, N'Cái', 45000, '', N'Pizza',1),
+('MA003', N'CocaCola', 30, N'Chai', 20000, '', N'Nước',1),
+('MA004', N'Khoai tây chiên', 35, N'Phần', 30000, '', N'Khác',1),
+('MA005', N'Gà rán', 15, N'Miếng', 45000, '', N'Gà',1)
 
 INSERT INTO CHITIETHOADON(MAHD, MAMA, SL)
 VALUES

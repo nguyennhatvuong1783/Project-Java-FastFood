@@ -1,6 +1,12 @@
 /GUI/
 /GiaoDienChuan/
 /Main/
+<<<<<<< HEAD
 /Connection/
 /DAO/
 /BUS/
+=======
+/image_monan/
+/DAO/
+/DTO/
+>>>>>>> branch 'main' of https://github.com/nguyennhatvuong1783/Project-Java-FastFood.git

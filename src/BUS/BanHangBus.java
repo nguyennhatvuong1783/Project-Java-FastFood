@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import DAO.DaoChiTietHoaDon;
 import DAO.DaoHoaDon;
 import DAO.DaoKhachHang;
 import DAO.DaoMonAn;
+import DTO.CHITIETHOADON;
 import DTO.HOADON;
 import DTO.KHACHHANG;
 import DTO.MONAN;
@@ -189,7 +191,7 @@ public class BanHangBus {
 			String maHD = txtHD.getText();
 			String ngayLap = formatNgayLap(txtNgayLap.getText());
 			int tongTien = Integer.parseInt(txtTongTien.getText());
-			int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, null));
+			int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, null, null, null));
 			if (ketqua!=0) {
 				JOptionPane.showMessageDialog(null, "Thanh toán thành công");
 				ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
@@ -201,6 +203,7 @@ public class BanHangBus {
 							soLuongMoi = monan.getSoLuong() - soLuongBan;
 							monan.setSoLuong(soLuongMoi);
 							DaoMonAn.getInstance().update(monan);
+							DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
 						}else {
 							j++;
 						}

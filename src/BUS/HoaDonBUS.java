@@ -38,7 +38,6 @@ import GiaoDienChuan.MyTable;
 public class HoaDonBUS {
 	private ArrayList<HOADON> DSHD;
 	private DefaultTableModel dtm;
-	private DaoHoaDon DAO = DaoHoaDon.getInstance();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -54,13 +53,13 @@ public class HoaDonBUS {
 	}
 	
 	public void UploadData(MyTable pnlTable) {
-		DSHD = DAO.selectAll();
+		DSHD = DaoHoaDon.getInstance().selectAll();
 		
 		dtm.setRowCount(0);
 		for(HOADON hoadon : DSHD) {
 			try {
 				Date date = dateFormat.parse(hoadon.getNgayLap());
-				dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), DAO.selectTenNVbyMaNV(hoadon.getMaNV()), 
+				dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), hoadon.getTenNV(), 
 						formatter.format(date.getTime()), FormatMoney.getFormat((long) hoadon.getTongTien())});
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -111,7 +110,7 @@ public class HoaDonBUS {
 
 				if(cbTimKiem.getSelectedIndex() == 0) {
 					for(HOADON hoadon : DSHD) {
-						if(((DAO.selectTenKHbyMaKH(hoadon.getMaKH())).toLowerCase()).contains((txtTimKiem.getText()).toLowerCase())) {
+						if(((hoadon.getTenKH()).toLowerCase()).contains((txtTimKiem.getText()).toLowerCase())) {
 							ketqua.add(hoadon);
 						}
 					}
@@ -120,8 +119,8 @@ public class HoaDonBUS {
 					for(HOADON hoadon : ketqua) {
 						try {
 							Date date = dateFormat.parse(hoadon.getNgayLap());
-							dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), 
-									DAO.selectTenNVbyMaNV(hoadon.getMaNV()), formatter.format(date.getTime()), 
+							dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), 
+									hoadon.getTenNV(), formatter.format(date.getTime()), 
 									FormatMoney.getFormat((long) hoadon.getTongTien())});
 						} catch (ParseException e1) {
 							e1.printStackTrace();
@@ -129,7 +128,7 @@ public class HoaDonBUS {
 					}
 				}else {
 					for(HOADON hoadon : DSHD) {
-						if(((DAO.selectTenNVbyMaNV(hoadon.getMaNV())).toLowerCase()).contains((txtTimKiem.getText()).toLowerCase())) {
+						if(((hoadon.getTenNV()).toLowerCase()).contains((txtTimKiem.getText()).toLowerCase())) {
 							ketqua.add(hoadon);
 						}
 					}
@@ -138,8 +137,8 @@ public class HoaDonBUS {
 					for(HOADON hoadon : ketqua) {
 						try {
 							Date date = dateFormat.parse(hoadon.getNgayLap());
-							dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), 
-									DAO.selectTenNVbyMaNV(hoadon.getMaNV()), formatter.format(date.getTime()), 
+							dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), 
+									hoadon.getTenNV(), formatter.format(date.getTime()), 
 									FormatMoney.getFormat((long) hoadon.getTongTien())});
 						} catch (ParseException e1) {
 							e1.printStackTrace();
@@ -176,8 +175,8 @@ public class HoaDonBUS {
 						for(HOADON hoadon : ketqua) {
 							try {
 								Date date = dateFormat.parse(hoadon.getNgayLap());
-								dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), 
-										DAO.selectTenNVbyMaNV(hoadon.getMaNV()), formatter.format(date.getTime()), 
+								dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), 
+										hoadon.getTenNV(), formatter.format(date.getTime()), 
 										FormatMoney.getFormat((long) hoadon.getTongTien())});
 							} catch (ParseException e1) {
 								e1.printStackTrace();
@@ -212,8 +211,8 @@ public class HoaDonBUS {
 						for(HOADON hoadon : ketqua) {
 							try {
 								Date date = dateFormat.parse(hoadon.getNgayLap());
-								dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), 
-										DAO.selectTenNVbyMaNV(hoadon.getMaNV()), formatter.format(date.getTime()), 
+								dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), 
+										hoadon.getTenNV(), formatter.format(date.getTime()), 
 										FormatMoney.getFormat((long) hoadon.getTongTien())});
 							} catch (ParseException e1) {
 								e1.printStackTrace();
@@ -249,8 +248,8 @@ public class HoaDonBUS {
 						for(HOADON hoadon : ketqua) {
 							try {
 								Date date = dateFormat.parse(hoadon.getNgayLap());
-								dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), 
-										DAO.selectTenNVbyMaNV(hoadon.getMaNV()), formatter.format(date.getTime()), 
+								dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), 
+										hoadon.getTenNV(), formatter.format(date.getTime()), 
 										FormatMoney.getFormat((long) hoadon.getTongTien())});
 							} catch (ParseException e1) {
 								e1.printStackTrace();
@@ -287,8 +286,8 @@ public class HoaDonBUS {
 						for(HOADON hoadon : ketqua) {
 							try {
 								Date date = dateFormat.parse(hoadon.getNgayLap());
-								dtm.addRow(new Object[]{hoadon.getMaHD(), DAO.selectTenKHbyMaKH(hoadon.getMaKH()), 
-										DAO.selectTenNVbyMaNV(hoadon.getMaNV()), formatter.format(date.getTime()), 
+								dtm.addRow(new Object[]{hoadon.getMaHD(), hoadon.getTenKH(), 
+										hoadon.getTenNV(), formatter.format(date.getTime()), 
 										FormatMoney.getFormat((long) hoadon.getTongTien())});
 							} catch (ParseException e1) {
 								e1.printStackTrace();
