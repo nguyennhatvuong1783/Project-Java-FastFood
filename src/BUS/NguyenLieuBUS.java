@@ -39,7 +39,9 @@ public class NguyenLieuBUS {
 	}
 	
 	//Hàm xóa nguyên liệu
-	public void deleteNL(NGUYENLIEU nl) {
-		daoNL.delete(nl);
+	//Update trạng thái là 0 chứ ko xóa hoàn toàn nguyên liệu
+	public void setInactiveNL(NGUYENLIEU nl) {
+		daoNL.update(nl);
 	}
+	
 }
