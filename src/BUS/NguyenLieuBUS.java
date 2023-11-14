@@ -31,11 +31,7 @@ public class NguyenLieuBUS {
 	
 	//Hàm sửa nguyên liệu
 	public void updateNL(NGUYENLIEU nl) {
-		NGUYENLIEU test = daoNL.selectById(nl);
-		if(test != null) {
-			test = nl;
-			daoNL.update(test);
-		}
+		daoNL.update(nl);
 	}
 	
 	//Hàm xóa nguyên liệu

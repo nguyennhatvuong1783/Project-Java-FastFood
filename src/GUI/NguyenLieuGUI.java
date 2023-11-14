@@ -87,10 +87,10 @@ public class NguyenLieuGUI extends JPanel{
             NguyenLieuBUS bus = new NguyenLieuBUS();
             listnl = bus.selectAllNL();
             for(NGUYENLIEU nl : listnl) {
-            	if(nl.getTrangThai() == 1) {
+            	//if(nl.getTrangThai() == 1) {
 	            	tableNL.getModel().addRow(new Object[] {nl.getMaNL(), nl.getTenNL(), nl.getSoLuong(), nl.getDonViTinh(), 
 	            			nl.getDonGia(), nl.getHinhAnh(), nl.getLoaiNL(), nl.getTrangThai()});
-            	}
+            	//}
             }
             
             sorter = new TableRowSorter<>(tableNL.getModel());
@@ -195,7 +195,19 @@ public class NguyenLieuGUI extends JPanel{
                 }
             });
 
-	}                             
+	}          
+	
+	public void KhoiTao() {
+		ArrayList<NGUYENLIEU> listnl = new ArrayList<NGUYENLIEU>();
+        NguyenLieuBUS bus = new NguyenLieuBUS();
+        listnl = bus.selectAllNL();
+        for(NGUYENLIEU nl : listnl) {
+        	//if(nl.getTrangThai() == 1) {
+            	tableNL.getModel().addRow(new Object[] {nl.getMaNL(), nl.getTenNL(), nl.getSoLuong(), nl.getDonViTinh(), 
+            			nl.getDonGia(), nl.getHinhAnh(), nl.getLoaiNL(), nl.getTrangThai()});
+        	//}
+        }
+	}
                 
         public void timkiem(){
             String text = txtsearch.getText();//lấy nội dung
@@ -216,53 +228,65 @@ public class NguyenLieuGUI extends JPanel{
         
         public void them(DefaultTableModel model){
         	// Tạo một JTextField cho mỗi cột trong JTable
-            JTextField txtTen = new JTextField();
-            JTextField txtSol = new JTextField();
-            JTextField txtDonvi = new JTextField();
-            JTextField txtDongia = new JTextField();
-            JTextField txtHinhanh = new JTextField();
-            JTextField txtLoai = new JTextField();
-            JTextField txtTrangThai = new JTextField();                       
-
-            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
-            Object[] message = {
-            "Nhập tên nguyên liệu:", txtTen,
-            "Nhập số lượng:", txtSol,
-            "Nhập đơn vị:", txtDonvi,
-            "Nhập đơn giá:", txtDongia,
-            //"Nhập hình ảnh:", txtHinhanh,
-            "Nhập loại:", txtLoai,
-            "Nhập trạng thái:", txtTrangThai,
-            };
-            
-            
-            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
-                // Thêm dòng mới vào model với dữ liệu từ JTextField
-                model.addRow(new Object[]{txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
+        	try {
+	            JTextField txtTen = new JTextField();
+	            JTextField txtSol = new JTextField();
+	            JTextField txtDonvi = new JTextField();
+	            JTextField txtDongia = new JTextField();
+	            JTextField txtHinhanh = new JTextField();
+	            JTextField txtLoai = new JTextField();
+	            JTextField txtTrangThai = new JTextField();                       
+	
+	            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
+	            Object[] message = {
+	            "Nhập tên nguyên liệu:", txtTen,
+	            "Nhập số lượng:", txtSol,
+	            "Nhập đơn vị:", txtDonvi,
+	            "Nhập đơn giá:", txtDongia,
+	            //"Nhập hình ảnh:", txtHinhanh,
+	            "Nhập loại:", txtLoai,
+	            "Nhập trạng thái:", txtTrangThai,
+	            };
+	            
+	            
+	            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
+	            
+	
+	            //Đưa nguyên liệu vào đối tượng và gọi hàm thêm nguyên liệu ở BUS để thêm DL vào database
+	            NGUYENLIEU nl = new NGUYENLIEU();
+	            int i = LaySLNL()+1;
+	            String manl = "NL"+i;
+	            nl.setMaNL(manl);
+	            nl.setTenNL(txtTen.getText());
+	            nl.setSoLuong(Integer.parseInt(txtSol.getText()));
+	            nl.setDonViTinh(txtDonvi.getText());
+	            nl.setDonGia(Integer.parseInt(txtDongia.getText()));
+	            nl.setHinhAnh(txtHinhanh.getText());
+	            nl.setLoaiNL(txtLoai.getText());
+	            nl.setTrangThai(Integer.parseInt(txtTrangThai.getText()));
+	            NguyenLieuBUS nlBUS = new NguyenLieuBUS();
+	            nlBUS.insertNL(nl);
+	            
+	            if (option == JOptionPane.OK_OPTION) {
+	                // Thêm dòng mới vào model với dữ liệu từ JTextField
+	                model.addRow(new Object[]{txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
+	            }
+	            
+	            DefaultTableModel model1 = tableNL.getModel();
+	        	model1.setRowCount(0);
+	            
+	            KhoiTao();
+        	} catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Sai kiểu dữ liệu vui lòng nhập lại");
             }
 
-            //Đưa nguyên liệu vào đối tượng và gọi hàm thêm nguyên liệu ở BUS để thêm DL vào database
-            NGUYENLIEU nl = new NGUYENLIEU();
-            int i = LaySLNL()+1;
-            String manl = "NL"+i;
-            nl.setMaNL(manl);
-            nl.setTenNL(txtTen.getText());
-            nl.setSoLuong(Integer.parseInt(txtSol.getText()));
-            nl.setDonViTinh(txtDonvi.getText());
-            nl.setDonGia(Integer.parseInt(txtDongia.getText()));
-            nl.setHinhAnh(txtHinhanh.getText());
-            nl.setLoaiNL(txtLoai.getText());
-            nl.setTrangThai(Integer.parseInt(txtTrangThai.getText()));
-            NguyenLieuBUS nlBUS = new NguyenLieuBUS();
-            nlBUS.insertNL(nl);
-            
        
         }
         
         public void sua(DefaultTableModel model,String Ma,String Ten,String Soluong,String Donvi,String Dongia,String Hinhanh,String Loai,String Trangthai){
             // Tạo một JTextField cho mỗi cột trong JTable
             JTextField txtMa = new JTextField(Ma);
+            txtMa.setEditable(false);
             JTextField txtTen = new JTextField(Ten);
             JTextField txtSol = new JTextField(Soluong);
             JTextField txtDonvi = new JTextField(Donvi);
@@ -283,11 +307,13 @@ public class NguyenLieuGUI extends JPanel{
             "Nhập trạng thái:", txtTrangThai,
             };
 
+            
             int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
             if (option == JOptionPane.OK_OPTION) {
             	// Thêm dòng mới vào model với dữ liệu từ JTextField
-                model.addRow(new Object[]{txtMa.getText(), txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
+                //model.addRow(new Object[]{txtMa.getText(), txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
             }
+            
             
           //Đưa nguyên liệu vào đối tượng và gọi hàm thêm nguyên liệu ở BUS để thêm DL vào database
             NGUYENLIEU nl = new NGUYENLIEU();
@@ -300,7 +326,12 @@ public class NguyenLieuGUI extends JPanel{
             nl.setLoaiNL(txtLoai.getText());
             nl.setTrangThai(Integer.parseInt(txtTrangThai.getText()));
             NguyenLieuBUS nlBUS = new NguyenLieuBUS();
-            nlBUS.insertNL(nl);    
+            nlBUS.updateNL(nl); 
+            
+            DefaultTableModel model1 = tableNL.getModel();
+        	model1.setRowCount(0);
+            
+            KhoiTao();
         }
          
         public void xoa(DefaultTableModel model){
