@@ -121,7 +121,7 @@ public class NguyenLieuGUI extends JPanel{
             
             tablepnl.add(scrollPane);
             
-            /*
+            /* 
             //Thêm tiêu đề
             frame.setTitle("Nguyên Liệu GUI");
             // Thêm scrollpane A.K.A jtable vào JFrame
@@ -227,6 +227,13 @@ public class NguyenLieuGUI extends JPanel{
             "Nhập trạng thái:", txtTrangThai,
             };
             
+            
+            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                // Thêm dòng mới vào model với dữ liệu từ JTextField
+                model.addRow(new Object[]{txtMa.getText(), txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
+            }
+
             //Đưa nguyên liệu vào đối tượng và gọi hàm thêm nguyên liệu ở BUS để thêm DL vào database
             NGUYENLIEU nl = new NGUYENLIEU();
             nl.setMaNL(txtMa.getText());
@@ -238,13 +245,7 @@ public class NguyenLieuGUI extends JPanel{
             nl.setLoaiNL(txtLoai.getText());
             nl.setTrangThai(Integer.parseInt(txtTrangThai.getText()));
             NguyenLieuBUS nlBUS = new NguyenLieuBUS();
-            nlBUS.insertNL(nl);
-            
-            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
-                // Thêm dòng mới vào model với dữ liệu từ JTextField
-                model.addRow(new Object[]{txtMa.getText(), txtTen.getText(),txtSol.getText(),txtDonvi.getText(),txtDongia.getText(),txtHinhanh.getText(),txtLoai.getText(),txtTrangThai.getText()});
-            }
+            nlBUS.insertNL(nl);          
         }
         
         public void sua(DefaultTableModel model,String Ma,String Ten,String Soluong,String Donvi,String Dongia,String Hinhanh,String Loai,String Trangthai){
