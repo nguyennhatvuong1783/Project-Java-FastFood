@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import Connection.connec;
 import DTO.HOADON;
 
-public class DaoHoaDon implements DaoInterface<HOADON>{
+public class DaoHoaDon implements DaoInterface<HOADON>{	
 	public static DaoHoaDon getInstance() {
 		return new DaoHoaDon();
 	}
@@ -123,7 +123,8 @@ public class DaoHoaDon implements DaoInterface<HOADON>{
 				String maKH = rs.getString("MAKH");
 				String maKM = rs.getString("MAKM");
 				
-				HOADON a = new HOADON(maHD, ngayNhap, tongTien, trangThai, maNV, maKH, maKM);
+				HOADON a = new HOADON(maHD, ngayNhap, tongTien, trangThai, maNV, maKH, maKM, 
+						selectTenNVbyMaNV(maNV), selectTenKHbyMaKH(maKH));
 				ketqua.add(a);
 			}
 			connec.closeConnection(c);
@@ -153,7 +154,8 @@ public class DaoHoaDon implements DaoInterface<HOADON>{
 				String maKH = rs.getString("MAKH");
 				String maKM = rs.getString("MAKM");
 				
-				ketqua = new HOADON(maHD, ngayNhap, tongTien, trangThai, maNV, maKH, maKM);
+				ketqua = new HOADON(maHD, ngayNhap, tongTien, trangThai, maNV, maKH, maKM, 
+						selectTenNVbyMaNV(maNV), selectTenKHbyMaKH(maKH));
 			}
 			connec.closeConnection(c);
 		} catch (SQLException e) {
@@ -181,7 +183,8 @@ public class DaoHoaDon implements DaoInterface<HOADON>{
 				String maKH = rs.getString("MAKH");
 				String maKM = rs.getString("MAKM");
 				
-				HOADON a = new HOADON(maHD, ngayNhap, tongTien, trangThai, maNV, maKH, maKM);
+				HOADON a = new HOADON(maHD, ngayNhap, tongTien, trangThai, maNV, maKH, maKM, 
+						selectTenNVbyMaNV(maNV), selectTenKHbyMaKH(maKH));
 				ketqua.add(a);
 			}
 			connec.closeConnection(c);

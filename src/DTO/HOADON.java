@@ -8,11 +8,14 @@ public class HOADON {
 	private String maNV;
 	private String maKH;
 	private String maKM;
+	private String tenNV;
+	private String tenKH;
 	
 	public HOADON() {
 	}
 
-	public HOADON(String maHD, String ngayLap, int tongTien, int trangThai, String maNV, String maKH, String maKM) {
+	public HOADON(String maHD, String ngayLap, int tongTien, int trangThai, String maNV, String maKH, String maKM, 
+			String tenNV, String tenKH) {
 		super();
 		this.maHD = maHD;
 		this.ngayLap = ngayLap;
@@ -21,6 +24,8 @@ public class HOADON {
 		this.maNV = maNV;
 		this.maKH = maKH;
 		this.maKM = maKM;
+		this.tenNV = tenNV;
+		this.tenKH = tenKH;
 	}
 
 	public String getMaHD() {
@@ -77,6 +82,22 @@ public class HOADON {
 
 	public void setMaKM(String maKM) {
 		this.maKM = maKM;
+	}
+
+	public String getTenNV() {
+		return tenNV;
+	}
+
+	public void setTenNV(String tenNV) {
+		this.tenNV = tenNV;
+	}
+
+	public String getTenKH() {
+		return tenKH;
+	}
+
+	public void setTenKH(String tenKH) {
+		this.tenKH = tenKH;
 	}
 	
 	
