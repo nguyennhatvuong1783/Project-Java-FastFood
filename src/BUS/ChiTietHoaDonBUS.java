@@ -21,7 +21,6 @@ import GiaoDienChuan.MyTable;
 
 public class ChiTietHoaDonBUS {
 	private HOADON hoadon;
-	private DaoHoaDon DAO = DaoHoaDon.getInstance();
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public ChiTietHoaDonBUS(MyTable pnlTable, JLabel lblMaHD, JLabel lblTenKH, JLabel lblTenNV, JLabel lblNgayLap, JLabel lblKhuyenMai, 
@@ -32,11 +31,11 @@ public class ChiTietHoaDonBUS {
 	
 	public void UploadHD(JLabel lblMaHD, JLabel lblTenKH, JLabel lblTenNV, JLabel lblNgayLap, JLabel lblKhuyenMai, 
 			JLabel lblTongTien, String MaHD) {
-		HOADON hoadonTmp = new HOADON(MaHD, "", 0, 0, "", "", "");
-		hoadon = DAO.selectById(hoadonTmp);
+		HOADON hoadonTmp = new HOADON(MaHD, null, 0, 0, null, null, null, null, null);
+		hoadon = DaoHoaDon.getInstance().selectById(hoadonTmp);
 		lblMaHD.setText(MaHD);
-		lblTenKH.setText(DAO.selectTenKHbyMaKH(hoadon.getMaKH()));
-		lblTenNV.setText(DAO.selectTenNVbyMaNV(hoadon.getMaNV()));
+		lblTenKH.setText(hoadon.getTenKH());
+		lblTenNV.setText(hoadon.getTenNV());
 		try {
 			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(hoadon.getNgayLap());
 			lblNgayLap.setText(formatter.format(date.getTime()));

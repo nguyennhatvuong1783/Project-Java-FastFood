@@ -189,7 +189,7 @@ public class BanHangBus {
 			String maHD = txtHD.getText();
 			String ngayLap = formatNgayLap(txtNgayLap.getText());
 			int tongTien = Integer.parseInt(txtTongTien.getText());
-			int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, null));
+			int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, null, null, null));
 			if (ketqua!=0) {
 				JOptionPane.showMessageDialog(null, "Thanh toán thành công");
 				ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
