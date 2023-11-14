@@ -31,15 +31,13 @@ public class NguyenLieuBUS {
 	
 	//Hàm sửa nguyên liệu
 	public void updateNL(NGUYENLIEU nl) {
-		NGUYENLIEU test = daoNL.selectById(nl);
-		if(test != null) {
-			test = nl;
-			daoNL.update(test);
-		}
+		daoNL.update(nl);
 	}
 	
 	//Hàm xóa nguyên liệu
-	public void deleteNL(NGUYENLIEU nl) {
-		daoNL.delete(nl);
+	//Update trạng thái là 0 chứ ko xóa hoàn toàn nguyên liệu
+	public void setInactiveNL(NGUYENLIEU nl) {
+		daoNL.update(nl);
 	}
+	
 }

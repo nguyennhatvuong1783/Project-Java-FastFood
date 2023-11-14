@@ -1,3 +1,17 @@
 /WorkExcel/
 /GUI/
+<<<<<<< HEAD
 /BUS/
+=======
+/GiaoDienChuan/
+/Main/
+<<<<<<< HEAD
+/Connection/
+/DAO/
+/BUS/
+=======
+/image_monan/
+/DAO/
+/DTO/
+>>>>>>> branch 'main' of https://github.com/nguyennhatvuong1783/Project-Java-FastFood.git
+>>>>>>> c40a49422b6e7c52b3d0acaf4d1de2777cc6e4a7

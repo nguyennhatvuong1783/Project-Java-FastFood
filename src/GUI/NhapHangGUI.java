@@ -1,8 +1,6 @@
 package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
-
-
 import BUS.NhapHangBUS;
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.SuaButton;
@@ -36,9 +34,11 @@ import javax.swing.JOptionPane;
 
 import DTO.NGUYENLIEU;
 import DTO.NHACUNGCAP;
+import DTO.NHANVIEN;
 import DTO.PHIEUNHAP;
 import BUS.PhieuNhapBUS;
 import BUS.ChiTietPhieuNhapBUS;
+import BUS.NguyenLieuBUS;
 import BUS.NhaCungCapBUS;
 import DTO.CHITIETPHIEUNHAP;
 
@@ -162,16 +162,25 @@ public class NhapHangGUI extends JPanel{
             themspbtn.addActionListener(new ActionListener() {
             	public void actionPerformed(ActionEvent e) {
             		int selectedRow = tableNCC.getTable().getSelectedRow();
-            		if (selectedRow >= 0) {
-                    //thêm vào bảng mới
-                    tableSP.getModel().addRow(new Object[] {tableNCC.getValueAt(selectedRow, 0), tableNCC.getValueAt(selectedRow, 1), txtSL.getText()
-                    ,tableNCC.getValueAt(selectedRow, 3), tableNCC.getValueAt(selectedRow, 4),(String) cb.getSelectedItem()});
-                    //cập nhật giá
-                    txtTongtien.setText(calculateColumnTotal(tableSP.getTable()));
-                    txtSL.setText("0");
-                    } else {
-                        // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để thêm");
+            		try {
+            			int i = Integer.parseInt(txtSL.getText());
+            			if(i > 0) {
+		            		if (selectedRow >= 0) {
+			                    //thêm vào bảng mới
+			                    tableSP.getModel().addRow(new Object[] {tableNCC.getValueAt(selectedRow, 0), tableNCC.getValueAt(selectedRow, 1), txtSL.getText()
+			                    ,tableNCC.getValueAt(selectedRow, 3), tableNCC.getValueAt(selectedRow, 4),(String) cb.getSelectedItem()});
+			                    //cập nhật giá
+			                    txtTongtien.setText(calculateColumnTotal(tableSP.getTable()));
+			                    txtSL.setText("0");
+		                    } else {
+		                        // Hiển thị thông báo nếu không có hàng nào được chọn
+		                        JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để thêm");
+		                    }
+            			} else {
+            				JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng lớn hơn 0");
+            			}
+            		} catch (NumberFormatException e1) {
+            			JOptionPane.showMessageDialog(null, "Vui lòng nhập đúng kí tự số vào số lượng và số lượng lớn hơn 0");
                     }
             	}
             });
@@ -214,12 +223,22 @@ public class NhapHangGUI extends JPanel{
             thanhtoanbtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent arg0){
-                    if(txtMANV.getText().equals("")){
+                	//Kiểm tra mã nhân viên có tồn tại trong hệ thống ko
+            		NhapHangBUS bus = new NhapHangBUS();
+            		ArrayList<NHANVIEN> listNV = bus.selectAllNV();
+            		int t=0;
+            		for(NHANVIEN nv : listNV) {
+            			if(nv.getMaNV().equalsIgnoreCase(txtMANV.getText())) {
+            				t=1;
+            			}
+            		}
+            		if(txtMANV.getText().equals("")){
                         JOptionPane.showMessageDialog(null, "Vui lòng nhập mã nhân viên");
-                    }
-                    else{
-                        showtt_thanhtoan();
-                    }
+                    } else if(t == 1) {
+            			showtt_thanhtoan();
+            		} else {
+            			JOptionPane.showMessageDialog(null, "Nhân viên không tồn tại trong hệ thống vui lòng nhập lại");
+            		}
                 }
             });
 	}
@@ -249,7 +268,9 @@ public class NhapHangGUI extends JPanel{
             NhapHangBUS nhap = new NhapHangBUS();
             ArrayList<NGUYENLIEU> listnl = nhap.selectAll();
             for(NGUYENLIEU nl : listnl) {
-            	tableNCC.getModel().addRow(new Object[] {nl.getMaNL(), nl.getTenNL(), nl.getSoLuong(), nl.getLoaiNL(), nl.getDonGia()});
+            	if(nl.getTrangThai() == 1) {
+            		tableNCC.getModel().addRow(new Object[] {nl.getMaNL(), nl.getTenNL(), nl.getSoLuong(), nl.getLoaiNL(), nl.getDonGia()});
+            	}
             }
             
             String[] columnNamesSP = {"Mã sản phẩm", "Tên sản phẩm","Số lượng nhập","Loại", "Đơn Giá","Nhà cung cấp"};
@@ -273,55 +294,63 @@ public class NhapHangGUI extends JPanel{
         
         public void xoa(DefaultTableModel model){
             // Lấy chỉ số của hàng được chọn
-                    int selectedRow = tableSP.getTable().getSelectedRow();
+                int selectedRow = tableSP.getTable().getSelectedRow();
 
-                    // Kiểm tra xem có hàng nào được chọn không
-                    if (selectedRow >= 0) {
-                        // Xóa hàng được chọn từ model
-                        model.removeRow(selectedRow);
-                        //cập nhật giá
-                        txtTongtien.setText(calculateColumnTotal(tableSP.getTable()));
-                    } else {
-                        // Hiển thị thông báo nếu không có hàng nào được chọn
-                        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để xóa");
-                    }
+                // Kiểm tra xem có hàng nào được chọn không
+                if (selectedRow >= 0) {
+                    // Xóa hàng được chọn từ model
+                    model.removeRow(selectedRow);
+                    //cập nhật giá
+                    txtTongtien.setText(calculateColumnTotal(tableSP.getTable()));
+                } else {
+                    // Hiển thị thông báo nếu không có hàng nào được chọn
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để xóa");
+                }
         }
         
         public void sua(DefaultTableModel model,String Soluong){
-            // Tạo một JTextField cho mỗi cột trong JTable      
-            JTextField txtSol = new JTextField(Soluong);                                  
-            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
-            Object[] message = {            
-            "Nhập số lượng:", txtSol,           
-            };
-
-            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
-                // Lấy chỉ số của hàng được chọn
-                int selectedRow = tableSP.getTable().getSelectedRow();
-                
-                // Cập nhật dữ liệu của hàng được chọn                
-                model.setValueAt(txtSol.getText(), selectedRow, 2);              
+        	try {
+	            // Tạo một JTextField cho mỗi cột trong JTable      
+	            JTextField txtSol = new JTextField(Soluong);                                  
+	            // Tạo một JOptionPane để nhận dữ liệu từ người dùng
+	            Object[] message = {            
+	            "Nhập số lượng:", txtSol,           
+	            };
+	            
+	
+	            int option = JOptionPane.showConfirmDialog(null, message, "Nhập dữ liệu", JOptionPane.OK_CANCEL_OPTION);
+	            int i = Integer.parseInt(txtSol.getText());
+	            if (option == JOptionPane.OK_OPTION) {
+	                // Lấy chỉ số của hàng được chọn
+	                int selectedRow = tableSP.getTable().getSelectedRow();
+	                
+	                // Cập nhật dữ liệu của hàng được chọn                
+	                model.setValueAt(txtSol.getText(), selectedRow, 2);              
+	            }
+        	} catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Sai kiểu dữ liệu vui lòng nhập lại");
             }
         }
         
         public void showtt_thanhtoan(){
-                JTextField txtManv = new JTextField(txtMANV.getText());
-                JTextField txtTong = new JTextField(txtTongtien.getText());
-                
-                Object[] options = {"OK", "Cancel"};
-                Object[] message = {
-                    "Mã nhân viên: ", txtManv,
-                    "Tổng số tiền: ", txtTong,   
-                    scrollPaneSP                   
-                };
-                        
-                int option = JOptionPane.showOptionDialog(null, message, "Thông tin",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                null, options, options[0]);
-                if (option == 0) {
-                    // Người dùng nhấn OK
-                    thanhtoan();
-                } 
+            JTextField txtManv = new JTextField(txtMANV.getText());
+            JTextField txtTong = new JTextField(txtTongtien.getText());
+            txtManv.setEditable(false);
+            txtTong.setEditable(false);
+            
+            Object[] options = {"OK", "Cancel"};
+            Object[] message = {
+                "Mã nhân viên: ", txtManv,
+                "Tổng số tiền: ", txtTong,   
+                scrollPaneSP                   
+            };
+                    
+            int option = JOptionPane.showOptionDialog(null, message, "Thông tin",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+            null, options, options[0]);
+            if (option == 0) {
+                // Người dùng nhấn OK
+                thanhtoan();
+            } 
         }
          
         public void thanhtoan() {
@@ -331,20 +360,17 @@ public class NhapHangGUI extends JPanel{
         		int sl = Integer.parseInt(sltxt);
         		NhapHangBUS nhap = new NhapHangBUS();
         		nhap.updateSL_NL(tableSP.getValueAt(i, 0).toString(), sl);
-        		
         		System.out.println(sl);
         	}
         	
         	//Tạo phiếu nhập cho mỗi phiên nhập hàng
         	String maNCC = getMaNCC(tableSP.getValueAt(0, 5).toString());
-        	String manv = txtMANV.getText();
+        	String manv = txtMANV.getText().toString();
     		String tt = txtTongtien.getText();
     		int tongtien = Integer.parseInt(tt);
     		
-    		System.out.println(manv);
-    		
     		String maPN = null;
-    		
+	    		
     		//Lệnh tạo ngày tháng tạo phiếu nhập
     		LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -364,8 +390,9 @@ public class NhapHangGUI extends JPanel{
         	}
         	
         	//Reset lại bảng giỏ hàng
-        	DefaultTableModel model = (DefaultTableModel) tableSP.getModel();
-        	model.setRowCount(0);
+        	DefaultTableModel model = tableSP.getModel();
+	        	model.setRowCount(0);
+    		
         }
          
         //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập

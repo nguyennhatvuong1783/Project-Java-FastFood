@@ -75,11 +75,11 @@ public class DaoNguyenLieu implements DaoInterface<NGUYENLIEU>{
 			String sql = "UPDATE NGUYENLIEU " +
 			             " SET TENNL=? "+
 					     ", SL=? "+
-			             ", DONVITINH "+
-					     ", DONGIA "+
-			             ", HINHANH "+
-					     ", LOAI "+
-			             ", TRANGTHAI "+
+			             ", DONVITINH=? "+
+					     ", DONGIA=? "+
+			             ", HINHANH=? "+
+					     ", LOAI=? "+
+			             ", TRANGTHAI=? "+
 					     " WHERE MANL=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setNString(1, t.getTenNL());
