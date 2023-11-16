@@ -59,12 +59,12 @@ public class KhuyenMaiBus {
 
     public int themKM() {
         daoKhuyenMai = new DaoKhuyenMai();
-        if ((khuyenMaiGui.getTxt_TenKM().getText() == "")
-                || (khuyenMaiGui.getTxt_dieuKien().getText() == "")
-                || (khuyenMaiGui.getTxt_phanTram().getText() == "")) {
+        if ((khuyenMaiGui.getTxt_TenKM().getText().equals(""))
+                || (khuyenMaiGui.getTxt_dieuKien().getText().equals(""))
+                || (khuyenMaiGui.getTxt_phanTram().getText().equals(""))) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!");
-            return 0;
-        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[a-zA-Z]") == true
+            return 2;
+        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[0-9]{0,}[a-zA-Z]{1,}[0-9]{0,}") == true
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("~")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("!")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("@")
@@ -79,29 +79,29 @@ public class KhuyenMaiBus {
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("+")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("/")) {
             JOptionPane.showMessageDialog(null, "Phần trăm giảm phải là số nguyên hoặc số thập phân(x.y)");
-            return 0;
+            return 2;
 
         } else if (khuyenMaiGui.getDate_BĐ().getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày bắt đầu hoặc kiểm tra lại ngày bắt đầu nếu đã nhập");
-            return 0;
+            return 2;
         } else if (khuyenMaiGui.getDate_KT().getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày kết thức hoặc kiểm tra lại ngày kết thúc nếu đã nhập");
-            return 0;
+            return 2;
         } else {
             daoKhuyenMai = new DaoKhuyenMai();
             if (!khuyenMaiGui.getTxt_dieuKien().getText().matches("^TONGTIEN >= [1-9]{1}[0,9]{1,}")) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập điều kiện có dạng: TONGTIEN >= x với x là 1 số tiền");
-                return 0;
+                return 2;
             }
 
             if (new Date().after(khuyenMaiGui.getDate_BĐ().getDate())) {
                 JOptionPane.showMessageDialog(null, "Ngày bắt đầu phải sau ngày hiện tại!");
 
-                return 0;
+                return 2;
             }
             if (khuyenMaiGui.getDate_BĐ().getDate().after(khuyenMaiGui.getDate_KT().getDate())) {
                 JOptionPane.showMessageDialog(null, "Ngày kết thúc phải sau hoặc cùng ngày với ngày bắt đầu!");
-                return 0;
+                return 2;
             }
 
             int trangThai = 1;
@@ -154,17 +154,13 @@ public class KhuyenMaiBus {
     }
 
     public int SuaKm() {
-        if (id == null) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi muốn sửa!");
-            return 0;
-        }
         daoKhuyenMai = new DaoKhuyenMai();
-        if ((khuyenMaiGui.getTxt_TenKM().getText() == "")
-                || (khuyenMaiGui.getTxt_dieuKien().getText() == "")
-                || (khuyenMaiGui.getTxt_phanTram().getText() == "")) {
+        if ((khuyenMaiGui.getTxt_TenKM().getText().equals(""))
+                || (khuyenMaiGui.getTxt_dieuKien().equals(""))
+                || (khuyenMaiGui.getTxt_phanTram().getText().equals(""))) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!");
-            return 0;
-        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[a-zA-Z]") == true
+            return 2;
+        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[0-9]{0,}[a-zA-Z]{1,}[0-9]{0,}") == true
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("~")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("!")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("@")
@@ -179,29 +175,29 @@ public class KhuyenMaiBus {
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("+")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("/")) {
             JOptionPane.showMessageDialog(null, "Phần trăm giảm phải là số nguyên hoặc số thập phân(x.y)");
-            return 0;
+            return 2;
 
         } else if (khuyenMaiGui.getDate_BĐ().getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày bắt đầu hoặc kiểm tra lại ngày bắt đầu nếu đã nhập");
-            return 0;
+            return 2;
         } else if (khuyenMaiGui.getDate_KT().getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ngày kết thức hoặc kiểm tra lại ngày kết thúc nếu đã nhập");
-            return 0;
+            return 2;
         } else {
             daoKhuyenMai = new DaoKhuyenMai();
             if (!khuyenMaiGui.getTxt_dieuKien().getText().matches("^TONGTIEN >= [1-9]{1}[0,9]{1,}")) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập điều kiện có dạng: TONGTIEN >= x với x là 1 số tiền");
-                return 0;
+                return 2;
             }
 
             if (new Date().after(khuyenMaiGui.getDate_BĐ().getDate())) {
                 JOptionPane.showMessageDialog(null, "Ngày bắt đầu phải sau ngày hiện tại!");
 
-                return 0;
+                return 2;
             }
             if (khuyenMaiGui.getDate_BĐ().getDate().after(khuyenMaiGui.getDate_KT().getDate())) {
                 JOptionPane.showMessageDialog(null, "Ngày kết thúc phải sau hoặc cùng ngày với ngày bắt đầu!");
-                return 0;
+                return 2;
             }
 
             int trangThai = 1;
@@ -227,11 +223,17 @@ public class KhuyenMaiBus {
         }
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public int XoaKm() {
-        if (id == null) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi muốn xóa");
-            return 0;
-        }
+        
+        
         daoKhuyenMai = new DaoKhuyenMai();
         int trangThai = 0;
         KHUYENMAI km = new KHUYENMAI(khuyenMaiGui.getTxt_MaKM().getText(),

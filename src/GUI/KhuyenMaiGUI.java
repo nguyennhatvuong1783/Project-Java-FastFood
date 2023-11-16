@@ -188,7 +188,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         this.getTableKM().getTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {                  
+                if (!e.getValueIsAdjusting()) {
                     khuyenMaiBus.LoadThongTinKm();
                     buttonThem.setEnabled(false);
                 }
@@ -219,22 +219,34 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
             if (khuyenMaiBus.themKM() == 1) {
                 JOptionPane.showMessageDialog(null, "Thêm thành công!");
-            } else {
+            } else  {
                 JOptionPane.showMessageDialog(null, "Thêm thất bại!");
             }
         }
         if (e.getSource() == buttonSua) {
-            if (khuyenMaiBus.SuaKm() == 1) {
-                JOptionPane.showMessageDialog(null, "Sửa thành công!");
+            if (khuyenMaiBus.getId() == null) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi muốn sửa");
             } else {
-                JOptionPane.showMessageDialog(null, "Sửa thất bại!");
+                if (khuyenMaiBus.SuaKm() == 1) {
+                    JOptionPane.showMessageDialog(null, "Sửa thành công!");
+                } else  {
+                    JOptionPane.showMessageDialog(null, "Sửa thất bại!");
+                }
             }
         }
         if (e.getSource() == buttonXoa) {
-            if (khuyenMaiBus.XoaKm() == 1) {
-                JOptionPane.showMessageDialog(null, "Xóa thành công!");
+            if (khuyenMaiBus.getId() == null) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi muốn xóa");
             } else {
-                JOptionPane.showMessageDialog(null, "Xóa thất bại!");
+                int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa không?", "Xác nhận", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    if (khuyenMaiBus.XoaKm() == 1) {
+                        JOptionPane.showMessageDialog(null, "Xóa thành công!");
+                    } else  {
+                        JOptionPane.showMessageDialog(null, "Xóa thất bại!");
+                    }
+                }
+
             }
         }
         if (e.getSource() == buttonLamMoi) {
@@ -243,7 +255,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
             this.getTxt_dieuKien().setText("");
             this.getTxt_phanTram().setText("");
             this.getDate_BĐ().setDate(null);
-            this.getDate_KT().setDate(null);                                   
+            this.getDate_KT().setDate(null);
             khuyenMaiBus.LoadDataToTable();
             buttonThem.setEnabled(true);
         }
@@ -325,8 +337,6 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         return txt_MaKMCT;
     }
 
-   
-
     public void setTxt_MaKMCT(JTextField txt_MaKMCT) {
         this.txt_MaKMCT = txt_MaKMCT;
     }
@@ -353,5 +363,16 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
 
     public void setPanel_4(JPanel panel_4) {
         this.panel_4 = panel_4;
+    }
+
+    public static void main(String[] args) {
+        JFrame jf = new JFrame();
+        jf.setLayout(new BorderLayout());
+
+        KhuyenMaiGUI km = new KhuyenMaiGUI();
+        jf.add(km, BorderLayout.CENTER);
+        jf.setVisible(true);
+        jf.setSize(500, 500);
+
     }
 }

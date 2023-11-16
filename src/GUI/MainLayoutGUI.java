@@ -298,6 +298,6 @@ public class MainLayoutGUI {
 		pnlLeftMenu.add(pnlMenu, BorderLayout.CENTER);
 		
 		return pnlLeftMenu;
-	}
+	}       
         
 }
