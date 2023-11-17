@@ -144,11 +144,26 @@ public class PhieuNhapGUI extends JPanel{
             // Kiểm tra xem có hàng nào được chọn không
             if (selectedRow >= 0) {                
                 String maPhieuNhap = (String)table.getModel().getValueAt(selectedRow, 0); // Lấy mã phiếu nhập được chọn
-                String maNguyenLieu = "NL01"; // Thay "NL01" bằng mã nguyên liệu thực tế
-                String soLuong = "10"; // Thay "10" bằng số lượng thực tế
+            
+                 // Tạo dữ liệu cho bảng
+                String[][] data = {
+                    {"John", "18"},
+                    {"Anna", "20"},
+                    {"Tom", "22"}
+                };
+
+                // Tạo tiêu đề cho các cột
+                String[] columnNames = {"Mã nguyên liệu", "Số lượng"};
+
+                // Tạo bảng
+                JTable tablemini = new JTable(data, columnNames);
+
+                // Tạo JScrollPane chứa bảng
+                JScrollPane scrollPane = new JScrollPane(tablemini);
+                tablemini.setFillsViewportHeight(true);
 
                 // Hiển thị thông tin hóa đơn bằng JOptionPane
-                JOptionPane.showMessageDialog(null, "Mã Phiếu Nhập: " + maPhieuNhap + "\nMã Nguyên Liệu: " + maNguyenLieu + "\nSố Lượng: " + soLuong);
+                JOptionPane.showMessageDialog(null,scrollPane, "Mã Phiếu Nhập: " + maPhieuNhap,JOptionPane.PLAIN_MESSAGE);
             } else {
                 // Hiển thị thông báo nếu không có hàng nào được chọn
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để xem chi tiết");
