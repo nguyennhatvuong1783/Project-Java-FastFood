@@ -129,7 +129,7 @@ public class LoginGUI {
 		f.setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		new LoginGUI();
-	}
+//	public static void main(String[] args) {
+//		new LoginGUI();
+//	}
 }

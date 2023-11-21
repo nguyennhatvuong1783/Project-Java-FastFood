@@ -1,4 +1,6 @@
 ﻿CREATE DATABASE THUCANNHANH
+GO
+
 USE THUCANNHANH
 
 CREATE TABLE NHANVIEN(
@@ -181,6 +183,7 @@ VALUES
 
 INSERT INTO TAIKHOAN(USERNAME, MATKHAU, MAQUYEN)
 VALUES
+<<<<<<< HEAD
 ('admin', 'admin', 'Q01'),
 ('NV001', 'nv001', 'Q02'),
 ('NV002', 'nv002', 'Q03'),
@@ -273,3 +276,96 @@ VALUES
 ('Q05', 'CN06'),
 ('Q05', 'CN09')
 
+=======
+('admin', 'admin'),
+('NV1', 'nv1'),
+('NV2', 'nv2'),
+('NV3', 'nv3'),
+('NV4', 'nv4')
+
+USE THUCANNHANH
+INSERT INTO QUYEN
+VALUES
+--('Q1', 'Tot', 'Q2', 1),
+('Q2', 'Ria', 'Q3', 0)
+GO
+
+USE THUCANNHANH
+INSERT INTO CHITIETPHANQUYEN
+VALUES
+('Q1', 'CN01')
+
+USE THUCANNHANH
+delete CHITIETPHANQUYEN
+where CHITIETPHANQUYEN.MAQUYEN = 'Q1'
+
+USE THUCANNHANH
+TRUNCATE TABLE CHITIETPHANQUYEN
+DELETE FROM QUYEN
+GO
+
+USE THUCANNHANH
+select * from CHITIETPHANQUYEN where CHITIETPHANQUYEN.MAQUYEN = 'Q1'
+
+USE THUCANNHANH
+insert into CHITIETPHANQUYEN
+values
+('Q1', 'CN02'),
+('Q1', 'CN06'),
+('Q1', 'CN07'),
+('Q1', 'CN09')
+
+USE THUCANNHANH
+insert into CHITIETPHANQUYEN
+values
+('Q2', 'CN02'),
+('Q2', 'CN04'),
+('Q2', 'CN06'),
+('Q2', 'CN05')
+
+USE THUCANNHANH
+delete CHITIETPHANQUYEN where MAQUYEN = 'Q2' and MACN = 'CN04'
+
+USE THUCANNHANH
+delete CHITIETPHANQUYEN where MAQUYEN = 'Q1'
+
+USE THUCANNHANH
+delete QUYEN where MAQUYEN = 'Q1'
+
+use THUCANNHANH	
+delete TAIKHOAN where TAIKHOAN.USERNAME = 'NV5'
+
+use THUCANNHANH	
+delete NHANVIEN where NHANVIEN.MANV = 'NV5'
+
+use THUCANNHANH	
+insert into TAIKHOAN
+values
+('NV3', 'pass3', 1, null),
+('NV5', 'pass5', 1, null)
+
+use THUCANNHANH
+update TAIKHOAN
+set MATKHAU = 'ha2', TRANGTHAI = 'True'
+where USERNAME = 'NV2'
+
+use THUCANNHANH
+insert into CHUCNANG
+values
+('CN01', N'Bán hàng', null),
+('CN02', N'Hóa đơn', null),
+('CN03', N'Nhập hàng', null),
+('CN04', N'Phiếu nhập', null),
+('CN05', N'Món ăn', null),
+('CN06', N'Nguyên liệu', null),
+('CN07', N'Nhân viên', null),
+('CN08', N'Khách hàng', null),
+('CN09', N'Nhà cung cấp', null),
+('CN10', N'Khuyến mãi', null),
+('CN11', N'Tài khoản', null),
+('CN12', N'Phân quyền', null),
+('CN13', N'Thống kê', null)
+
+use THUCANNHANH
+select QUYEN.MAQUYEN from QUYEN where QUYEN.TENQUYEN = N'Q2 rìa'
+>>>>>>> QTung
