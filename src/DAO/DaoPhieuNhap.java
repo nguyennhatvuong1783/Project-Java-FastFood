@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Connection.connec;
 import DTO.NGUYENLIEU;
 import DTO.PHIEUNHAP;
+import DTO.THONGKE;
 
 public class DaoPhieuNhap implements DaoInterface<PHIEUNHAP>{
 	public static DaoPhieuNhap getInstance() {
@@ -177,5 +178,23 @@ public class DaoPhieuNhap implements DaoInterface<PHIEUNHAP>{
 		}
 		return ketqua;
 	}
+        public ArrayList<THONGKE> getListThongKe() {
+        ArrayList<THONGKE> list = new ArrayList<>();
+
+        try {
+            Connection c = connec.getConnection1();
+            String sql = "select SUM(TONGTIEN), MONTH(NGAYNHAP), YEAR(NGAYNHAP)  from PHIEUNHAP group by MONTH(NGAYNHAP), YEAR(NGAYNHAP)";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                THONGKE s = new THONGKE(rs.getInt(1), rs.getString(2), rs.getString(3));
+                list.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 }
