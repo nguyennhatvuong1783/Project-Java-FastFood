@@ -82,14 +82,4 @@ public class ThongKeGUI extends JPanel {
             
         }
     } 
-     public static void main(String arg[]){
-        JFrame jp=new JFrame();
-        ThongKeGUI tk=new ThongKeGUI();
-        jp.setLayout(new BorderLayout());
-        jp.add(tk, BorderLayout.CENTER);
-        jp.setSize(600,600);
-        jp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jp.setLocationRelativeTo(null);
-        jp.setVisible(true);
-    }
 }

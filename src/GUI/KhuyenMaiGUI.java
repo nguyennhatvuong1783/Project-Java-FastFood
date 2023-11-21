@@ -369,14 +369,5 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
     public void setPanel_4(JPanel panel_4) {
         this.panel_4 = panel_4;
     }
-    public static void main(String arg[]){
-        JFrame jp=new JFrame();
-        KhuyenMaiGUI km=new KhuyenMaiGUI();
-        jp.setLayout(new BorderLayout());
-        jp.add(km, BorderLayout.CENTER);
-        jp.setSize(600,600);
-        jp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jp.setLocationRelativeTo(null);
-        jp.setVisible(true);
-    }
+    
 }
