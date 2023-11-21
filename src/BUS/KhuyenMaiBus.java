@@ -64,7 +64,8 @@ public class KhuyenMaiBus {
                 || (khuyenMaiGui.getTxt_phanTram().getText().equals(""))) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!");
             return 2;
-        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[0-9]{0,}[a-zA-Z]{1,}[0-9]{0,}") == true
+        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[a-z0-9A-Z]{0,}") == false
+                || khuyenMaiGui.getTxt_phanTram().getText().matches("[0-9]{0,}[a-zA-Z]{1,}[0-9]{0,}") == true
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("~")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("!")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("@")
@@ -160,7 +161,8 @@ public class KhuyenMaiBus {
                 || (khuyenMaiGui.getTxt_phanTram().getText().equals(""))) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin!");
             return 2;
-        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[0-9]{0,}[a-zA-Z]{1,}[0-9]{0,}") == true
+        } else if (khuyenMaiGui.getTxt_phanTram().getText().matches("[a-z0-9A-Z]{0,}") == false
+                || khuyenMaiGui.getTxt_phanTram().getText().matches("[0-9]{0,}[a-zA-Z]{1,}[0-9]{0,}") == true
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("~")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("!")
                 || khuyenMaiGui.getTxt_phanTram().getText().contains("@")
