@@ -255,3 +255,6 @@ values
 ('CN11', N'Tài khoản', null),
 ('CN12', N'Phân quyền', null),
 ('CN13', N'Thống kê', null)
+
+use THUCANNHANH
+select QUYEN.MAQUYEN from QUYEN where QUYEN.TENQUYEN = N'Q2 rìa'

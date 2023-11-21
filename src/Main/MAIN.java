@@ -16,5 +16,6 @@ public class MAIN {
             });
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
         }
+//        new MainLayoutGUI();
     }
 }
