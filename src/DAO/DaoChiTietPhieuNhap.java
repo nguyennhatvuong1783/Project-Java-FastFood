@@ -144,8 +144,10 @@ public class DaoChiTietPhieuNhap implements DaoInterface<CHITIETPHIEUNHAP>{
 		ArrayList<CHITIETPHIEUNHAP> ketqua = new ArrayList<CHITIETPHIEUNHAP>();
 		try {
 			Connection c = connec.getConnection();
-			String sql = "SELECT * FROM CHITIETPHIEUNHAP WHERE " + condition;
+			String sql = "SELECT * FROM CHITIETPHIEUNHAP WHERE MAPN = ? ";
+			System.out.print(sql);
 			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setString(1, condition);
 			ResultSet rs = pst.executeQuery();
 			
 			while (rs.next()) {
