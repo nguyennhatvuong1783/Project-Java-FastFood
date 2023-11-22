@@ -181,9 +181,16 @@ VALUES
 ('NV003', N'Nguyễn Thị D', N'nữ', '1999-11-20', N'Quận 4, Thành phố Hồ Chí Minh', '0456456456'),
 ('NV004', N'Phan Văn E', N'nam', '2000-12-21', N'Quận 5, Thành phố Hồ Chí Minh', '0789789789')
 
+INSERT INTO QUYEN(MAQUYEN, TENQUYEN)
+VALUES
+('Q01', N'Admin'),
+('Q02', N'Quản lý'),
+('Q03', N'Nhân viên kiểm kê'),
+('Q04', N'Nhân viên bán hàng'),
+('Q05', N'Nhân viên nhập hàng')
+
 INSERT INTO TAIKHOAN(USERNAME, MATKHAU, MAQUYEN)
 VALUES
-<<<<<<< HEAD
 ('admin', 'admin', 'Q01'),
 ('NV001', 'nv001', 'Q02'),
 ('NV002', 'nv002', 'Q03'),
@@ -229,13 +236,32 @@ VALUES
 ('HD005', 'MA005', 4),
 ('HD005', 'MA003', 4)
 
-INSERT INTO QUYEN(MAQUYEN, TENQUYEN)
+INSERT INTO NGUYENLIEU
 VALUES
-('Q01', N'Admin'),
-('Q02', N'Quản lý'),
-('Q03', N'Nhân viên kiểm kê'),
-('Q04', N'Nhân viên bán hàng'),
-('Q05', N'Nhân viên nhập hàng')
+('NL001', N'Gà', 20, N'Kg', 90000, '', N'Thịt',1),
+('NL002', N'Cá hồi', 7, N'Kg', 70000, '', N'Thịt',1),
+('NL003', N'Bột mỳ', 10, N'Bịch', 20000, '', N'Bột',1),
+('NL004', N'Khoai tây', 35, N'Kg', 3000, '', N'Rau Củ',1),
+('NL005', N'Si-rô coca', 5, N'Can', 75000, '', N'Syrup',1)
+
+INSERT INTO NHACUNGCAP
+VALUES
+('NCC001', N'Cty TNHH Gia Phát', '0123456781', N'Quận 6, Thành phố Hồ Chí Minh',1),
+('NCC002', N'Cty cổ phần Vương Hà', '0987654329', N'Quận 7, Thành phố Hồ Chí Minh',1),
+('NCC003', N'Cty TNHH dịch vụ thực phẩm Nhuận Phú', '0123123120', N'Quận 8, Thành phố Hồ Chí Minh',1)
+
+INSERT INTO PHIEUNHAP
+VALUES
+('PN001', '2023-12-24', 10500000, 'NV001','NCC002'),
+('PN002', '2023-12-30', 12006000, 'NV001','NCC001')
+
+INSERT INTO CHITIETPHIEUNHAP
+VALUES
+('PN001','NL001',20),
+('PN001','NL005',10),
+('PN001','NL002',5),
+('PN002','NL001',10),
+('PN002','NL004',7)
 
 INSERT INTO CHITIETPHANQUYEN(MAQUYEN, MACN)
 VALUES
@@ -276,96 +302,3 @@ VALUES
 ('Q05', 'CN06'),
 ('Q05', 'CN09')
 
-=======
-('admin', 'admin'),
-('NV1', 'nv1'),
-('NV2', 'nv2'),
-('NV3', 'nv3'),
-('NV4', 'nv4')
-
-USE THUCANNHANH
-INSERT INTO QUYEN
-VALUES
---('Q1', 'Tot', 'Q2', 1),
-('Q2', 'Ria', 'Q3', 0)
-GO
-
-USE THUCANNHANH
-INSERT INTO CHITIETPHANQUYEN
-VALUES
-('Q1', 'CN01')
-
-USE THUCANNHANH
-delete CHITIETPHANQUYEN
-where CHITIETPHANQUYEN.MAQUYEN = 'Q1'
-
-USE THUCANNHANH
-TRUNCATE TABLE CHITIETPHANQUYEN
-DELETE FROM QUYEN
-GO
-
-USE THUCANNHANH
-select * from CHITIETPHANQUYEN where CHITIETPHANQUYEN.MAQUYEN = 'Q1'
-
-USE THUCANNHANH
-insert into CHITIETPHANQUYEN
-values
-('Q1', 'CN02'),
-('Q1', 'CN06'),
-('Q1', 'CN07'),
-('Q1', 'CN09')
-
-USE THUCANNHANH
-insert into CHITIETPHANQUYEN
-values
-('Q2', 'CN02'),
-('Q2', 'CN04'),
-('Q2', 'CN06'),
-('Q2', 'CN05')
-
-USE THUCANNHANH
-delete CHITIETPHANQUYEN where MAQUYEN = 'Q2' and MACN = 'CN04'
-
-USE THUCANNHANH
-delete CHITIETPHANQUYEN where MAQUYEN = 'Q1'
-
-USE THUCANNHANH
-delete QUYEN where MAQUYEN = 'Q1'
-
-use THUCANNHANH	
-delete TAIKHOAN where TAIKHOAN.USERNAME = 'NV5'
-
-use THUCANNHANH	
-delete NHANVIEN where NHANVIEN.MANV = 'NV5'
-
-use THUCANNHANH	
-insert into TAIKHOAN
-values
-('NV3', 'pass3', 1, null),
-('NV5', 'pass5', 1, null)
-
-use THUCANNHANH
-update TAIKHOAN
-set MATKHAU = 'ha2', TRANGTHAI = 'True'
-where USERNAME = 'NV2'
-
-use THUCANNHANH
-insert into CHUCNANG
-values
-('CN01', N'Bán hàng', null),
-('CN02', N'Hóa đơn', null),
-('CN03', N'Nhập hàng', null),
-('CN04', N'Phiếu nhập', null),
-('CN05', N'Món ăn', null),
-('CN06', N'Nguyên liệu', null),
-('CN07', N'Nhân viên', null),
-('CN08', N'Khách hàng', null),
-('CN09', N'Nhà cung cấp', null),
-('CN10', N'Khuyến mãi', null),
-('CN11', N'Tài khoản', null),
-('CN12', N'Phân quyền', null),
-('CN13', N'Thống kê', null)
-
-use THUCANNHANH
-select QUYEN.MAQUYEN from QUYEN where QUYEN.TENQUYEN = N'Q2 rìa'
->>>>>>> QTung

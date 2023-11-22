@@ -44,6 +44,7 @@ public class NguyenLieuGUI extends JPanel{
         
         public ThemButton addbtn;
         
+        public RefreshButton refreshbtn;
         public XoaButton delbtn;
         public SuaButton modbtn;
         public ExportExcelButton xuatbtn;
@@ -77,6 +78,7 @@ public class NguyenLieuGUI extends JPanel{
             modbtn = new SuaButton();
             xuatbtn = new ExportExcelButton();
             timkiembtn = new JButton("Tìm kiếm");
+            refreshbtn = new RefreshButton();
             
             tableNL = new MyTable();
             String[] columnNames = {"Mã Nguyên Liệu", "Tên Nguyên Liệu", "Số Lượng", "Đơn Vị Tính", "Đơn Giá", "Hình Ảnh", "Loại", "Trạng Thái"};
@@ -111,6 +113,7 @@ public class NguyenLieuGUI extends JPanel{
             // Thêm hai JButton vào JPanel                     
             searchpnl.add(txtsearch); 
             searchpnl.add(timkiembtn);
+
             optionpnl.add(searchpnl,BorderLayout.NORTH);
             optionpnl.add(panel1,BorderLayout.CENTER);
             panel1.add(panel2);
@@ -120,6 +123,7 @@ public class NguyenLieuGUI extends JPanel{
             panel2.add(modbtn);
             panel2.add(delbtn);           
             panel2.add(xuatbtn);
+            panel2.add(refreshbtn);
             
             tablepnl.add(scrollPane);
             
@@ -195,6 +199,13 @@ public class NguyenLieuGUI extends JPanel{
                 }
             });
 
+            refreshbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    sorter.setRowFilter(null);
+                    txtsearch.setText("");
+                }
+            });
 	}          
 	
 	public void KhoiTao() {

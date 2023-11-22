@@ -3,6 +3,7 @@ package GUI;
 import GiaoDienChuan.ExportExcelButton;
 
 import GiaoDienChuan.MyTable;
+import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
@@ -45,6 +46,7 @@ public class PhieuNhapGUI extends JPanel{
         public ExportExcelButton xuatbtn;
         public JButton timkiembtn; 
         public JButton chitietbtn;
+        public RefreshButton refreshbtn;
         public MyTable table;        
         public JScrollPane scrollPane;
         public JTextField txtsearch;
@@ -58,7 +60,8 @@ public class PhieuNhapGUI extends JPanel{
 	public void init() {
             this.add(new JLabel("Phiếu nhập GUI"));  
             this.setLayout(new BorderLayout());     
-            //frame = new JFrame();            
+            //frame = new JFrame();   
+            refreshbtn =new RefreshButton();         
             xuatbtn = new ExportExcelButton();
             chitietbtn = new JButton("Chi tiết");
             timkiembtn = new JButton("Tìm kiếm");
@@ -87,6 +90,7 @@ public class PhieuNhapGUI extends JPanel{
             searchPnl.add(timkiembtn);
             panel2.add(chitietbtn);                     
             panel2.add(xuatbtn);
+            panel2.add(refreshbtn);
             tablePnl.add(scrollPane);
             optionPnl.add(searchPnl,BorderLayout.NORTH);
             optionPnl.add(panel1,BorderLayout.CENTER);
@@ -125,6 +129,14 @@ public class PhieuNhapGUI extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     xuat(table.getModel());
+                }
+            });
+
+            refreshbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    sorter.setRowFilter(null);
+                    txtsearch.setText("");
                 }
             });
 

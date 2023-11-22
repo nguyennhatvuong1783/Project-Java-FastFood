@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class connec {
 
-    public static Connection getConnection() {
+    public static Connection getConnection1() {
         Connection connection = null;
         String URL = "jdbc:sqlserver://localhost:1433;databaseName=THUCANNHANH;encrypt=true;trustServerCertificate=true";
 
@@ -21,7 +21,8 @@ public class connec {
 
         return connection;
     }
-    public static Connection getConnection1() {
+    
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

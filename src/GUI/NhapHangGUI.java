@@ -7,6 +7,7 @@ import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -45,7 +46,7 @@ import DTO.CHITIETPHIEUNHAP;
 public class NhapHangGUI extends JPanel{
         //public JFrame frame;  
 	
-        public JButton themnccbtn; 
+        public JLabel themnccbtn; 
         public JButton themspbtn;   
         public JPanel panel;
         public JPanel panelNCCselector;
@@ -85,7 +86,7 @@ public class NhapHangGUI extends JPanel{
             //fix
             //frame = new JFrame();      
             
-            themnccbtn = new JButton("Chọn nhà cung cấp");
+            themnccbtn = new JLabel("Chọn nhà cung cấp");
             themspbtn = new JButton("Thêm sản phẩm"); 
             tableNCC = new MyTable();
             tableSP = new MyTable();
@@ -185,13 +186,6 @@ public class NhapHangGUI extends JPanel{
             	}
             });
             
-            //đây là chức năng hiển thị sp theo ncc được chọn 
-            cb.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    //hienthisanpham();
-                }
-            });
-            
             delbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -259,11 +253,6 @@ public class NhapHangGUI extends JPanel{
             String[] columnNamesNCC = {"Mã sản phẩm", "Tên sản phẩm","Số lượng tồn kho","Loại", "Đơn Giá"};
             tableNCC.setHeaders(columnNamesNCC);
             
-            /*
-            modelNCC.addRow(new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","10000"});
-            modelNCC.addRow(new Object[] {"Dữ liệu cột 1", "Dữ liệu cột 2", "Dữ liệu cột 3","Dữ liệu cột 4","20000"});
-            */
-            
             //Đổ dữ liệu lên bảng NCC
             NhapHangBUS nhap = new NhapHangBUS();
             ArrayList<NGUYENLIEU> listnl = nhap.selectAll();
@@ -277,20 +266,6 @@ public class NhapHangGUI extends JPanel{
             tableSP.setHeaders(columnNamesSP);  
             
         }
-
-        //reset lại bảng sau khi có dữ liệu tương ứng với NCC
-        public void hienthisanpham(){
-            String[] columnNames = {"Mã sản phẩm", "Tên sản phẩm","Số lượng tồn kho","Loại", "Đơn Giá"};
-            String nhaCungCapChon = (String) cb.getItemAt(cb.getSelectedIndex());
-            //String[][] sanPham = getSanPhamTheoNhaCungCap(nhaCungCapChon);
-            //tableNCC.getTable().setModel(new DefaultTableModel(sanPham, columnNames));
-        }
-        /* 
-        private String[][] getSanPhamTheoNhaCungCap(String nhaCungCap) {
-            // Thực hiện truy vấn dữ liệu từ cơ sở dữ liệu hoặc nguồn dữ liệu khác tại đây
-            // và trả về một mảng 2 chiều chứa thông tin sản phẩm
-            return new String[][]{};
-        }*/
         
         public void xoa(DefaultTableModel model){
             // Lấy chỉ số của hàng được chọn
@@ -341,10 +316,9 @@ public class NhapHangGUI extends JPanel{
             Object[] options = {"OK", "Cancel"};
             Object[] message = {
                 "Mã nhân viên: ", txtManv,
-                "Tổng số tiền: ", txtTong,   
-                scrollPaneSP                   
+                "Tổng số tiền: ", txtTong                     
             };
-                    
+
             int option = JOptionPane.showOptionDialog(null, message, "Thông tin",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
             null, options, options[0]);
             if (option == 0) {
@@ -388,11 +362,11 @@ public class NhapHangGUI extends JPanel{
             	ChiTietPhieuNhapBUS ctpnbus = new ChiTietPhieuNhapBUS();
             	ctpnbus.insertCTPN(ctpn);
         	}
-        	
-        	//Reset lại bảng giỏ hàng
+
+            //Reset lại bảng giỏ hàng
         	DefaultTableModel model = tableSP.getModel();
-	        	model.setRowCount(0);
-    		
+            model.setRowCount(0);
+            calculateColumnTotal(tableSP.getTable());
         }
          
         //Lấy số lượng phiếu nhập đã có trong database để tạo mã phiếu nhập
