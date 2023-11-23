@@ -20,7 +20,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI> {
     public int insert(KHUYENMAI t) {
         int ketqua = 0;
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "INSERT INTO KHUYENMAI(MAKM, TENKM, DIEUKIEN, GIAMGIA, NGAY_BD, NGAY_KT, TRANGTHAI) "
                     + " VALUES(?,?,?,?,?,?,?)";
             PreparedStatement pst = c.prepareStatement(sql);
@@ -48,7 +48,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI> {
     public int delete(KHUYENMAI t) {
         int ketqua = 0;
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "UPDATE KHUYENMAI "
                     + "SET TRANGTHAI=?"
                     + " WHERE MAKM=?";
@@ -71,7 +71,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI> {
     public int update(KHUYENMAI t) {
         int ketqua = 0;
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "UPDATE KHUYENMAI "
                     + " SET TENKM=? "
                     + ", DIEUKIEN=? "
@@ -106,7 +106,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI> {
     public ArrayList<KHUYENMAI> selectAll() {
         ArrayList<KHUYENMAI> ketqua = new ArrayList<KHUYENMAI>();
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "SELECT * FROM KHUYENMAI";
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -135,7 +135,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI> {
     public KHUYENMAI selectById(KHUYENMAI t) {
         KHUYENMAI ketqua = null;
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "SELECT * FROM KHUYENMAI WHERE NAKM=?";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, t.getMaKM());
@@ -164,7 +164,7 @@ public class DaoKhuyenMai implements DaoInterface<KHUYENMAI> {
     public ArrayList<KHUYENMAI> selectByCondition(String condition) {
         ArrayList<KHUYENMAI> ketqua = new ArrayList<KHUYENMAI>();
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "SELECT * FROM KHUYENMAI WHERE " + condition;
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();

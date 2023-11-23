@@ -46,126 +46,6 @@ import WorkExcel.XuatExcel;
 
 public class MonAnGUI extends JPanel {
 
-<<<<<<< HEAD
-		txtTimKiem = new JTextField();
-		txtTimKiem.setPreferredSize(new Dimension(400, 25));
-		
-		JPanel pnlTimKiem = new JPanel(new GridBagLayout());
-		
-		gbclbl.ipadx = 5;
-		gbclbl.gridx = 0;
-		gbclbl.gridy = 0;
-		pnlTimKiem.add(lblTimKiem, gbclbl);
-		gbctxt.ipadx = 500;
-		gbctxt.ipady = 10;
-		gbctxt.gridx = 1;
-		pnlTimKiem.add(txtTimKiem, gbctxt);
-		
-		//pnlbtn
-		btnThem = new ThemButton();
-		btnSua = new SuaButton();
-		btnXoa = new XoaButton();
-		btnNhap = new ImportExcelButton();
-		btnXuat = new ExportExcelButton();
-		btnLamMoi = new RefreshButton();
-		
-		//sự kiện
-		addDocumentListener(txtTimKiem);
-		btnThem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				FormThemMonAn a = new FormThemMonAn();
-				a.addWindowListener(new WindowAdapter() {
-					@Override
-					 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-		                clearInfo();
-		                mAnBus.readDB();
-		                mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
-		            }
-				});
-			}
-		});
-		btnLamMoi.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clearInfo();
-				mAnBus.readDB();
-				mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
-			}
-		});
-		btnXoa.addActionListener(new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				listenerXoa();
-			}
-		});
-		btnSua.addActionListener(new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				listenerSua();		
-			}
-		});
-		btnXuat.addActionListener(new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				XuatExcel xuatExcel = new XuatExcel();
-				xuatExcel.xuatFileExcelMonAn();				
-			}
-		});
-		btnNhap.addActionListener(new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				DocExcel docExcel = new DocExcel();
-				docExcel.docFileExcelMonAn();				
-			}
-		});
-		
-		JPanel pnlbtn = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 0));
-		pnlbtn.add(btnThem);
-		pnlbtn.add(btnSua);
-		pnlbtn.add(btnXoa);
-		pnlbtn.add(btnNhap);
-		pnlbtn.add(btnXuat);
-		pnlbtn.add(btnLamMoi);
-		
-		//Table
-		pnlMonAnTable = new MyTable();
-		String[] headers = {"Mã món ăn", "Tên món ăn", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
-		pnlMonAnTable.setHeaders(headers);
-		mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
-		pnlMonAnTable.getTable().addMouseListener(new MouseListener() {		
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				tableMouseClicked(e);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}			
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}			
-			@Override
-			public void mouseEntered(MouseEvent e) {				
-			}			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-								
-			}
-		});
-		pnlMonAnTable.addKeyListener(new KeyListener() {			
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				tableKeyRelease(e);
-			}		
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
-=======
     public static MyTable pnlMonAnTable;
     public JTextField txtMaMA;
     public JTextField txtTenMA;
@@ -181,7 +61,6 @@ public class MonAnGUI extends JPanel {
     public JButton btnXuat;
     public JButton btnLamMoi;
     public JTextField txtTimKiem;
->>>>>>> 5a3f5778832911504cf3dcd305dc79a2381d2d71
 
     MonAnBus mAnBus = new MonAnBus();
 
