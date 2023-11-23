@@ -182,7 +182,7 @@ public class DaoPhieuNhap implements DaoInterface<PHIEUNHAP>{
         ArrayList<THONGKE> list = new ArrayList<>();
 
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "select SUM(TONGTIEN), MONTH(NGAYNHAP), YEAR(NGAYNHAP)  from PHIEUNHAP group by MONTH(NGAYNHAP), YEAR(NGAYNHAP)";
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
