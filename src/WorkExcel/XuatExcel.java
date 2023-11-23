@@ -23,10 +23,14 @@ import DAO.DaoChiTietHoaDon;
 import DAO.DaoHoaDon;
 import DAO.DaoKhachHang;
 import DAO.DaoMonAn;
+import DAO.DaoNhaCungCap;
 import DAO.DaoNhanVien;
 import DTO.CHITIETHOADON;
 import DTO.HOADON;
+import DTO.KHACHHANG;
 import DTO.MONAN;
+import DTO.NHACUNGCAP;
+import DTO.NHANVIEN;
 
 public class XuatExcel {
 	FileDialog fd = new FileDialog(new JFrame(), "Xuất file excel", FileDialog.SAVE);
@@ -65,9 +69,10 @@ public class XuatExcel {
     			row.createCell(0, CellType.NUMERIC).setCellValue("STT");
     			row.createCell(1,CellType.STRING).setCellValue("Mã món ăn");
     			row.createCell(2,CellType.STRING).setCellValue("Tên món ăn");
-    			row.createCell(3,CellType.STRING).setCellValue("Loại");
-    			row.createCell(4,CellType.NUMERIC).setCellValue("Số lượng");
-    			row.createCell(5,CellType.NUMERIC).setCellValue("Đơn giá");
+    			row.createCell(3,CellType.STRING).setCellValue("Đơn vị tính");
+    			row.createCell(4,CellType.STRING).setCellValue("Loại");
+    			row.createCell(5,CellType.NUMERIC).setCellValue("Số lượng");
+    			row.createCell(6,CellType.NUMERIC).setCellValue("Đơn giá");
     			
     			for (MONAN monan : monans) {
     				rowNum++;
@@ -76,9 +81,10 @@ public class XuatExcel {
     				row.createCell(0, CellType.NUMERIC).setCellValue(rowNum);
     				row.createCell(1,CellType.STRING).setCellValue(monan.getMaMonAn());
     				row.createCell(2,CellType.STRING).setCellValue(monan.getTenMonAn());
-    				row.createCell(3,CellType.STRING).setCellValue(monan.getLoai());
-    				row.createCell(4,CellType.NUMERIC).setCellValue(monan.getSoLuong());
-    				row.createCell(5,CellType.NUMERIC).setCellValue(monan.getDonGia());				
+    				row.createCell(3,CellType.STRING).setCellValue(monan.getDonViTinh());
+    				row.createCell(4,CellType.STRING).setCellValue(monan.getLoai());
+    				row.createCell(5,CellType.NUMERIC).setCellValue(monan.getSoLuong());
+    				row.createCell(6,CellType.NUMERIC).setCellValue(monan.getDonGia());				
     			}
     			for (int i = 0; i < rowNum; i++) {
     				sheet.autoSizeColumn(i);
@@ -109,7 +115,7 @@ public class XuatExcel {
 		
 	}
 	
-	// xuất file hóa đơn "Mã hóa đơn, Tên khách hàng, Nhân viên lập hóa đơn, Ngày lập, Tổng tiền"
+	// xuất file hóa đơn
 	public void xuatFileExcelHoaDon() {
 		fd.setTitle("Xuất dữ liệu hóa đơn");
 		String tenFile = JOptionPane.showInputDialog(null,"Tên file","Thông báo", JOptionPane.PLAIN_MESSAGE);
@@ -196,5 +202,200 @@ public class XuatExcel {
 			}
 		}
 	}
+	
+	// Xuất file excel nhân viên
+	public void xuatFileExcelNhanVien() {
+		fd.setTitle("Xuất dữ liệu danh sách nhân viên");
+		String tenFile = JOptionPane.showInputDialog(null,"Tên file","Thông báo", JOptionPane.PLAIN_MESSAGE);
+        if (tenFile != null) {
+        	String url = getFile(tenFile);
+    		if (url == null) {
+    			return;
+    		}
+    		
+    		FileOutputStream outputStream = null;
+    		try {
+    			HSSFWorkbook workbook = new HSSFWorkbook();
+    			HSSFSheet sheet = workbook.createSheet("Nhân viên");
+    			ArrayList<NHANVIEN> nhanviens = DaoNhanVien.getInstance().selectAll();
+    			
+    			int rowNum = 0;
+    			Row row = sheet.createRow(rowNum);
+    			
+    			row.createCell(0, CellType.NUMERIC).setCellValue("STT");
+    			row.createCell(1,CellType.STRING).setCellValue("Mã nhân viên");
+    			row.createCell(2,CellType.STRING).setCellValue("Họ và tên");
+    			row.createCell(3,CellType.STRING).setCellValue("Giới tính");
+    			row.createCell(4, CellType.STRING).setCellValue("Ngày sinh");
+    			row.createCell(5,CellType.STRING).setCellValue("Số điện thoại");
+    			row.createCell(6,CellType.STRING).setCellValue("Địa chỉ");
+    			
+    			for (NHANVIEN nhanvien : nhanviens) {
+    				rowNum++;
+    				row = sheet.createRow(rowNum);
+    				
+    				row.createCell(0, CellType.NUMERIC).setCellValue(rowNum);
+    				row.createCell(1,CellType.STRING).setCellValue(nhanvien.getMaNV());
+    				row.createCell(2,CellType.STRING).setCellValue(nhanvien.getTenNV());
+    				row.createCell(3,CellType.STRING).setCellValue(nhanvien.getGioiTinh());
+    				row.createCell(4,CellType.STRING).setCellValue(nhanvien.getNgaySinh());
+    				row.createCell(5,CellType.STRING).setCellValue(nhanvien.getSdt());		
+    				row.createCell(6,CellType.STRING).setCellValue(nhanvien.getSdt());	
+    			}
+    			for (int i = 0; i < rowNum; i++) {
+    				sheet.autoSizeColumn(i);
+    			}
+    			
+    			File file = new File(url);
+    			if (file != null) {
+    				file.getParentFile().mkdirs();
+    			}
+    			outputStream = new FileOutputStream(file);
+    			workbook.write(outputStream);
+    			
+    			JOptionPane.showMessageDialog(null, "Ghi file thành công: " + file.getAbsolutePath());
+    		} catch (FileNotFoundException ex) {
+    			  Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    		} catch (IOException ex) {
+    			 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    		} finally {
+    			try {
+    				if (outputStream != null) {
+    					outputStream.close();
+    				}
+    			} catch (IOException ex) {
+    				 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    			}
+    		}
+		}
+	}
 
+	// Xuất file excel khách hàng
+	public void xuatFileExcelKhachHang() {
+		fd.setTitle("Xuất dữ liệu danh sách khách hàng");
+		String tenFile = JOptionPane.showInputDialog(null,"Tên file","Thông báo", JOptionPane.PLAIN_MESSAGE);
+        if (tenFile != null) {
+        	String url = getFile(tenFile);
+    		if (url == null) {
+    			return;
+    		}
+    		
+    		FileOutputStream outputStream = null;
+    		try {
+    			HSSFWorkbook workbook = new HSSFWorkbook();
+    			HSSFSheet sheet = workbook.createSheet("Khách hàng");
+    			ArrayList<KHACHHANG> khachhangs = DaoKhachHang.getInstance().selectAll();
+    			
+    			int rowNum = 0;
+    			Row row = sheet.createRow(rowNum);
+    			
+    			row.createCell(0, CellType.NUMERIC).setCellValue("STT");
+    			row.createCell(1,CellType.STRING).setCellValue("Mã khách hàng");
+    			row.createCell(2,CellType.STRING).setCellValue("Họ và tên");
+    			row.createCell(3,CellType.STRING).setCellValue("Số điện thoại");
+    			row.createCell(4,CellType.STRING).setCellValue("Địa chỉ");
+
+    			
+    			for (KHACHHANG khachhang : khachhangs) {
+    				rowNum++;
+    				row = sheet.createRow(rowNum);
+    				
+    				row.createCell(0, CellType.NUMERIC).setCellValue(rowNum);
+    				row.createCell(1,CellType.STRING).setCellValue(khachhang.getMaKH());
+    				row.createCell(2,CellType.STRING).setCellValue(khachhang.getTenKH());
+    				row.createCell(3,CellType.STRING).setCellValue(khachhang.getSdt());
+    				row.createCell(4,CellType.STRING).setCellValue(khachhang.getDiaChi());			
+    			}
+    			for (int i = 0; i < rowNum; i++) {
+    				sheet.autoSizeColumn(i);
+    			}
+    			
+    			File file = new File(url);
+    			if (file != null) {
+    				file.getParentFile().mkdirs();
+    			}
+    			outputStream = new FileOutputStream(file);
+    			workbook.write(outputStream);
+    			
+    			JOptionPane.showMessageDialog(null, "Ghi file thành công: " + file.getAbsolutePath());
+    		} catch (FileNotFoundException ex) {
+    			  Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    		} catch (IOException ex) {
+    			 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    		} finally {
+    			try {
+    				if (outputStream != null) {
+    					outputStream.close();
+    				}
+    			} catch (IOException ex) {
+    				 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    			}
+    		}
+		}
+	}
+	
+	// Xuất file excel nhà cung cấp
+	public void xuatFileExcelNhaCungCap() {
+		fd.setTitle("Xuất dữ liệu danh sách nhà cung cấp");
+		String tenFile = JOptionPane.showInputDialog(null,"Tên file","Thông báo", JOptionPane.PLAIN_MESSAGE);
+        if (tenFile != null) {
+        	String url = getFile(tenFile);
+    		if (url == null) {
+    			return;
+    		}
+    		
+    		FileOutputStream outputStream = null;
+    		try {
+    			HSSFWorkbook workbook = new HSSFWorkbook();
+    			HSSFSheet sheet = workbook.createSheet("Nhà cung cấp");
+    			ArrayList<NHACUNGCAP> nhacungcaps = DaoNhaCungCap.getInstance().selectAll();
+    			
+    			int rowNum = 0;
+    			Row row = sheet.createRow(rowNum);
+    			
+    			row.createCell(0, CellType.NUMERIC).setCellValue("STT");
+    			row.createCell(1,CellType.STRING).setCellValue("Mã nhà cung cấp");
+    			row.createCell(2,CellType.STRING).setCellValue("Tên nhà cung cấp");
+    			row.createCell(3,CellType.STRING).setCellValue("Số điện thoại");
+    			row.createCell(4,CellType.NUMERIC).setCellValue("Địa chỉ");
+    			
+    			for (NHACUNGCAP nhacungcap : nhacungcaps) {
+    				rowNum++;
+    				row = sheet.createRow(rowNum);
+    				
+    				row.createCell(0, CellType.NUMERIC).setCellValue(rowNum);
+    				row.createCell(1,CellType.STRING).setCellValue(nhacungcap.getMaNCC());
+    				row.createCell(2,CellType.STRING).setCellValue(nhacungcap.getTenNCC());
+    				row.createCell(3,CellType.STRING).setCellValue(nhacungcap.getSdt());
+    				row.createCell(4,CellType.STRING).setCellValue(nhacungcap.getDiaChi());		
+    			}
+    			for (int i = 0; i < rowNum; i++) {
+    				sheet.autoSizeColumn(i);
+    			}
+    			
+    			File file = new File(url);
+    			if (file != null) {
+    				file.getParentFile().mkdirs();
+    			}
+    			outputStream = new FileOutputStream(file);
+    			workbook.write(outputStream);
+    			
+    			JOptionPane.showMessageDialog(null, "Ghi file thành công: " + file.getAbsolutePath());
+    		} catch (FileNotFoundException ex) {
+    			  Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    		} catch (IOException ex) {
+    			 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    		} finally {
+    			try {
+    				if (outputStream != null) {
+    					outputStream.close();
+    				}
+    			} catch (IOException ex) {
+    				 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+    			}
+    		}
+		}
+	}
+	
+	
 }

@@ -41,6 +41,7 @@ import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
+import WorkExcel.DocExcel;
 import WorkExcel.XuatExcel;
 
 public class MonAnGUI extends JPanel{
@@ -236,6 +237,13 @@ public class MonAnGUI extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				XuatExcel xuatExcel = new XuatExcel();
 				xuatExcel.xuatFileExcelMonAn();				
+			}
+		});
+		btnNhap.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DocExcel docExcel = new DocExcel();
+				docExcel.docFileExcelMonAn();				
 			}
 		});
 		
