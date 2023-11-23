@@ -12,7 +12,7 @@ public class connec {
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(URL, "sa", "jhin");
+            connection = DriverManager.getConnection(URL, "sa", "123456");
             System.out.println("[getConnection]: Connected.");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Can't connect.");
