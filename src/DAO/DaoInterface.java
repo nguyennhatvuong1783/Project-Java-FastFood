@@ -5,18 +5,17 @@ import java.util.ArrayList;
 import DTO.NGUYENLIEU;
 
 public interface DaoInterface<T> {
-	 public int insert(T t);
 
-	 public int delete(T t);
+    public int insert(T t);
 
-     public int update(T t);
+    public int delete(T t);
 
-     public ArrayList<T> selectAll();
+    public int update(T t);
 
-     public T selectById(T t);
+    public ArrayList<T> selectAll();
 
-     public ArrayList<T> selectByCondition(String condition);
+    public T selectById(T t);
 
-
+    public ArrayList<T> selectByCondition(String condition);
 
 }

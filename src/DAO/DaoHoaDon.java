@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import Connection.connec;
 import DTO.HOADON;
+import DTO.THONGKE;
 
 public class DaoHoaDon implements DaoInterface<HOADON>{	
 	public static DaoHoaDon getInstance() {
@@ -231,4 +232,22 @@ public class DaoHoaDon implements DaoInterface<HOADON>{
 		}
 		return ketqua;
 	}
+        public ArrayList<THONGKE> getListThongKe() {
+        ArrayList<THONGKE> list = new ArrayList<>();
+
+        try {
+            Connection c = connec.getConnection1();
+            String sql = "select SUM(TONGTIEN), MONTH(NGAYLAPHD), YEAR(NGAYLAPHD)  from HOADON group by MONTH(NGAYLAPHD), YEAR(NGAYLAPHD)";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                THONGKE s = new THONGKE(rs.getInt(1), rs.getString(2), rs.getString(3));
+                list.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

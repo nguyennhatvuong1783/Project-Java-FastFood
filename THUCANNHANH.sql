@@ -1,4 +1,6 @@
 ﻿CREATE DATABASE THUCANNHANH
+GO
+
 USE THUCANNHANH
 
 CREATE TABLE NHANVIEN(
@@ -179,6 +181,14 @@ VALUES
 ('NV003', N'Nguyễn Thị D', N'nữ', '1999-11-20', N'Quận 4, Thành phố Hồ Chí Minh', '0456456456'),
 ('NV004', N'Phan Văn E', N'nam', '2000-12-21', N'Quận 5, Thành phố Hồ Chí Minh', '0789789789')
 
+INSERT INTO QUYEN(MAQUYEN, TENQUYEN)
+VALUES
+('Q01', N'Admin'),
+('Q02', N'Quản lý'),
+('Q03', N'Nhân viên kiểm kê'),
+('Q04', N'Nhân viên bán hàng'),
+('Q05', N'Nhân viên nhập hàng')
+
 INSERT INTO TAIKHOAN(USERNAME, MATKHAU, MAQUYEN)
 VALUES
 ('admin', 'admin', 'Q01'),
@@ -226,13 +236,32 @@ VALUES
 ('HD005', 'MA005', 4),
 ('HD005', 'MA003', 4)
 
-INSERT INTO QUYEN(MAQUYEN, TENQUYEN)
+INSERT INTO NGUYENLIEU
 VALUES
-('Q01', N'Admin'),
-('Q02', N'Quản lý'),
-('Q03', N'Nhân viên kiểm kê'),
-('Q04', N'Nhân viên bán hàng'),
-('Q05', N'Nhân viên nhập hàng')
+('NL001', N'Gà', 20, N'Kg', 90000, '', N'Thịt',1),
+('NL002', N'Cá hồi', 7, N'Kg', 70000, '', N'Thịt',1),
+('NL003', N'Bột mỳ', 10, N'Bịch', 20000, '', N'Bột',1),
+('NL004', N'Khoai tây', 35, N'Kg', 3000, '', N'Rau Củ',1),
+('NL005', N'Si-rô coca', 5, N'Can', 75000, '', N'Syrup',1)
+
+INSERT INTO NHACUNGCAP
+VALUES
+('NCC001', N'Cty TNHH Gia Phát', '0123456781', N'Quận 6, Thành phố Hồ Chí Minh',1),
+('NCC002', N'Cty cổ phần Vương Hà', '0987654329', N'Quận 7, Thành phố Hồ Chí Minh',1),
+('NCC003', N'Cty TNHH dịch vụ thực phẩm Nhuận Phú', '0123123120', N'Quận 8, Thành phố Hồ Chí Minh',1)
+
+INSERT INTO PHIEUNHAP
+VALUES
+('PN001', '2023-12-24', 10500000, 'NV001','NCC002'),
+('PN002', '2023-12-30', 12006000, 'NV001','NCC001')
+
+INSERT INTO CHITIETPHIEUNHAP
+VALUES
+('PN001','NL001',20),
+('PN001','NL005',10),
+('PN001','NL002',5),
+('PN002','NL001',10),
+('PN002','NL004',7)
 
 INSERT INTO CHITIETPHANQUYEN(MAQUYEN, MACN)
 VALUES

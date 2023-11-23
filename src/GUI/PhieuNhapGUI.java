@@ -1,7 +1,9 @@
 package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
+
 import GiaoDienChuan.MyTable;
+import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
@@ -30,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import BUS.PhieuNhapBUS;
+import DTO.CHITIETPHIEUNHAP;
 import DTO.PHIEUNHAP;
 
 
@@ -43,10 +46,12 @@ public class PhieuNhapGUI extends JPanel{
         public ExportExcelButton xuatbtn;
         public JButton timkiembtn; 
         public JButton chitietbtn;
+        public RefreshButton refreshbtn;
         public MyTable table;        
         public JScrollPane scrollPane;
         public JTextField txtsearch;
-        private TableRowSorter<DefaultTableModel> sorter;               
+        private TableRowSorter<DefaultTableModel> sorter;    
+        private DefaultTableModel tableModel;
         
 	public PhieuNhapGUI() {
 		init();
@@ -55,7 +60,8 @@ public class PhieuNhapGUI extends JPanel{
 	public void init() {
             this.add(new JLabel("Phiếu nhập GUI"));  
             this.setLayout(new BorderLayout());     
-            //frame = new JFrame();            
+            //frame = new JFrame();   
+            refreshbtn =new RefreshButton();         
             xuatbtn = new ExportExcelButton();
             chitietbtn = new JButton("Chi tiết");
             timkiembtn = new JButton("Tìm kiếm");
@@ -84,6 +90,7 @@ public class PhieuNhapGUI extends JPanel{
             searchPnl.add(timkiembtn);
             panel2.add(chitietbtn);                     
             panel2.add(xuatbtn);
+            panel2.add(refreshbtn);
             tablePnl.add(scrollPane);
             optionPnl.add(searchPnl,BorderLayout.NORTH);
             optionPnl.add(panel1,BorderLayout.CENTER);
@@ -125,6 +132,14 @@ public class PhieuNhapGUI extends JPanel{
                 }
             });
 
+            refreshbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    sorter.setRowFilter(null);
+                    txtsearch.setText("");
+                }
+            });
+
 	}                             
                 
         public void timkiem(){
@@ -144,11 +159,34 @@ public class PhieuNhapGUI extends JPanel{
             // Kiểm tra xem có hàng nào được chọn không
             if (selectedRow >= 0) {                
                 String maPhieuNhap = (String)table.getModel().getValueAt(selectedRow, 0); // Lấy mã phiếu nhập được chọn
-                String maNguyenLieu = "NL01"; // Thay "NL01" bằng mã nguyên liệu thực tế
-                String soLuong = "10"; // Thay "10" bằng số lượng thực tế
+                ArrayList<CHITIETPHIEUNHAP> listCTPN = new ArrayList<CHITIETPHIEUNHAP>();
+                PhieuNhapBUS bus = new PhieuNhapBUS();
+                listCTPN = bus.selectAllPNbyID(maPhieuNhap);
+                
+                 // Tạo dữ liệu cho bảng
+                String[][] data = {
+                        {"John", "18"},
+                        {"Anna", "20"},
+                        {"Tom", "22"}
+                    };
+
+                // Tạo tiêu đề cho các cột
+                String[] columnNames = {"Mã nguyên liệu", "Số lượng"};
+
+                // Tạo bảng
+                tableModel = new DefaultTableModel(columnNames, 0);
+                JTable tablemini = new JTable(tableModel);
+
+                // Tạo JScrollPane chứa bảng
+                JScrollPane scrollPane = new JScrollPane(tablemini);
+                tablemini.setFillsViewportHeight(true);
+                
+                for(CHITIETPHIEUNHAP ctpn : listCTPN) {
+                	tableModel.addRow(new Object[] {ctpn.getMaNL(), ctpn.getSoLuong()});
+                }
 
                 // Hiển thị thông tin hóa đơn bằng JOptionPane
-                JOptionPane.showMessageDialog(null, "Mã Phiếu Nhập: " + maPhieuNhap + "\nMã Nguyên Liệu: " + maNguyenLieu + "\nSố Lượng: " + soLuong);
+                JOptionPane.showMessageDialog(null,scrollPane, "Mã Phiếu Nhập: " + maPhieuNhap,JOptionPane.PLAIN_MESSAGE);
             } else {
                 // Hiển thị thông báo nếu không có hàng nào được chọn
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để xem chi tiết");
