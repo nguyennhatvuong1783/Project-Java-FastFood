@@ -5,23 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class connec {
-
+    
     public static Connection getConnection() {
-        Connection connection = null;
-        String URL = "jdbc:sqlserver://localhost:1433;databaseName=THUCANNHANH;encrypt=true;trustServerCertificate=true";
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(URL, "sa", "jhin");
-            System.out.println("[getConnection]: Connected.");
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Can't connect.");
-            System.out.println("Erroe: " + e);
-        }
-
-        return connection;
-    }
-    public static Connection getConnection1() {
         Connection connection = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

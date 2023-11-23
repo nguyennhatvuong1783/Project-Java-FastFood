@@ -236,7 +236,7 @@ public class DaoHoaDon implements DaoInterface<HOADON>{
         ArrayList<THONGKE> list = new ArrayList<>();
 
         try {
-            Connection c = connec.getConnection1();
+            Connection c = connec.getConnection();
             String sql = "select SUM(TONGTIEN), MONTH(NGAYLAPHD), YEAR(NGAYLAPHD)  from HOADON group by MONTH(NGAYLAPHD), YEAR(NGAYLAPHD)";
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();

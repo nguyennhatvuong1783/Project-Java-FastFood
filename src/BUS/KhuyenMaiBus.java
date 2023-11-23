@@ -29,7 +29,7 @@ public class KhuyenMaiBus {
     private DefaultTableModel model;
 
     public KhuyenMaiBus(KhuyenMaiGUI khuyenMaiGui) {
-        this.khuyenMaiGui = khuyenMaiGui ;
+        this.khuyenMaiGui = khuyenMaiGui;
     }
 
     public void LoadDataToTable() {
@@ -50,7 +50,6 @@ public class KhuyenMaiBus {
 
         }
     }
-    
 
     public int maKhuyenMaiMoiNhat() {
         daoKhuyenMai = new DaoKhuyenMai();
@@ -107,7 +106,13 @@ public class KhuyenMaiBus {
             }
 
             int trangThai = 1;
-            String maKM = String.valueOf(this.maKhuyenMaiMoiNhat() + 1);
+            String maKM = "";
+            if (this.maKhuyenMaiMoiNhat() < 9) {
+                maKM = "KM0" + String.valueOf(this.maKhuyenMaiMoiNhat() + 1);
+            } else {
+                maKM = "KM" + String.valueOf(this.maKhuyenMaiMoiNhat() + 1);
+            }
+
             KHUYENMAI km = new KHUYENMAI(maKM,
                     khuyenMaiGui.getTxt_TenKM().getText(),
                     khuyenMaiGui.getTxt_dieuKien().getText(),
@@ -237,8 +242,7 @@ public class KhuyenMaiBus {
     }
 
     public int XoaKm() {
-        
-        
+
         daoKhuyenMai = new DaoKhuyenMai();
         int trangThai = 0;
         KHUYENMAI km = new KHUYENMAI(khuyenMaiGui.getTxt_MaKM().getText(),

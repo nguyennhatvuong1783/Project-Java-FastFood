@@ -1,5 +1,9 @@
-/WorkExcel/
-/GUI/
 /BUS/
-/DAO/
 /Connection/
+/DAO/
+/DTO/
+/GUI/
+/GiaoDienChuan/
+/Main/
+/WorkExcel/
+/icon_img/
