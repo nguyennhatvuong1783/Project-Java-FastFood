@@ -111,7 +111,7 @@ public class SuaQuyenBUS {
                 System.out.println("[SuaQuyenBUS]: Luu");
                 String ten = suaQuyenGUI.getTxtTenQuyen().getText();
                 String moTa;
-                if (suaQuyenGUI.getTxtMoTa().getText().equals("Mô tả...")) {
+                if (suaQuyenGUI.getTxtMoTa().getText().equals("Mô tả...") || suaQuyenGUI.getTxtMoTa().getText().replaceAll(" ", "").equals("")) {
                     moTa = null;
                 } else {
                     moTa = suaQuyenGUI.getTxtMoTa().getText();
@@ -168,7 +168,6 @@ public class SuaQuyenBUS {
                                 break;
                             }
                         }
-                        System.out.println("macn " + maCN);
 
                         // Kiem tra trong chi tiet phan quyen neu ton tai thi xoa
                         boolean exist = false;
@@ -196,6 +195,9 @@ public class SuaQuyenBUS {
 
                 JOptionPane option = new JOptionPane();
                 option.showMessageDialog(suaQuyenGUI, "Sửa thành công");
+                QuyenBUS.sortListQuyenByMaQuyen(suaQuyenGUI.getListQuyen());
+                QuyenBUS.lamMoi();
+                TaiKhoanBUS.setListQuyen(suaQuyenGUI.getListQuyen());
                 suaQuyenGUI.dispose();
             }
 

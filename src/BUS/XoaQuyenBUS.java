@@ -16,9 +16,9 @@ public class XoaQuyenBUS {
     private ArrayList<CHITIETPHANQUYEN> listPhanQuyen;
     public PHANQUYEN quyen;
 
-    public XoaQuyenBUS(ArrayList<PHANQUYEN> listQuyen, ArrayList<CHITIETPHANQUYEN> listPhanQuyen, PHANQUYEN quyen) {
-        this.listQuyen = listQuyen;
-        this.listPhanQuyen = listPhanQuyen;
+    public XoaQuyenBUS(PHANQUYEN quyen) {
+        this.listQuyen = QuyenBUS.getListQuyen();
+        this.listPhanQuyen = QuyenBUS.getListPhanQuyen();
         this.quyen = quyen;
         xoaQuyen();
     }
@@ -64,6 +64,9 @@ public class XoaQuyenBUS {
         
         /* Xoa Database QUYEN */
         DaoQuyen.getInstance().delete(quyen);
+        
+        /* Set lại (TaiKhoanBUS)listQuyen */
+        TaiKhoanBUS.setListQuyen(listQuyen);
     }
 
 }

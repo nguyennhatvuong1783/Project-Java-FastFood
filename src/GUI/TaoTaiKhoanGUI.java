@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Jhin
  */
-public class TaoTaiKhoanGUI extends JFrame {
+public class TaoTaiKhoanGUI extends JDialog {
 
     private final Font lbFont = new Font("Times New Roman", Font.BOLD, 16);
     private final Font txtFont = new Font("Times New Roman", Font.PLAIN, 16);

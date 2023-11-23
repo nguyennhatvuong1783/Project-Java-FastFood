@@ -46,7 +46,7 @@ public class ChiTietHoaDonBUS {
 			e.printStackTrace();
 		}
 		if(hoadon.getMaKM() != null) {
-			KHUYENMAI khuyenmaiTmp = new KHUYENMAI(hoadon.getMaKM(), "", "", null, "", "", 0);
+			KHUYENMAI khuyenmaiTmp = new KHUYENMAI(hoadon.getMaKM(), "", "", null, new Date(), new Date(), 0);
 			KHUYENMAI khuyenmai = DaoKhuyenMai.getInstance().selectById(khuyenmaiTmp);
 			lblKhuyenMai.setText(khuyenmai.getTenKM());
 		}

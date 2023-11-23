@@ -9,25 +9,23 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
 
 /**
  *
  * @author Jhin
  */
-public class SuaTaiKhoanGUI extends JFrame {
+public class SuaTaiKhoanGUI extends JDialog {
 
     private final Font titleFont = new Font("Times New Roman", Font.BOLD, 20);
     private final Font lbFont = new Font("Times New Roman", Font.BOLD, 16);

@@ -17,9 +17,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,14 +26,12 @@ import javax.swing.JOptionPane;
  */
 public class TaiKhoanBUS {
 
-    private ArrayList<NHANVIEN> listNhanVien;
-    private ArrayList<TAIKHOAN> listTaiKhoan;
-    private ArrayList<PHANQUYEN> listQuyen;
-    private ArrayList<TAIKHOAN> listTimKiem;
+    private static ArrayList<NHANVIEN> listNhanVien;
+    private static ArrayList<TAIKHOAN> listTaiKhoan;
+    private static ArrayList<PHANQUYEN> listQuyen;
+    private static ArrayList<TAIKHOAN> listTimKiem;
 
     private TaiKhoanGUI taiKhoanGUI;
-
-    private boolean isRefresh;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public TaiKhoanBUS(TaiKhoanGUI taiKhoanGUI) {
@@ -44,7 +40,6 @@ public class TaiKhoanBUS {
         listQuyen = DaoQuyen.getInstance().selectAll();
         listTimKiem = new ArrayList<>();
         this.taiKhoanGUI = taiKhoanGUI;
-        this.isRefresh = true;
 
         addDataToTable();
         event();
@@ -114,11 +109,6 @@ public class TaiKhoanBUS {
             @SuppressWarnings("ResultOfObjectAllocationIgnored")
             public void mouseClicked(MouseEvent e) {
                 System.out.println("[TaiKhoanBUS]: Add");
-                if (!isRefresh) {
-                    sortTaiKhoanByMa(listTaiKhoan);
-                    refresh();
-                }
-                isRefresh = false;
                 new TaoTaiKhoanGUI(listNhanVien, listTaiKhoan, listQuyen);
             }
 
@@ -140,11 +130,6 @@ public class TaiKhoanBUS {
             @SuppressWarnings("ResultOfObjectAllocationIgnored")
             public void mouseClicked(MouseEvent e) {
                 System.out.println("[TaiKhoanBUS]: Update");
-                if (!isRefresh) {
-                    sortTaiKhoanByMa(listTaiKhoan);
-                    refresh();
-                }
-                isRefresh = false;
                 int selectedRow = taiKhoanGUI.getTbTaiKhoan().getTable().getSelectedRow();
                 String[] rowData = new String[3];
 
@@ -285,7 +270,6 @@ public class TaiKhoanBUS {
                 System.out.println("[TaiKhoanBUS]: Refresh");
                 sortTaiKhoanByMa(listTaiKhoan);
                 refresh();
-                isRefresh = true;
             }
 
             @Override
@@ -300,6 +284,7 @@ public class TaiKhoanBUS {
         });
     }
 
+    // Method
     public void sortTaiKhoanByMa(ArrayList<TAIKHOAN> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
@@ -381,4 +366,24 @@ public class TaiKhoanBUS {
             taiKhoanGUI.getTbTaiKhoan().getTable().setValueAt(data[i], index, i);
         }
     }
+
+    // Getter
+    public static ArrayList<NHANVIEN> getListNhanVien() {
+        return listNhanVien;
+    }
+
+    public static ArrayList<TAIKHOAN> getListTaiKhoan() {
+        return listTaiKhoan;
+    }
+
+    public static ArrayList<PHANQUYEN> getListQuyen() {
+        return listQuyen;
+    }
+    
+    
+    // Setter
+    public static void setListQuyen(ArrayList<PHANQUYEN> listQuyen) {
+        TaiKhoanBUS.listQuyen = listQuyen;
+    }
+    
 }

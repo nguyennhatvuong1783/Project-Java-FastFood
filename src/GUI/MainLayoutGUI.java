@@ -215,8 +215,7 @@ public class MainLayoutGUI {
 		JPanel pnlLeftMenu = new JPanel(new BorderLayout());
 		pnlLeftMenu.setBackground(new Color(62,78,94));
 		
-		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource(
-				"/icon_img/logo-fast-food-150.png")));
+		JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource("/icon_img/logo-fast-food-150.png")));
 		lblLogo.setPreferredSize(new Dimension(215, 170));
 		
 		pnlMenu = new JPanel(new GridLayout(9, 1));

@@ -26,16 +26,11 @@ import javax.swing.JOptionPane;
  */
 public class QuyenBUS {
 
-    private ArrayList<PHANQUYEN> listQuyen, listTimKiem;
-    private ArrayList<CHITIETPHANQUYEN> listPhanQuyen;
-    private ArrayList<CHUCNANG> listChucNang;
+    private static ArrayList<PHANQUYEN> listQuyen, listTimKiem;
+    private static ArrayList<CHITIETPHANQUYEN> listPhanQuyen;
+    private static ArrayList<CHUCNANG> listChucNang;
 
-    private QuyenGUI quyenGUI;
-    
-    private boolean isRefresh;
-
-    public QuyenBUS() {
-    }
+    private static QuyenGUI quyenGUI;
 
     @SuppressWarnings("static-access")
     public QuyenBUS(QuyenGUI quyenGUI) {
@@ -44,7 +39,6 @@ public class QuyenBUS {
         this.listPhanQuyen = DaoChiTietPhanQuyen.getInstance().selectAll();
         this.listChucNang = DaoChucNang.getInstance().selectAll();
         this.quyenGUI = quyenGUI;
-        this.isRefresh = true;
         sortListQuyenByMaQuyen(listQuyen);
         addDataToTable();
         event();
@@ -58,14 +52,56 @@ public class QuyenBUS {
     }
 
     private void event() {
-        txtEvent();
-        lamMoiEvent();
         themEvent();
         suaEvent();
         xoaEvent();
+        searchEvent();
+        lamMoiEvent();
     }
 
-    private void txtEvent() {
+    private void searchEvent() {
+        // Key
+        quyenGUI.getTxtTimKiem().addKeyListener(new KeyAdapter() {
+            @Override
+            @SuppressWarnings("IndexOfReplaceableByContains")
+            public void keyTyped(KeyEvent e) {
+                String findText;
+                
+                if (e.getKeyChar() == KeyEvent.VK_D) { System.out.println("DDDD");}
+
+                if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE || e.getKeyChar() == KeyEvent.VK_DELETE) {
+                    findText = quyenGUI.getTxtTimKiem().getText();
+                } else {
+                    findText = quyenGUI.getTxtTimKiem().getText() + e.getKeyChar();
+                }
+                findText = findText.toLowerCase();
+                System.out.println("[QuyenBUS: txtTimKiem.toLower]: \"" + findText + "\"");
+
+                if (findText.replaceAll("\\s", "").equals("")) {
+                    // Truong hop txtTimKiem trong
+                    if (!listTimKiem.isEmpty()) {
+                        listTimKiem.removeAll(listTimKiem);
+                    }
+                } else {
+                    listTimKiem.removeAll(listTimKiem);
+
+                    // Tìm theo mã quyền và tên quyền
+                    for (PHANQUYEN q : listQuyen) {
+                        if (q.getMaQuyen().toLowerCase().indexOf(findText) >= 0 || q.getTenQuyen().toLowerCase().indexOf(findText) >= 0) {
+                            listTimKiem.add(q);
+                        }
+                    }
+                    if (listTimKiem.isEmpty()) {
+                        // Tim kiem khong co ket qua, danh sach tim kiem them mot doi tuong co maquyen empty
+                        listTimKiem.add(new PHANQUYEN("empty", "", "", 0));
+                    }
+                }
+
+                sortListQuyenByMaQuyen(listTimKiem);
+                lamMoi();
+            }
+        });
+
         // Place Holder
         quyenGUI.getTxtTimKiem().addFocusListener(new FocusAdapter() {
             @Override
@@ -84,42 +120,6 @@ public class QuyenBUS {
                 }
             }
         });
-
-        // Key
-        quyenGUI.getTxtTimKiem().addKeyListener(new KeyAdapter() {
-            @Override
-            @SuppressWarnings("IndexOfReplaceableByContains")
-            public void keyTyped(KeyEvent e) {
-                String findText;
-                if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
-                    findText = quyenGUI.getTxtTimKiem().getText();
-                } else {
-                    findText = quyenGUI.getTxtTimKiem().getText() + e.getKeyChar();
-                }
-                findText = findText.toLowerCase();
-                System.out.println("[QuyenBUS: txtTimKiem.toLower]:" + findText);
-
-                if (findText.replaceAll("\\s", "").equals("")) {
-                    // Truong hop txtTimKiem trong
-                    listTimKiem.removeAll(listTimKiem);
-                } else {
-                    listTimKiem.removeAll(listTimKiem);
-                    // Tim kiem theo ma quyen va ten quyen
-                    for (PHANQUYEN pq : listQuyen) {
-                        if (pq.getMaQuyen().toLowerCase().indexOf(findText) >= 0 || pq.getTenQuyen().toLowerCase().indexOf(findText) >= 0) {
-                            listTimKiem.add(pq);
-                        }
-                    }
-                    if (listTimKiem.isEmpty()) {
-                        // Tim kiem khong co ket qua, danh sach tim kiem them mot doi tuong co maquyen empty
-                        listTimKiem.add(new PHANQUYEN("empty", "", "", 0));
-                    }
-                }
-
-                sortListQuyenByMaQuyen(listTimKiem);
-                lamMoi();
-            }
-        });
     }
 
     private void lamMoiEvent() {
@@ -129,7 +129,6 @@ public class QuyenBUS {
                 System.out.println("[QuyenBUS]: Refresh");
                 sortListQuyenByMaQuyen(listQuyen);
                 lamMoi();
-                isRefresh = true;
             }
 
             @Override
@@ -150,13 +149,7 @@ public class QuyenBUS {
             @SuppressWarnings("ResultOfObjectAllocationIgnored")
             public void mouseClicked(MouseEvent e) {
                 System.out.println("[QuyenBUS]: Them");
-                if (!isRefresh) {
-                    sortListQuyenByMaQuyen(listQuyen);
-                    lamMoi();
-                }
-                isRefresh = false;
-                
-                new TaoQuyenGUI(listQuyen, listPhanQuyen, listChucNang);
+                new TaoQuyenGUI();
             }
 
             @Override
@@ -189,10 +182,12 @@ public class QuyenBUS {
                         quyenStr[i] = (String) value;
                     }
 
+                    // Lấy dữ liêu của dòng được chọn, tạo đối tượng quyen
                     PHANQUYEN quyen = new PHANQUYEN(quyenStr[0], quyenStr[1], quyenStr[2], 0);
-                    ArrayList<CHITIETPHANQUYEN> quyenDuocSua = DaoChiTietPhanQuyen.getInstance().selectAllById(quyen.getMaQuyen());
+                    // Lấy danh sách quyền của đối tượng quyen
+                    ArrayList<CHITIETPHANQUYEN> ctpqDuocSua = DaoChiTietPhanQuyen.getInstance().selectAllById(quyen.getMaQuyen());
 
-                    new SuaQuyenGUI(quyen, listQuyen, listPhanQuyen, listChucNang, quyenDuocSua);
+                    new SuaQuyenGUI(quyen, ctpqDuocSua);
                 }
             }
 
@@ -232,7 +227,7 @@ public class QuyenBUS {
 
                             PHANQUYEN quyen = new PHANQUYEN(quyenStr[0], quyenStr[1], quyenStr[2], 0);
 
-                            new XoaQuyenBUS(listQuyen, listPhanQuyen, quyen);
+                            new XoaQuyenBUS(quyen);
                         }
                         case 1 ->
                             System.out.println("[QuyenBUS]: Chon no");
@@ -255,7 +250,14 @@ public class QuyenBUS {
         });
     }
 
-    private void sortListQuyenByMaQuyen(ArrayList<PHANQUYEN> list) {
+    // Method
+    public static void setRowData(int index, String[] data) {
+        for (int i = 0; i < data.length; i++) {
+            quyenGUI.getTbQuyen().getTable().setValueAt(data[i], index, i);
+        }
+    }
+
+    public static void sortListQuyenByMaQuyen(ArrayList<PHANQUYEN> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = i + 1; j < list.size(); j++) {
                 int quyenI = Integer.parseInt(list.get(i).getMaQuyen().substring(1));
@@ -280,13 +282,7 @@ public class QuyenBUS {
         }
     }
 
-    public void setRowData(int index, String[] data) {
-        for (int i = 0; i < data.length; i++) {
-            quyenGUI.getTbQuyen().getTable().setValueAt(data[i], index, i);
-        }
-    }
-
-    public void lamMoi() {
+    public static void lamMoi() {
         ArrayList<PHANQUYEN> tableList;
         int listRow;
         int tableRow = quyenGUI.getTbQuyen().getTable().getRowCount();
@@ -296,7 +292,7 @@ public class QuyenBUS {
             listRow = listQuyen.size();
         } else {
             if (listTimKiem.size() == 1 && listTimKiem.get(0).getMaQuyen().equals("empty")) {
-                // Truong hop tim kiem khong co ket qua: line 111
+                // Truong hop tim kiem khong co ket qua
                 tableList = listTimKiem;
                 listRow = 0;
             } else {
@@ -328,6 +324,30 @@ public class QuyenBUS {
                     i++;
                 }
             }
+        } else {
+            int i = 0;
+
+            for (PHANQUYEN p : listTimKiem) {
+                setRowData(i++, new String[]{p.getMaQuyen(), p.getTenQuyen(), p.getMoTaQuyen()});
+            }
         }
     }
+
+    // Getter
+    public static ArrayList<PHANQUYEN> getListQuyen() {
+        return listQuyen;
+    }
+
+    public static ArrayList<PHANQUYEN> getListTimKiem() {
+        return listTimKiem;
+    }
+
+    public static ArrayList<CHITIETPHANQUYEN> getListPhanQuyen() {
+        return listPhanQuyen;
+    }
+
+    public static ArrayList<CHUCNANG> getListChucNang() {
+        return listChucNang;
+    }
+
 }
