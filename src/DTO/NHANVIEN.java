@@ -11,7 +11,6 @@ public class NHANVIEN {
 	
 	public NHANVIEN() {
 	}
-	
 	public NHANVIEN(String maNV, String tenNV, String gioiTinh, String ngaySinh, String diaChi, String sdt,
 			int trangThai) {
 		super();
@@ -23,8 +22,15 @@ public class NHANVIEN {
 		this.sdt = sdt;
 		this.trangThai = trangThai;
 	}
-	
-	
+	public void setNhanVien(NHANVIEN nhanVien) {
+		this.maNV = nhanVien.maNV;
+		this.tenNV = nhanVien.tenNV;
+		this.gioiTinh = nhanVien.gioiTinh;
+		this.ngaySinh = nhanVien.ngaySinh;
+		this.sdt = nhanVien.sdt;
+		this.diaChi = nhanVien.diaChi;
+		this.trangThai = nhanVien.trangThai;
+	}
 	public String getMaNV() {
 		return maNV;
 	}

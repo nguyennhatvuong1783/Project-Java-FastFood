@@ -107,7 +107,8 @@ public class LoginBUS {
 
 							        NHANVIEN nhanvien = new NHANVIEN(taikhoan.getUserName(), "", "", "", "", "", 1);
 							        nhanvien = DaoNhanVien.getInstance().selectById(nhanvien);
-									new MainLayoutGUI(taikhoan, nhanvien);
+									System.out.println(taikhoan.getMaQuyen());
+							        new MainLayoutGUI(taikhoan, nhanvien);
 								} catch (Exception ex) {
 									ex.printStackTrace();
 								}

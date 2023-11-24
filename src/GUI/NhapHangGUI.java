@@ -241,7 +241,7 @@ public class NhapHangGUI extends JPanel{
         	NhaCungCapBUS nccbus = new NhaCungCapBUS();
         	ArrayList<NHACUNGCAP> ncclist = new ArrayList<NHACUNGCAP>();
         	int list_count = ncclist.size()-1;
-        	ncclist = nccbus.selectAllNCC();
+        	ncclist = nccbus.getDsNHACUNGCAP();
             String[] NCC = new String[ncclist.size()];
             for(int i=0; i < ncclist.size(); i++) {
             	NCC[i] = ncclist.get(i).getTenNCC();

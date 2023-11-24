@@ -45,7 +45,7 @@ public class DaoNhaCungCap implements DaoInterface<NHACUNGCAP>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "DELETE FROM NHACUNGCAP " +
+			String sql = "Update nhacungcap Set TrangThai = 0" +
 			             " WHERE MANCC=?";
 			PreparedStatement pst = c.prepareStatement(sql);
 			pst.setString(1, t.getMaNCC());
