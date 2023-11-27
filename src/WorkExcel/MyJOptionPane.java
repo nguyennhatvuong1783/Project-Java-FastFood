@@ -1,6 +1,7 @@
 package WorkExcel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -19,8 +20,10 @@ public class MyJOptionPane extends JOptionPane{
 		table.resizeColumnWidth();
 		
 		panel.setLayout(new BorderLayout());
+		panel.setPreferredSize(new Dimension(500, 600));
 		panel.add(table,BorderLayout.CENTER);
 		panel.add(comboBox, BorderLayout.SOUTH);
+		
 		
 		this.showMessageDialog(null,panel,"Trùng mã", QUESTION_MESSAGE);
 	}

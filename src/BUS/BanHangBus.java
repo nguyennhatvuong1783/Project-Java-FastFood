@@ -4,17 +4,22 @@ import java.rmi.Remote;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.jfree.chart.labels.BubbleXYItemLabelGenerator;
+
 import DAO.DaoChiTietHoaDon;
 import DAO.DaoHoaDon;
 import DAO.DaoKhachHang;
+import DAO.DaoKhuyenMai;
 import DAO.DaoMonAn;
 import DTO.CHITIETHOADON;
 import DTO.HOADON;
 import DTO.KHACHHANG;
+import DTO.KHUYENMAI;
 import DTO.MONAN;
 import GUI.MainLayoutGUI;
 import GiaoDienChuan.MyTable;
@@ -185,41 +190,155 @@ public class BanHangBus {
 		return arr[2] + "-" + arr[1] + "-" + arr[0];
 	}
 	
-	public void mouseClickBtnHoanThanh(MyTable table, JTextField txtHD, JTextField txtNgayLap, JTextField txtTongTien, String Manv, JTextField txtKH,String maKH, JTextField txtKM, JTextField txtTienThoi) {
-		if (checkBtnHoanThanh(table, txtKH, txtTienThoi)) {
-			int soLuongBan = 0, soLuongMoi = 0;
-			String maHD = txtHD.getText();
-			String ngayLap = formatNgayLap(txtNgayLap.getText());
+	public String getMaKM(int tongTien) {
+		ArrayList<KHUYENMAI> dsKhuyenMai = DaoKhuyenMai.getInstance().selectAll();
+		int dieuKien[] = new int[dsKhuyenMai.size()];
+		int i = 0;
+		int index = 0;
+		Boolean flag = false;
+		String maKM = null;
+		for (KHUYENMAI khuyenmai : dsKhuyenMai) {
+			if (khuyenmai.getTrangThai() != 1) {
+				dsKhuyenMai.remove(khuyenmai);
+			}else {
+				dieuKien[i] = splitDieuKienKM(khuyenmai.getDieuKienKM());
+				i++;
+			}
+		}
+		
+		Arrays.sort(dieuKien);
+		for(int j =0; j<dieuKien.length; j++) {
+			if (tongTien >= dieuKien[j]) {
+				index = j;
+				flag = true;
+				break;
+			}
+		}
+		
+		if (flag == true) {
+			maKM = dsKhuyenMai.get(index).getMaKM();
+		}
+		return maKM;		
+	}
+	
+	private Float getDieuKienKM(String maKM) {
+		Float result = 0.0f;
+		ArrayList<KHUYENMAI> dsKhuyenMai = DaoKhuyenMai.getInstance().selectAll();
+		for (KHUYENMAI khuyenmai : dsKhuyenMai) {
+			if (khuyenmai.getMaKM().equals(maKM)) {
+				result = khuyenmai.getGiamGia();
+				break;
+			}
+		}
+		return result;
+	}
+	
+	public void MouseclickBtnKhuyenMai(JTextField txtKhuyenMai, JTextField txtTongTien, JTextField tienKhachDua, JTextField tienThoi) {
+		if (txtTongTien.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(null, "Chưa có hóa đơn để áp dụng");
+		}else {
 			int tongTien = Integer.parseInt(txtTongTien.getText());
-			int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, null, null, null));
-			if (ketqua!=0) {
-				JOptionPane.showMessageDialog(null, "Thanh toán thành công");
-				ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
-			    for (int i = 0; i < table.getModel().getRowCount(); i++) {
-			    	for (MONAN monan : monans) {
-			    		int j=0;
-						if (monan.getMaMonAn().equals(table.getValueAt(j, 0))) {
-							soLuongBan = Integer.parseInt(String.valueOf(table.getValueAt(j, 2)));
-							soLuongMoi = monan.getSoLuong() - soLuongBan;
-							monan.setSoLuong(soLuongMoi);
-							DaoMonAn.getInstance().update(monan);
-							DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
-						}else {
-							j++;
+			String maKM = getMaKM(tongTien);
+			if (maKM!=null) {
+				txtKhuyenMai.setText(maKM);
+				int tongTienNew = (int)(tongTien * getDieuKienKM(maKM));
+				txtTongTien.setText(String.valueOf(tongTienNew));
+				JOptionPane.showMessageDialog(null, "Đã áp dụng khuyến mãi, vui lòng nhập lại tiền khách đưa");
+				tienThoi.setText("");
+				tienKhachDua.setText("");
+			}else {
+				JOptionPane.showMessageDialog(null, "Hóa đơn chưa đủ điều kiện áp dụng");
+			}
+		}
+	}
+	
+	private int splitDieuKienKM(String dieuKien) {
+		String result[] = dieuKien.split("=");
+		int kq = Integer.parseInt(result[1].replaceAll(" ", ""));
+		return kq;
+	}
+	
+	public void mouseClickBtnHoanThanh(MyTable table, JTextField txtHD, JTextField txtNgayLap, JTextField txtTongTien, String Manv, JTextField txtKH,String maKH, JTextField txtKM, JTextField txtTienThoi, JTextField txtTienKhachDua) {
+		if (checkBtnHoanThanh(table, txtKH, txtTienThoi)) {
+			if (txtKM.getText().trim().equals("") && getMaKM(Integer.parseInt(txtTongTien.getText()))!=null) {
+				if(JOptionPane.showConfirmDialog(null, "Hóa đơn có khuyến mãi chưa áp dụng, bạn có muốn áp dụng khuyến mãi","Thông báo",
+						JOptionPane.YES_NO_OPTION)== JOptionPane.OK_OPTION) {
+					MouseclickBtnKhuyenMai(txtKM, txtTongTien, txtTienKhachDua, txtTienThoi);	
+					int soLuongBan = 0, soLuongMoi = 0;
+					String maHD = txtHD.getText();
+					String ngayLap = formatNgayLap(txtNgayLap.getText());
+					String maKM = txtKM.getText();			
+					int tongTien = Integer.parseInt(txtTongTien.getText());
+					int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, maKM, null, null));
+					if (ketqua!=0) {
+						JOptionPane.showMessageDialog(null, "Thanh toán thành công");
+						ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
+					    for (int i = 0; i < table.getModel().getRowCount(); i++) {
+					    	for (MONAN monan : monans) {
+					    		int j=0;
+								if (monan.getMaMonAn().equals(table.getValueAt(j, 0))) {
+									soLuongBan = Integer.parseInt(String.valueOf(table.getValueAt(j, 2)));
+									soLuongMoi = monan.getSoLuong() - soLuongBan;
+									monan.setSoLuong(soLuongMoi);
+									DaoMonAn.getInstance().update(monan);
+									DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
+								}else {
+									j++;
+								}
+							}
+						}
+					    
+					    int lengh =  table.getModel().getRowCount();
+					    for (int i = 0; i < lengh; i++) {
+					        table.getModel().removeRow(0);
+					    }
+						setMaHD(txtHD);
+						txtTongTien.setText("");
+						txtKH.setText("");
+						txtTienThoi.setText("");
+						txtKM.setText("");
+					}
+				}					
+			}else {
+				int soLuongBan = 0, soLuongMoi = 0;
+				String maHD = txtHD.getText();
+				String ngayLap = formatNgayLap(txtNgayLap.getText());
+				String maKM = null;
+				if (txtKM.getText().trim().equals("")==false) {
+					maKM = txtKM.getText();
+				}		
+				int tongTien = Integer.parseInt(txtTongTien.getText());
+				int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, maKM, null, null));
+				if (ketqua!=0) {
+					JOptionPane.showMessageDialog(null, "Thanh toán thành công");
+					ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
+				    for (int i = 0; i < table.getModel().getRowCount(); i++) {
+				    	for (MONAN monan : monans) {
+				    		int j=0;
+							if (monan.getMaMonAn().equals(table.getValueAt(j, 0))) {
+								soLuongBan = Integer.parseInt(String.valueOf(table.getValueAt(j, 2)));
+								soLuongMoi = monan.getSoLuong() - soLuongBan;
+								monan.setSoLuong(soLuongMoi);
+								DaoMonAn.getInstance().update(monan);
+								DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
+							}else {
+								j++;
+							}
 						}
 					}
+				    
+				    int lengh =  table.getModel().getRowCount();
+				    for (int i = 0; i < lengh; i++) {
+				        table.getModel().removeRow(0);
+				    }
+					setMaHD(txtHD);
+					txtTongTien.setText("");
+					txtKH.setText("");
+					txtTienThoi.setText("");
+					txtKM.setText("");
 				}
-			    
-			    int lengh =  table.getModel().getRowCount();
-			    for (int i = 0; i < lengh; i++) {
-			        table.getModel().removeRow(0);
-			    }
-				setMaHD(txtHD);
-				txtTongTien.setText("");
-				txtKH.setText("");
-				txtTienThoi.setText("");
-				txtKM.setText("");
 			}
+			
 			
 		}
 	}

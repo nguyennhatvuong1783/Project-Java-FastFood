@@ -125,10 +125,11 @@ public class TaoQuyenBUS {
                     moTa = taoQuyenGUI.getTxtMoTa().getText();
                 }
 
-                // Them Database Quyen va them (QuyenBUS)listQuyen
+                // Them Database Quyen, them (QuyenBUS)listQuyen va sua (TaiKhoanBUS)listQuyen
                 PHANQUYEN quyen = new PHANQUYEN(taoQuyenGUI.getMaQuyenMoi(), ten, moTa, 0);
                 DaoQuyen.getInstance().insert(quyen);
                 taoQuyenGUI.getListQuyen().add(quyen);
+                TaiKhoanBUS.setListQuyen(taoQuyenGUI.getListQuyen());
 
                 // Them Database ChiTietPhanQuyen
                 ArrayList<CHITIETPHANQUYEN> listPhanQuyen = new ArrayList<>();
@@ -144,6 +145,9 @@ public class TaoQuyenBUS {
                 }
                 JOptionPane option = new JOptionPane();
                 option.showMessageDialog(taoQuyenGUI, "Thêm thành công");
+                QuyenBUS.sortListQuyenByMaQuyen(taoQuyenGUI.getListQuyen());
+                QuyenBUS.lamMoi();
+                TaiKhoanBUS.setListQuyen(taoQuyenGUI.getListQuyen());
                 taoQuyenGUI.dispose();
             }
 

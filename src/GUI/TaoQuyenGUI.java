@@ -1,5 +1,6 @@
 package GUI;
 
+import BUS.QuyenBUS;
 import BUS.TaoQuyenBUS;
 import DTO.CHITIETPHANQUYEN;
 import DTO.CHUCNANG;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +27,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Jhin
  */
-public class TaoQuyenGUI extends JFrame {
+public class TaoQuyenGUI extends JDialog {
 
     private final Font lbFont = new Font("Times New Roman", Font.BOLD, 16);
     private final Font txtFont = new Font("Times New Roman", Font.PLAIN, 16);
@@ -49,25 +51,25 @@ public class TaoQuyenGUI extends JFrame {
     private int pX, pY;
 
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
-    public TaoQuyenGUI(ArrayList<PHANQUYEN> listQuyen, ArrayList<CHITIETPHANQUYEN> listPhanQuyen, ArrayList<CHUCNANG> listChucNang) {
+    public TaoQuyenGUI() {
+        this.listQuyen = QuyenBUS.getListQuyen();
+        this.listPhanQuyen = QuyenBUS.getListPhanQuyen();
+        this.listChucNang = QuyenBUS.getListChucNang();
         if (listQuyen.isEmpty()) {
-            maQuyenMoi = "Q1";
+            maQuyenMoi = "Q01";
         } else {
             int i = 1;
-            for(PHANQUYEN pq : listQuyen) {
-                if (!pq.getMaQuyen().equals("Q" + i)) {
-                    maQuyenMoi = "Q" + i;
+            for (PHANQUYEN pq : listQuyen) {
+                if (!(Integer.parseInt(pq.getMaQuyen().substring(1)) == i)) {
+                    maQuyenMoi = String.format("Q%02d", i);
                     break;
                 }
                 i++;
             }
             if (maQuyenMoi == null) {
-                maQuyenMoi = "Q" + i;
+                maQuyenMoi = String.format("Q%02d", i);
             }
         }
-        this.listQuyen = listQuyen;
-        this.listPhanQuyen = listPhanQuyen;
-        this.listChucNang = listChucNang;
         init();
         new TaoQuyenBUS(this);
     }

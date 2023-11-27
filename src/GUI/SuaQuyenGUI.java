@@ -1,7 +1,7 @@
 package GUI;
 
+import BUS.QuyenBUS;
 import BUS.SuaQuyenBUS;
-import DAO.DaoChiTietPhanQuyen;
 import DTO.CHITIETPHANQUYEN;
 import DTO.CHUCNANG;
 import DTO.PHANQUYEN;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,7 +27,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Jhin
  */
-public class SuaQuyenGUI extends JFrame {
+public class SuaQuyenGUI extends JDialog {
 
     private final Font lbFont = new Font("Times New Roman", Font.BOLD, 16);
     private final Font txtFont = new Font("Times New Roman", Font.PLAIN, 16);
@@ -54,11 +55,11 @@ public class SuaQuyenGUI extends JFrame {
     private int pX, pY;
 
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
-    public SuaQuyenGUI(PHANQUYEN quyen, ArrayList<PHANQUYEN> listQuyen, ArrayList<CHITIETPHANQUYEN> listPhanQuyen, ArrayList<CHUCNANG> listChucNang, ArrayList<CHITIETPHANQUYEN> quyenDuocSua) {
+    public SuaQuyenGUI(PHANQUYEN quyen, ArrayList<CHITIETPHANQUYEN> quyenDuocSua) {
         this.quyen = quyen;
-        this.listQuyen = listQuyen;
-        this.listPhanQuyen = listPhanQuyen;
-        this.listChucNang = listChucNang;
+        this.listQuyen = QuyenBUS.getListQuyen();
+        this.listPhanQuyen = QuyenBUS.getListPhanQuyen();
+        this.listChucNang = QuyenBUS.getListChucNang();
         this.quyenDuocSua = quyenDuocSua;
         init();
         new SuaQuyenBUS(this);

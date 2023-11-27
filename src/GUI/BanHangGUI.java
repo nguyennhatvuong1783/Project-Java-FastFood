@@ -442,6 +442,13 @@ public class BanHangGUI extends JPanel{
 				MouseClickRefresh();
 			}
 		});
+        btnKhuyenMai.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				banHangBus.MouseclickBtnKhuyenMai(txtKhuyenMai, txtTongTien, txtTienKhachDua, txtTienThoi);
+				
+			}
+		});
         
         addDocumentListener(txtTimKiem);
         banHangBus.setMaHD(txtMaHD);
@@ -542,6 +549,7 @@ public class BanHangGUI extends JPanel{
 			updateSoLuong();
 			updateTongTien();
 			clearInfor();
+			txtKhuyenMai.setText("");
 			pnlTableMonAn.getTable().setRowSelectionInterval(0, 0);
 		}
 	}
@@ -555,6 +563,7 @@ public class BanHangGUI extends JPanel{
 			banHangBus.updateSoLuong2(pnlTableMonAn, sl, maMA);
 			updateTongTienXoa(index);
 			pnlTableGioHang.getModel().removeRow(index);
+			txtKhuyenMai.setText("");
 		}else {
 			JOptionPane.showMessageDialog(null, "Chưa chọn món ăn cần xóa");
 		}
@@ -586,7 +595,7 @@ public class BanHangGUI extends JPanel{
 	
 	
 	private void MouseClickHoanThanh() {
-		banHangBus.mouseClickBtnHoanThanh(pnlTableGioHang, txtMaHD, txtNgayNhap, txtTongTien, MainLayoutGUI.nhanvien.getMaNV(), txtKhachHang, maKhString, txtKhuyenMai, txtTienThoi);
+		banHangBus.mouseClickBtnHoanThanh(pnlTableGioHang, txtMaHD, txtNgayNhap, txtTongTien, MainLayoutGUI.nhanvien.getMaNV(), txtKhachHang, maKhString, txtKhuyenMai, txtTienThoi, txtTienKhachDua);
 	}
 	
 	private void MouseClickRefresh() {

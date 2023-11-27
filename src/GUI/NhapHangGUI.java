@@ -6,6 +6,7 @@ import GiaoDienChuan.MyTable;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
+import GiaoDienChuan.RefreshButton;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -65,6 +66,7 @@ public class NhapHangGUI extends JPanel{
         public JLabel txtSLhint;
         public XoaButton delbtn;
         public SuaButton modbtn;
+        public RefreshButton rFreshBtn;
         public JTextField txtMANV;
         public JLabel txtMANVhint;
         public JLabel txtTongtien;
@@ -117,6 +119,7 @@ public class NhapHangGUI extends JPanel{
             txtSLhint=new JLabel("Nhập số lượng");
             delbtn = new XoaButton();
             modbtn = new SuaButton();
+            rFreshBtn = new RefreshButton();
             txtMANV=new JTextField(20);
             txtMANVhint = new JLabel("Nhập mã nhân viên: ");
             txtTongtien=new JLabel("0");
@@ -127,6 +130,7 @@ public class NhapHangGUI extends JPanel{
             // Thêm vào JPanel         
             panelNCCselector.add(themnccbtn);                
             panelNCCselector.add(cb);   
+            panelNCCselector.add(rFreshBtn);
             NCCpnl.add(scrollPaneNCC,BorderLayout.CENTER);  
             panelSPselector.add(txtSLhint);
             panelSPselector.add(txtSL);
@@ -158,6 +162,14 @@ public class NhapHangGUI extends JPanel{
             //Hiển thị JFrame
             frame.setVisible(true);
             */
+            
+            rFreshBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                	tableNCC.getModel().setRowCount(0);
+                    khoitao2bang();
+                }
+            });   
             
            
             themspbtn.addActionListener(new ActionListener() {
@@ -315,8 +327,7 @@ public class NhapHangGUI extends JPanel{
             
             Object[] options = {"OK", "Cancel"};
             Object[] message = {
-                "Mã nhân viên: ", txtManv,
-                "Tổng số tiền: ", txtTong                     
+               "Bạn có xác nhận thanh toán ???"                   
             };
 
             int option = JOptionPane.showOptionDialog(null, message, "Thông tin",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
