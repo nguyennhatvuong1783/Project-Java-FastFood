@@ -93,6 +93,7 @@ public class DocExcel {
 									String.valueOf(soLuong),
 									String.valueOf(donGia)
 							});
+							table.resizeColumnWidth();
 							
 							 MyJOptionPane mop = new MyJOptionPane(table, hanhDongKhiTrung);
 	                         hanhDongKhiTrung = mop.getAnswer();

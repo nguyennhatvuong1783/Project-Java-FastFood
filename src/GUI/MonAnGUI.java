@@ -240,7 +240,14 @@ public class MonAnGUI extends JPanel {
                 xuatExcel.xuatFileExcelMonAn();
             }
         });
-
+        btnNhap.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DocExcel docExcel = new DocExcel();
+				docExcel.docFileExcelMonAn();
+				
+			}
+		});
         JPanel pnlbtn = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 0));
         pnlbtn.add(btnThem);
         pnlbtn.add(btnSua);
