@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import GiaoDienChuan.MyTable;
 
 public class MyJOptionPane extends JOptionPane{
-	JComboBox<String> comboBox = new JComboBox<String>(new String[] {"Ghi đè","Bỏ qua","Ghi đè tất cả","Bỏ qua tất cả"});
+	JComboBox<String> comboBox = new JComboBox<String>(new String[] {"Ghi đè","Bỏ qua"});
 	JPanel panel = new JPanel();
 	
 	public MyJOptionPane(MyTable table, String select) {

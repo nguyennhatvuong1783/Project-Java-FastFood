@@ -1,15 +1,11 @@
 package BUS;
 
-import java.rmi.Remote;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.jfree.chart.labels.BubbleXYItemLabelGenerator;
 
 import DAO.DaoChiTietHoaDon;
 import DAO.DaoHoaDon;
@@ -21,7 +17,6 @@ import DTO.HOADON;
 import DTO.KHACHHANG;
 import DTO.KHUYENMAI;
 import DTO.MONAN;
-import GUI.MainLayoutGUI;
 import GiaoDienChuan.MyTable;
 
 public class BanHangBus {
