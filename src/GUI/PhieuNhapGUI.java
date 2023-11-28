@@ -2,6 +2,7 @@ package GUI;
 
 import GiaoDienChuan.ExportExcelButton;
 
+
 import GiaoDienChuan.MyTable;
 import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
@@ -28,12 +29,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import BUS.PhieuNhapBUS;
+import BUS.NhanVienBUS;
+import BUS.NhaCungCapBUS;
 import DTO.CHITIETPHIEUNHAP;
+import DTO.NGUYENLIEU;
 import DTO.PHIEUNHAP;
+import DTO.NHANVIEN;
+import DTO.NHACUNGCAP;
 
 
 public class PhieuNhapGUI extends JPanel{
@@ -67,7 +74,7 @@ public class PhieuNhapGUI extends JPanel{
             timkiembtn = new JButton("Tìm kiếm");
             txtsearch = new JTextField(30);
             table = new MyTable();       
-            String[] columnNames = {"Mã phiếu nhập", "Ngày lập", "Tổng tiền", "Mã nhân viên", "Mã nhà cung cấp"};   
+            String[] columnNames = {"Mã phiếu nhập", "Ngày lập", "Tổng tiền", "Tên nhân viên", "T nhà cung cấp"};   
             table.setHeaders(columnNames);    
             listNL(); 
             sorter = new TableRowSorter<>(table.getModel());                                         
@@ -137,6 +144,8 @@ public class PhieuNhapGUI extends JPanel{
                 public void actionPerformed(ActionEvent e) {
                     sorter.setRowFilter(null);
                     txtsearch.setText("");
+                    table.getModel().setRowCount(0);
+                    listNL();
                 }
             });
 
@@ -147,7 +156,7 @@ public class PhieuNhapGUI extends JPanel{
                 if (text.length() == 0) {
                     sorter.setRowFilter(null);// không có bộ lọc được áp dụng
                 } else {
-                    sorter.setRowFilter(RowFilter.regexFilter(text));// lọc dựa trên nội dung đã nhập
+                	sorter.setRowFilter(RowFilter.regexFilter(text));// lọc dựa trên nội dung đã nhập
                 }           
         }
         
@@ -171,7 +180,7 @@ public class PhieuNhapGUI extends JPanel{
                     };
 
                 // Tạo tiêu đề cho các cột
-                String[] columnNames = {"Mã nguyên liệu", "Số lượng"};
+                String[] columnNames = {"Tên nguyên liệu", "Mã nguyên liệu", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
 
                 // Tạo bảng
                 tableModel = new DefaultTableModel(columnNames, 0);
@@ -181,8 +190,16 @@ public class PhieuNhapGUI extends JPanel{
                 JScrollPane scrollPane = new JScrollPane(tablemini);
                 tablemini.setFillsViewportHeight(true);
                 
+                
+                ArrayList<NGUYENLIEU> NLlist = new ArrayList<NGUYENLIEU>();
+                NLlist = bus.selectAllNL();
+                
                 for(CHITIETPHIEUNHAP ctpn : listCTPN) {
-                	tableModel.addRow(new Object[] {ctpn.getMaNL(), ctpn.getSoLuong()});
+                	for(NGUYENLIEU nl : NLlist) {
+                		if(ctpn.getMaNL().equalsIgnoreCase(nl.getMaNL())) {
+                			tableModel.addRow(new Object[] {nl.getTenNL(), ctpn.getMaNL(), ctpn.getSoLuong(), nl.getDonViTinh(), nl.getDonGia(), nl.getLoaiNL()});
+                		}
+                	}
                 }
 
                 // Hiển thị thông tin hóa đơn bằng JOptionPane
@@ -221,8 +238,28 @@ public class PhieuNhapGUI extends JPanel{
             ArrayList<PHIEUNHAP> pnlist = new ArrayList<PHIEUNHAP>();
             PhieuNhapBUS pnbus = new PhieuNhapBUS();
             pnlist = pnbus.selectAllPN();
+            
+            NhanVienBUS NVbus = new NhanVienBUS();
+            ArrayList<NHANVIEN> NVlist = NVbus.getDsNHANVIEN();
+            NhaCungCapBUS NCCbus = new NhaCungCapBUS();
+            ArrayList<NHACUNGCAP> NCClist = NCCbus.getDsNHACUNGCAP();
+            
+            int i=0;
             for(PHIEUNHAP pn : pnlist) {
-            	table.getModel().addRow(new Object[] {pn.getMaPN(), pn.getNgayNhap(), pn.getTongTien(), pn.getMaNV(), pn.getMaNCC()});
+            	table.getModel().addRow(new Object[] {pn.getMaPN(), pn.getNgayNhap(), pn.getTongTien(), null, null});
+            	for(NHANVIEN nv : NVlist) {
+            		if(pn.getMaNV().equalsIgnoreCase(nv.getMaNV())) {
+            			table.getTable().setValueAt(nv.getTenNV(), i, 3);
+            		}
+            	}
+            	for(NHACUNGCAP ncc : NCClist) {
+            		if(pn.getMaNCC().equalsIgnoreCase(ncc.getMaNCC())) {
+            			table.getTable().setValueAt(ncc.getTenNCC(), i, 4);
+            		}
+            	}
+            	i++;
             }
+            
+            
         }
 }
