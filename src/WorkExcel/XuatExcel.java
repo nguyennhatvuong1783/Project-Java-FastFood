@@ -18,19 +18,27 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 import BUS.ChiTietHoaDonBUS;
+import BUS.ChiTietPhieuNhapBUS;
 import BUS.MonAnBus;
+import BUS.NguyenLieuBUS;
+import BUS.PhieuNhapBUS;
 import DAO.DaoChiTietHoaDon;
 import DAO.DaoHoaDon;
 import DAO.DaoKhachHang;
 import DAO.DaoMonAn;
+import DAO.DaoNguyenLieu;
 import DAO.DaoNhaCungCap;
 import DAO.DaoNhanVien;
+import DAO.DaoPhieuNhap;
 import DTO.CHITIETHOADON;
+import DTO.CHITIETPHIEUNHAP;
 import DTO.HOADON;
 import DTO.KHACHHANG;
 import DTO.MONAN;
+import DTO.NGUYENLIEU;
 import DTO.NHACUNGCAP;
 import DTO.NHANVIEN;
+import DTO.PHIEUNHAP;
 
 public class XuatExcel {
 	FileDialog fd = new FileDialog(new JFrame(), "Xuất file excel", FileDialog.SAVE);
@@ -397,5 +405,157 @@ public class XuatExcel {
 		}
 	}
 	
+	// Xuất file nguyên liệu
+	public void xuatFileExcelNguyenLieu() {
+		fd.setTitle("Xuất dữ liệu danh sách nguyên liệu");
+		String tenFile = JOptionPane.showInputDialog(null,"Tên file","Thông báo", JOptionPane.PLAIN_MESSAGE);
+		 if (tenFile != null) {
+	        	String url = getFile(tenFile);
+	    		if (url == null) {
+	    			return;
+	    		}
+	    		
+	    		FileOutputStream outputStream = null;
+	    		try {
+	    			HSSFWorkbook workbook = new HSSFWorkbook();
+	    			HSSFSheet sheet = workbook.createSheet("Nguyên liệu");
+	    			ArrayList<NGUYENLIEU> nguyenlieus = DaoNguyenLieu.getInstance().selectAll();
+	    			
+	    			int rowNum = 0;
+	    			Row row = sheet.createRow(rowNum);
+	    			
+	    			row.createCell(0, CellType.NUMERIC).setCellValue("STT");
+	    			row.createCell(1,CellType.STRING).setCellValue("Mã nguyên liệu");
+	    			row.createCell(2,CellType.STRING).setCellValue("Tên nguyên liệu");
+	    			row.createCell(3,CellType.STRING).setCellValue("Đơn vị tính");
+	    			row.createCell(4,CellType.STRING).setCellValue("Loại");
+	    			row.createCell(5,CellType.NUMERIC).setCellValue("Số lượng");
+	    			row.createCell(6,CellType.NUMERIC).setCellValue("Đơn giá");
+	    			
+	    			for (NGUYENLIEU nguyenlieu : nguyenlieus) {
+	    				rowNum++;
+	    				row = sheet.createRow(rowNum);
+	    				
+	    				row.createCell(0, CellType.NUMERIC).setCellValue(rowNum);
+	    				row.createCell(1,CellType.STRING).setCellValue(nguyenlieu.getMaNL());
+	    				row.createCell(2,CellType.STRING).setCellValue(nguyenlieu.getTenNL());
+	    				row.createCell(3,CellType.STRING).setCellValue(nguyenlieu.getDonViTinh());
+	    				row.createCell(4,CellType.STRING).setCellValue(nguyenlieu.getLoaiNL());
+	    				row.createCell(5,CellType.NUMERIC).setCellValue(nguyenlieu.getSoLuong());
+	    				row.createCell(6,CellType.NUMERIC).setCellValue(nguyenlieu.getDonGia());				
+	    			}
+	    			for (int i = 0; i < rowNum; i++) {
+	    				sheet.autoSizeColumn(i);
+	    			}
+	    			
+	    			File file = new File(url);
+	    			if (file != null) {
+	    				file.getParentFile().mkdirs();
+	    			}
+	    			outputStream = new FileOutputStream(file);
+	    			workbook.write(outputStream);
+	    			
+	    			JOptionPane.showMessageDialog(null, "Ghi file thành công: " + file.getAbsolutePath());
+	    		} catch (FileNotFoundException ex) {
+	    			  Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+	    		} catch (IOException ex) {
+	    			 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+	    		} finally {
+	    			try {
+	    				if (outputStream != null) {
+	    					outputStream.close();
+	    				}
+	    			} catch (IOException ex) {
+	    				 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+	    			}
+	    		}
+			}
+			
+		
+	}
 	
+	// Xuất file phiếu nhập
+	public void xuatFileExcelPhieuNhap() {
+		fd.setTitle("Xuất dữ liệu phiếu nhập");
+		String tenFile = JOptionPane.showInputDialog(null,"Tên file","Thông báo", JOptionPane.PLAIN_MESSAGE);
+		if (tenFile != null) {
+			String url = getFile(tenFile);
+			if (url == null) {
+				return;
+			}
+			
+			FileOutputStream outputStream = null;
+			try {
+				HSSFWorkbook workbook = new HSSFWorkbook();
+				HSSFSheet sheet = workbook.createSheet("Phiếu nhập");
+				ArrayList<PHIEUNHAP> phieunhaps = DaoPhieuNhap.getInstance().selectAll();
+				ChiTietPhieuNhapBUS chiTietPhieuNhapBUS = new ChiTietPhieuNhapBUS();
+				NguyenLieuBUS nguyenLieuBUS = new NguyenLieuBUS();
+				
+				int rowNum = 0;
+				int sttPhieuNhap = 0;
+				Row row = sheet.createRow(rowNum);
+				
+				row.createCell(0, CellType.NUMERIC).setCellValue("STT");
+				row.createCell(1,CellType.STRING).setCellValue("Mã phiếu nhập");
+				row.createCell(2,CellType.STRING).setCellValue("Mã nhà cung cấp");
+				row.createCell(3,CellType.STRING).setCellValue("Nhân viên lập phiếu nhập");
+				row.createCell(4,CellType.STRING).setCellValue("Ngày lập");
+				row.createCell(5,CellType.NUMERIC).setCellValue("Tổng tiền");
+				
+				row.createCell(6, CellType.STRING).setCellValue("Nguyên liệu");
+		        row.createCell(7, CellType.NUMERIC).setCellValue("Số lượng");
+		        row.createCell(8, CellType.NUMERIC).setCellValue("Đơn giá");
+		        row.createCell(9, CellType.NUMERIC).setCellValue("Thành tiền");
+				
+				for (PHIEUNHAP phieunhap : phieunhaps) {
+					rowNum++;
+					sttPhieuNhap++;
+					row = sheet.createRow(rowNum);
+					
+					row.createCell(0, CellType.NUMERIC).setCellValue(sttPhieuNhap);
+					row.createCell(1,CellType.STRING).setCellValue(phieunhap.getMaPN());
+					row.createCell(2,CellType.STRING).setCellValue(phieunhap.getMaNCC());
+					row.createCell(3,CellType.STRING).setCellValue(phieunhap.getMaNV());
+					row.createCell(4,CellType.STRING).setCellValue(phieunhap.getNgayNhap());
+					row.createCell(5,CellType.NUMERIC).setCellValue(phieunhap.getTongTien());
+					
+					for(CHITIETPHIEUNHAP ctphieuNhap : chiTietPhieuNhapBUS.getAllCTPhieuNhap(phieunhap.getMaPN())) {
+						rowNum++;
+						row = sheet.createRow(rowNum);
+						
+						String maNL = ctphieuNhap.getMaNL();
+		
+						row.createCell(6, CellType.STRING).setCellValue(maNL+" - "+nguyenLieuBUS.getTenNL(maNL));
+				        row.createCell(7, CellType.NUMERIC).setCellValue(ctphieuNhap.getSoLuong());
+				        row.createCell(8, CellType.NUMERIC).setCellValue(nguyenLieuBUS.getDonGia(maNL));
+				        row.createCell(9, CellType.NUMERIC).setCellValue(ctphieuNhap.getSoLuong() * nguyenLieuBUS.getDonGia(maNL));
+					}
+					
+				}
+				for (int i = 0; i < rowNum; i++) {
+					sheet.autoSizeColumn(i);
+				}
+				
+				File file = new File(url);
+				file.getParentFile().mkdirs();
+				outputStream = new FileOutputStream(file);
+				workbook.write(outputStream);
+				
+				JOptionPane.showMessageDialog(null, "Ghi file thành công: " + file.getAbsolutePath());
+			} catch (FileNotFoundException ex) {
+				  Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IOException ex) {
+				 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				try {
+					if (outputStream != null) {
+						outputStream.close();
+					}
+				} catch (IOException ex) {
+					 Logger.getLogger(XuatExcel.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		}
+	}
 }
