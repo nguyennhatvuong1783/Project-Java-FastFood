@@ -72,7 +72,7 @@ public class DaoNhanVien implements DaoInterface<NHANVIEN>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "UPDATE KHACHHANG " +
+			String sql = "UPDATE NhanVien " +
 			             " SET TENNV=?" +
 					     ", GIOITINH=? "+
 			             ", NGAYSINH=?"+
@@ -84,6 +84,7 @@ public class DaoNhanVien implements DaoInterface<NHANVIEN>{
 			pst.setNString(1, t.getTenNV());
 			pst.setNString(2, t.getGioiTinh());
 			String ngayString = t.getNgaySinh();
+			System.out.println(t.getMaNV());
 			Date date = Date.valueOf(ngayString);
 			pst.setDate(3, date);
 			pst.setNString(4, t.getDiaChi());

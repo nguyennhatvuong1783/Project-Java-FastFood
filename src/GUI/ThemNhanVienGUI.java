@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
@@ -38,7 +39,12 @@ public class ThemNhanVienGUI extends JFrame{
 	public ThemNhanVienGUI() {
 		init();
 	}
-	
+    private Boolean isDate(String date) {
+    	String regex = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+    	Pattern pattern = Pattern.compile(regex);
+    	return pattern.matches(regex, date);
+    	
+    }
 
 	public void init() {
 		JPanel inforPanel = new JPanel();
@@ -164,7 +170,7 @@ public class ThemNhanVienGUI extends JFrame{
 			String NgaySinh = txtNgaySinh.getText();
 			String GioiTinh = (String)cbGioiTinh.getSelectedItem();
 			String SDT =txtSDT.getText();
-			 nv = new NHANVIEN(Manv, Tennv,GioiTinh,NgaySinh,SDT , DiaChi, 1);
+			 nv = new NHANVIEN(Manv, Tennv,GioiTinh,NgaySinh,DiaChi, SDT, 1);
 		    if (DaoNhanVien.getInstance().insert(nv)!=0) {
 		    	JOptionPane.showMessageDialog(this,"Thêm thành công");
 				this.dispose();
@@ -180,6 +186,7 @@ public class ThemNhanVienGUI extends JFrame{
 		String Tennv = txtTennv.getText();
 		String DiaChi = txtDiaChi.getText();
 		String SDT = txtSDT.getText();
+		String NgaySinh = txtNgaySinh.getText();
 		if (Tennv.trim().equals("")) {
 			return showErr(txtTennv, "Tên nhân viên không được để trống");	
 		}else if (checkKyTuDacBiet(Tennv)== false) {
@@ -195,6 +202,8 @@ public class ThemNhanVienGUI extends JFrame{
 			return showErr(txtSDT,"Ký tự đầu của số điện thoại phải là 0");
 		}else if (checkKyTuDacBiet(SDT)==false) {
 			return showErr(txtSDT,"Số điện thoại không được chứa ký tự đặc biệt");
+		}else if (isDate(NgaySinh)==false){
+			return showErr(txtNgaySinh,"Ngày sinh phải là yyyy-mm-dd");
 		}
 		return true;
 	}

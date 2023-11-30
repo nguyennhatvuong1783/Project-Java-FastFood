@@ -280,7 +280,6 @@ public class KhachHangGUI extends JPanel {
 	        this.add(pnlbtn);
 	        this.add(Box.createRigidArea(new Dimension(0, 3)));
 	        this.add(pnlNhaCungCapTable);
-
 	    }
 
 	    public void showInfo(int selectedIndex) {

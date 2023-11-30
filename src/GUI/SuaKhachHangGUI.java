@@ -167,7 +167,7 @@ public class SuaKhachHangGUI extends JFrame{
 				JOptionPane.showMessageDialog(this,"Sửa thành công");
 				this.dispose();
 			}else {
-				kh = new KHACHHANG(maKH, ten, diachi, sdt, 1);
+				kh = new KHACHHANG(maKH, ten, sdt, diachi, 1);
 				if (DaoKhachHang.getInstance().update(kh)!=0) {
 					JOptionPane.showMessageDialog(this,"Sửa thành công");
 					this.dispose();

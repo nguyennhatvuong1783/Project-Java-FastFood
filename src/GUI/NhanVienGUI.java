@@ -18,6 +18,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -402,7 +403,7 @@ public class NhanVienGUI extends JPanel {
 	            }
 	        });
 	    }
-
+	
 	    private void txSearchOnChange() {
 	        BUS.setDataToTable(BUS.searchNHANVIEN(txtTimKiem.getText()), pnlNhaCungCapTable);
 

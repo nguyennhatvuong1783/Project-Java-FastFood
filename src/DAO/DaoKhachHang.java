@@ -39,7 +39,27 @@ public class DaoKhachHang implements DaoInterface<KHACHHANG>{
 		}
 		return ketqua;
 	}
-
+	public int changeStatus(KHACHHANG khachHang) {
+		int ketqua = 0;
+		try {
+			Connection c = connec.getConnection();
+			String sql = "Update KHACHHANG " +
+							"Set TrangThai=0"+
+			             " WHERE MAKH=?";
+			PreparedStatement pst = c.prepareStatement(sql);
+			pst.setString(1, khachHang.getMaKH());
+		    ketqua = pst.executeUpdate();
+			
+			System.out.println("Bạn đã thực thi " + sql);
+	        System.out.println("Có " + ketqua + " bị thay đổi");
+	        
+	        connec.closeConnection(c);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ketqua;
+	}
 	@Override
 	public int delete(KHACHHANG t) {
 		int ketqua = 0;

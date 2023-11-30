@@ -175,7 +175,7 @@ public class SuaNhaCungCapGUI extends JFrame{
 				JOptionPane.showMessageDialog(this,"Sửa thành công");
 				this.dispose();
 			}else {
-				ncc = new NHACUNGCAP(maNhaCungCap, ten, diachi, sdt, 1);
+				ncc = new NHACUNGCAP(maNhaCungCap, ten, sdt, diachi, 1);
 				if (DaoNhaCungCap.getInstance().update(ncc)!=0) {
 					JOptionPane.showMessageDialog(this,"Sửa thành công");
 					this.dispose();

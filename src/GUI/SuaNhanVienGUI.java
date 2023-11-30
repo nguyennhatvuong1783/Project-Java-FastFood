@@ -191,11 +191,11 @@ public class SuaNhanVienGUI extends JFrame{
 			String ngaySinh = txtNgaySinh.getText();
 			String diachi = txtDiaChi.getText();
 			String sdt = txtSDT.getText();
-			if (ten.equals(Tennv) && diachi.equals(DiaChi)&&sdt.equals(SDT)) {
+			if (ten.equals(Tennv) && diachi.equals(DiaChi)&&sdt.equals(SDT)&&ngaySinh.equals(this.ngaySinh)&&gioiTinh.equals(gioiTinh)) {
 				JOptionPane.showMessageDialog(this,"Sửa thành công");
 				this.dispose();
 			}else {
-				nv = new NHANVIEN(maNHANVIEN, ten,gioiTinh,ngaySinh ,diachi, sdt, 1);
+				nv = new NHANVIEN(maNHANVIEN,ten,gioiTinh,ngaySinh ,diachi, sdt, 1);
 				if (DaoNhanVien.getInstance().update(nv)!=0) {
 					JOptionPane.showMessageDialog(this,"Sửa thành công");
 					this.dispose();

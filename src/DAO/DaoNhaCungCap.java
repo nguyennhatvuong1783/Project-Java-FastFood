@@ -67,7 +67,7 @@ public class DaoNhaCungCap implements DaoInterface<NHACUNGCAP>{
 		int ketqua = 0;
 		try {
 			Connection c = connec.getConnection();
-			String sql = "UPDATE KHACHHANG " +
+			String sql = "UPDATE NHACUNGCAP " +
 			             " SET TENNCC=?" +
 					     ", SDT=?" +
 			             ", DIACHI=?" +	
