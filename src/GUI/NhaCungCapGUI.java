@@ -44,6 +44,7 @@ import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
+import WorkExcel.DocExcel;
 import WorkExcel.XuatExcel;
 
 
@@ -210,6 +211,14 @@ public class NhaCungCapGUI extends JPanel {
 	                xuatExcel.xuatFileExcelNhaCungCap();
 	            }
 	        });
+	        btnNhap.addActionListener(new ActionListener() {				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					DocExcel docExcel = new DocExcel();
+					docExcel.docFileExcelNhaCungCap();
+					
+				}
+			});
 
 	        JPanel pnlbtn = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 0));
 	        pnlbtn.add(btnThem);

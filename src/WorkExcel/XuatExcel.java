@@ -248,7 +248,7 @@ public class XuatExcel {
     				row.createCell(3,CellType.STRING).setCellValue(nhanvien.getGioiTinh());
     				row.createCell(4,CellType.STRING).setCellValue(nhanvien.getNgaySinh());
     				row.createCell(5,CellType.STRING).setCellValue(nhanvien.getSdt());		
-    				row.createCell(6,CellType.STRING).setCellValue(nhanvien.getSdt());	
+    				row.createCell(6,CellType.STRING).setCellValue(nhanvien.getDiaChi());	
     			}
     			for (int i = 0; i < rowNum; i++) {
     				sheet.autoSizeColumn(i);
