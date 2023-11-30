@@ -56,51 +56,11 @@ public class TaiKhoanBUS {
     }
 
     private void event() {
-        importEvent();
-        exportEvent();
         addEvent();
         updateEvent();
         deleteEvent();
         searchEvent();
         refreshEvent();
-    }
-
-    private void importEvent() {
-        taiKhoanGUI.getBtnImport().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("[TaiKhoanBUS]: Import");
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                taiKhoanGUI.getBtnImport().setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                taiKhoanGUI.getBtnImport().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-        });
-    }
-
-    private void exportEvent() {
-        taiKhoanGUI.getBtnExport().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("[TaiKhoanBUS]: Export");                
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                taiKhoanGUI.getBtnExport().setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                taiKhoanGUI.getBtnExport().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-        });
     }
 
     private void addEvent() {

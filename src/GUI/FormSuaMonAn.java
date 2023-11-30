@@ -116,7 +116,6 @@ public class FormSuaMonAn extends JFrame{
 		txtDonGia = new JTextField();
 		cbLoai = new JComboBox<String>(new String[] {"Thức ăn", "Đồ uống"});
 		
-		
 		gbclbl.ipadx = 9;
 		gbclbl.ipady = 5;
 		pnlInfo.add(lblMaMA, gbclbl);

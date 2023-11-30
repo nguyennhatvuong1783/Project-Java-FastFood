@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -80,7 +81,12 @@ public class SuaKhachHangGUI extends JFrame{
 		txtTenKH = new JTextField();
 		txtSDT = new JTextField();
 		txtDiaChi = new JTextField();
-				
+		
+		txtmaKH.setPreferredSize(new Dimension(300, 25));
+		txtTenKH.setPreferredSize(new Dimension(300, 25));
+		txtSDT.setPreferredSize(new Dimension(300, 25));
+		txtDiaChi.setPreferredSize(new Dimension(300, 25));
+		
 		// defaut value
 		txtmaKH.setText(BUS.nextId(BUS.getLastID()));
 		

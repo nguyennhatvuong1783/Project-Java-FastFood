@@ -20,12 +20,10 @@ import javax.swing.WindowConstants;
 
 import BUS.ChiTietHoaDonBUS;
 import GiaoDienChuan.CancelButton;
-import GiaoDienChuan.ExportExcelButton;
 import GiaoDienChuan.MyTable;
 
 public class ChiTietHoaDonGUI extends JDialog{
     public JButton btnDong;
-    public JButton btnXuat;
     public JLabel lbl1;
     public JLabel lbl2;
     public JLabel lbl3;
@@ -79,7 +77,6 @@ public class ChiTietHoaDonGUI extends JDialog{
         lblTitle = new JLabel();
         lblRightIcon = new JLabel();
         pnlButton = new JPanel();
-        btnXuat = new ExportExcelButton();
         btnDong = new CancelButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -178,8 +175,6 @@ public class ChiTietHoaDonGUI extends JDialog{
         pnlTitle.add(lblRightIcon);
 
         getContentPane().add(pnlTitle, BorderLayout.NORTH);
-
-        pnlButton.add(btnXuat);
 
         btnDong.setText("Đóng");
         btnDong.addActionListener(new ActionListener() {

@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -67,7 +68,12 @@ public class ThemKhachHangGUI extends JFrame{
 		txtTenKH = new JTextField();
 		txtSDT = new JTextField();
 		txtDiaChi = new JTextField();
-				
+		
+		txtMaKH.setPreferredSize(new Dimension(300, 25));
+		txtTenKH.setPreferredSize(new Dimension(300, 25));
+		txtSDT.setPreferredSize(new Dimension(300, 25));
+		txtDiaChi.setPreferredSize(new Dimension(300, 25));
+		
 		// defaut value
 		txtMaKH.setText(BUS.nextId(BUS.getLastID()));
 		
