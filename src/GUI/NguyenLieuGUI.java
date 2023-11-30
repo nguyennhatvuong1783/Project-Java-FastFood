@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import GiaoDienChuan.*;
+import WorkExcel.XuatExcel;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -195,7 +197,8 @@ public class NguyenLieuGUI extends JPanel{
             xuatbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    xuat(tableNL.getModel());
+                    XuatExcel xuatExcel = new XuatExcel();
+                    xuatExcel.xuatFileExcelNguyenLieu();
                 }
             });
 
@@ -373,26 +376,5 @@ public class NguyenLieuGUI extends JPanel{
             }
         }
         
-        public void xuat(DefaultTableModel model){
-            //đường dẫn lưu file trong ngoặc nha
-            try (FileWriter writer = new FileWriter("NguyenLieu.csv")) {                        
-                // Xuất tiêu đề cột
-                for (int i = 0; i < model.getColumnCount(); i++) {
-                    writer.write(model.getColumnName(i) + ",");
-                }
-                writer.write("\n");
-
-                // Xuất dữ liệu từng hàng
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    for (int j = 0; j < model.getColumnCount(); j++) {
-                        writer.write(model.getValueAt(i, j).toString() + ",");
-                    }
-                    writer.write("\n");
-                }
-
-                JOptionPane.showMessageDialog(null, "Dữ liệu đã được xuất thành công!");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+       
 }

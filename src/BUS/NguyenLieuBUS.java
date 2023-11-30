@@ -40,4 +40,28 @@ public class NguyenLieuBUS {
 		daoNL.update(nl);
 	}
 	
+	// Hàm lấy tên nguyên liệu
+	public String getTenNL(String maNL) {
+		String reString = null;
+		ArrayList<NGUYENLIEU> nguyenlieus = DaoNguyenLieu.getInstance().selectAll();
+		for (NGUYENLIEU nguyenlieu : nguyenlieus) {
+			if (nguyenlieu.getMaNL().equals(maNL)) {
+				reString = nguyenlieu.getTenNL();
+			}
+		}
+		return reString;
+	}
+	
+	// Hàm lấy đơn giá
+	public int getDonGia(String maNL) {
+		int reString = 0;
+		ArrayList<NGUYENLIEU> nguyenlieus = DaoNguyenLieu.getInstance().selectAll();
+		for (NGUYENLIEU nguyenlieu : nguyenlieus) {
+			if (nguyenlieu.getMaNL().equals(maNL)) {
+				reString = nguyenlieu.getDonGia();
+			}
+		}
+		return reString;
+	}
+	
 }

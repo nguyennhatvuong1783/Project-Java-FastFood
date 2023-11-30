@@ -8,6 +8,8 @@ import GiaoDienChuan.RefreshButton;
 import GiaoDienChuan.SuaButton;
 import GiaoDienChuan.ThemButton;
 import GiaoDienChuan.XoaButton;
+import WorkExcel.XuatExcel;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -135,7 +137,8 @@ public class PhieuNhapGUI extends JPanel{
             xuatbtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    xuat(table.getModel());
+                   XuatExcel xuatExcel = new XuatExcel();
+                   xuatExcel.xuatFileExcelPhieuNhap();
                 }
             });
 
@@ -210,28 +213,6 @@ public class PhieuNhapGUI extends JPanel{
             }               
         }             
         
-        public void xuat(DefaultTableModel model){
-            //đường dẫn lưu file trong ngoặc nha
-            try (FileWriter writer = new FileWriter("NguyenLieu.csv")) {                        
-                // Xuất tiêu đề cột
-                for (int i = 0; i < model.getColumnCount(); i++) {
-                    writer.write(model.getColumnName(i) + ",");
-                }
-                writer.write("\n");
-
-                // Xuất dữ liệu từng hàng
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    for (int j = 0; j < model.getColumnCount(); j++) {
-                        writer.write(model.getValueAt(i, j).toString() + ",");
-                    }
-                    writer.write("\n");
-                }
-
-                JOptionPane.showMessageDialog(null, "Dữ liệu đã được xuất thành công!");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
         
         public void listNL(){          
             //thêm dòng sau khởi tạo
