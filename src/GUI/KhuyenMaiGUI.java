@@ -91,7 +91,7 @@ public class KhuyenMaiGUI extends JPanel implements ActionListener {
         jp.setLayout(null);
         jp.setBorder(loweredBevel);
         jp1 = new JPanel();
-        jp1.setBounds(125, 50, 750, 325);
+        jp1.setBounds(125, 10, 750, 325);
         jp1.setLayout(new BorderLayout());
         jp2 = new JPanel();
         jp2.setLayout(new BorderLayout());

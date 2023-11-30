@@ -26,7 +26,7 @@ public class TaiKhoanGUI extends JPanel {
     private JTextField txtTimKiem;
     private JPanel pnButton;
 
-    private JButton btnImport, btnExport, btnThem, btnSua, btnXoa, btnLamMoi;
+    private JButton btnThem, btnSua, btnXoa, btnLamMoi;
 
     private MyTable tbTaiKhoan;
 
@@ -43,21 +43,15 @@ public class TaiKhoanGUI extends JPanel {
         // Panel button
         pnButton = new JPanel(new GridLayout(1, 5, 5, 0));
 
-        btnImport = new ImportExcelButton();
-        btnExport = new ExportExcelButton();
         btnThem = new ThemButton();
         btnSua = new SuaButton();
         btnXoa = new XoaButton();
 
         Dimension dimensionButton = new Dimension(0, 30);
-        btnImport.setPreferredSize(dimensionButton);
-        btnExport.setPreferredSize(dimensionButton);
         btnThem.setPreferredSize(dimensionButton);
         btnSua.setPreferredSize(dimensionButton);
         btnXoa.setPreferredSize(dimensionButton);
 
-        pnButton.add(btnImport);
-        pnButton.add(btnExport);
         pnButton.add(btnThem);
         pnButton.add(btnSua);
         pnButton.add(btnXoa);
@@ -97,14 +91,6 @@ public class TaiKhoanGUI extends JPanel {
     // Getter
     public JTextField getTxtTimKiem() {
         return txtTimKiem;
-    }
-
-    public JButton getBtnImport() {
-        return btnImport;
-    }
-
-    public JButton getBtnExport() {
-        return btnExport;
     }
 
     public JButton getBtnThem() {

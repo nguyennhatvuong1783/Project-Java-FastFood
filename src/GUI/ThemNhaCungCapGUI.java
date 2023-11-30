@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -81,7 +82,12 @@ public class ThemNhaCungCapGUI extends JFrame{
 		txtTenNCC = new JTextField();
 		txtSDT = new JTextField();
 		txtDiaChi = new JTextField();
-				
+		
+		txtMaNCC.setPreferredSize(new Dimension(300, 25));
+		txtTenNCC.setPreferredSize(new Dimension(300, 25));
+		txtSDT.setPreferredSize(new Dimension(300, 25));
+		txtDiaChi.setPreferredSize(new Dimension(300, 25));
+		
 		// defaut value
 		txtMaNCC.setText(BUS.nextId(BUS.getLastID()));
 		

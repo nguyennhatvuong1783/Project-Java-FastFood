@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -90,6 +91,14 @@ public class SuaNhanVienGUI extends JFrame{
 		txtDiaChi = new JTextField();
 		cbGioiTinh = new JComboBox<String>(new String[] {"Nam", "Nữ"});
 		txtNgaySinh = new JTextField();
+		
+		txtManv.setPreferredSize(new Dimension(300, 25));
+		txtTennv.setPreferredSize(new Dimension(300, 25));
+		txtSDT.setPreferredSize(new Dimension(300, 25));
+		txtDiaChi.setPreferredSize(new Dimension(300, 25));
+		cbGioiTinh.setPreferredSize(new Dimension(300, 25));
+		txtNgaySinh.setPreferredSize(new Dimension(300, 25));
+		
 		// defaut value
 		txtManv.setText(BUS.nextId(BUS.getLastID()));
 		
@@ -128,6 +137,8 @@ public class SuaNhanVienGUI extends JFrame{
         gbclbl.gridx = 0;
         gbclbl.gridy = 5;
         pnlInfo.add(lblGioiTinh, gbclbl);
+        gbctxt.ipadx = 401;
+		gbctxt.ipady = 5;
         gbctxt.gridx = 1;
         pnlInfo.add(cbGioiTinh, gbctxt);
 		

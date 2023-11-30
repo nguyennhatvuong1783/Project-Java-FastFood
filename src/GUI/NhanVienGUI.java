@@ -109,6 +109,14 @@ public class NhanVienGUI extends JPanel {
 			txtNgaySinh.setEditable(false);
 			txtGioiTinh = new JTextField();
 			txtGioiTinh.setEditable(false);
+			
+			txtMaNV.setPreferredSize(new Dimension(300, 25));
+			txtTenNV.setPreferredSize(new Dimension(300, 25));
+			txtSDT.setPreferredSize(new Dimension(300, 25));
+			txtDiaChi.setPreferredSize(new Dimension(300, 25));
+			txtNgaySinh.setPreferredSize(new Dimension(300, 25));
+			txtGioiTinh.setPreferredSize(new Dimension(300, 25));
+			
 			// defaut value
 			txtMaNV.setText(BUS.nextId(BUS.getLastID()));
 			

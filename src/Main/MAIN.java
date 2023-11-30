@@ -7,4 +7,3 @@ public class MAIN {
 		new LoginGUI();
 	}
 }
-
