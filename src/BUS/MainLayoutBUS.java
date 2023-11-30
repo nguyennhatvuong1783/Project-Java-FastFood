@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -535,9 +536,12 @@ public class MainLayoutBUS {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-
-                MainLayoutGUI.f.dispose();
-                new LoginGUI();
+                
+                int output = JOptionPane.showConfirmDialog(MainLayoutGUI.f, "Bạn có chắc muốn đăng xuất?", "Thông báo", JOptionPane.YES_NO_OPTION);
+                if (output == JOptionPane.YES_OPTION) {
+                	MainLayoutGUI.f.dispose();
+                    new LoginGUI();
+                }
             }
         });
     }
