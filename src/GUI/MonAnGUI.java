@@ -49,7 +49,6 @@ public class MonAnGUI extends JPanel {
     public static MyTable pnlMonAnTable;
     public JTextField txtMaMA;
     public JTextField txtTenMA;
-    public JTextField txtSL;
     public JTextField txtDonViTinh;
     public JTextField txtDonGia;
     public JTextField cbLoai;
@@ -78,14 +77,12 @@ public class MonAnGUI extends JPanel {
         //pnlMonAn
         JLabel lblMaMA = new JLabel("     Mã món ăn");
         JLabel lblTenMA = new JLabel("     Tên món ăn");
-        JLabel lblSL = new JLabel("     Số lượng");
         JLabel lblDonViTinh = new JLabel("     Đơn vị tính");
         JLabel lblDonGia = new JLabel("     Đơn giá");
         JLabel lblLoai = new JLabel("     Loại");
 
         lblMaMA.setFont(new Font("Times New Roman", Font.BOLD, 16));
         lblTenMA.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        lblSL.setFont(new Font("Times New Roman", Font.BOLD, 16));
         lblDonViTinh.setFont(new Font("Times New Roman", Font.BOLD, 16));
         lblDonGia.setFont(new Font("Times New Roman", Font.BOLD, 16));
         lblLoai.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -103,8 +100,6 @@ public class MonAnGUI extends JPanel {
         txtMaMA.setEditable(false);
         txtTenMA = new JTextField();
         txtTenMA.setEditable(false);
-        txtSL = new JTextField();
-        txtSL.setEditable(false);
         txtDonViTinh = new JTextField();
         txtDonViTinh.setEditable(false);
         txtDonGia = new JTextField();
@@ -114,7 +109,6 @@ public class MonAnGUI extends JPanel {
 
         txtMaMA.setPreferredSize(new Dimension(300, 25));
         txtTenMA.setPreferredSize(new Dimension(300, 25));
-        txtSL.setPreferredSize(new Dimension(300, 25));
         txtDonViTinh.setPreferredSize(new Dimension(300, 25));
         txtDonGia.setPreferredSize(new Dimension(300, 25));
         cbLoai.setPreferredSize(new Dimension(300, 25));
@@ -135,24 +129,18 @@ public class MonAnGUI extends JPanel {
         gbclbl.ipadx = 21;
         gbclbl.gridx = 0;
         gbclbl.gridy = 2;
-        pnlInfo.add(lblSL, gbclbl);
-        gbctxt.gridx = 1;
-        pnlInfo.add(txtSL, gbctxt);
-        gbclbl.ipadx = 6;
-        gbclbl.gridx = 0;
-        gbclbl.gridy = 3;
         pnlInfo.add(lblDonViTinh, gbclbl);
         gbctxt.gridx = 1;
         pnlInfo.add(txtDonViTinh, gbctxt);
-        gbclbl.ipadx = 29;
+        gbclbl.ipadx = 6;
         gbclbl.gridx = 0;
-        gbclbl.gridy = 4;
+        gbclbl.gridy = 3;
         pnlInfo.add(lblDonGia, gbclbl);
         gbctxt.gridx = 1;
         pnlInfo.add(txtDonGia, gbctxt);
-        gbclbl.ipadx = 49;
+        gbclbl.ipadx = 29;
         gbclbl.gridx = 0;
-        gbclbl.gridy = 5;
+        gbclbl.gridy = 4;
         pnlInfo.add(lblLoai, gbclbl);
         gbctxt.gridx = 1;
         pnlInfo.add(cbLoai, gbctxt);
@@ -258,7 +246,7 @@ public class MonAnGUI extends JPanel {
 
         //Table
         pnlMonAnTable = new MyTable();
-        String[] headers = {"Mã món ăn", "Tên món ăn", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
+        String[] headers = {"Mã món ăn", "Tên món ăn", "Đơn vị tính", "Đơn giá", "Loại"};
         pnlMonAnTable.setHeaders(headers);
         mAnBus.setDataToTable(mAnBus.getDsMonAn(), pnlMonAnTable);
         pnlMonAnTable.getTable().addMouseListener(new MouseListener() {
@@ -318,29 +306,26 @@ public class MonAnGUI extends JPanel {
         if (selectedIndex != -1) {
             String maMA = pnlMonAnTable.getValueAt(selectedIndex, 0);
             String tenMA = pnlMonAnTable.getValueAt(selectedIndex, 1);
-            String soLuong = pnlMonAnTable.getValueAt(selectedIndex, 2);
-            String donViTinh = pnlMonAnTable.getValueAt(selectedIndex, 3);
-            String donGia = pnlMonAnTable.getValueAt(selectedIndex, 4);
-            String Loai = pnlMonAnTable.getValueAt(selectedIndex, 5);
+            String donViTinh = pnlMonAnTable.getValueAt(selectedIndex, 2);
+            String donGia = pnlMonAnTable.getValueAt(selectedIndex, 3);
+            String Loai = pnlMonAnTable.getValueAt(selectedIndex, 4);
             String path = mAnBus.getHinhAnh(maMA);
-            setTextForTxt(maMA, tenMA, soLuong, donViTinh, donGia, Loai, path);
+            setTextForTxt(maMA, tenMA, donViTinh, donGia, Loai, path);
         }
     }
 
     public void clearInfo() {
         txtMaMA.setText("");
         txtTenMA.setText("");
-        txtSL.setText("");
         txtDonViTinh.setText("");
         txtDonGia.setText("");
         cbLoai.setText("");
         lblHinhAnh.setIcon(null);
     }
 
-    public void setTextForTxt(String maMA, String tenMA, String soLuong, String donViTinh, String donGia, String Loai, String path) {
+    public void setTextForTxt(String maMA, String tenMA, String donViTinh, String donGia, String Loai, String path) {
         txtMaMA.setText(maMA);
         txtTenMA.setText(tenMA);
-        txtSL.setText(soLuong);
         txtDonViTinh.setText(donViTinh);
         txtDonGia.setText(donGia);
         cbLoai.setText(Loai);
@@ -380,7 +365,7 @@ public class MonAnGUI extends JPanel {
         } else {
             String hinhAnh = mAnBus.getHinhAnh(pnlMonAnTable.getValueAt(index, 0));
             if (JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn sửa món ăn", "Chú ý", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
-                FormSuaMonAn suaMonAn = new FormSuaMonAn(txtMaMA.getText(), txtTenMA.getText(), txtSL.getText(), txtDonViTinh.getText(), txtDonGia.getText(), cbLoai.getText(), hinhAnh);
+                FormSuaMonAn suaMonAn = new FormSuaMonAn(txtMaMA.getText(), txtTenMA.getText(), txtDonViTinh.getText(), txtDonGia.getText(), cbLoai.getText(), hinhAnh);
                 suaMonAn.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(java.awt.event.WindowEvent windowEvent) {

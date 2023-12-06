@@ -50,7 +50,6 @@ public class FormSuaMonAn extends JFrame{
 	MONAN monan;
 	private JTextField txtMaMA;
 	private JTextField txtTenMA;
-	private JTextField txtSL;
 	private JTextField txtDonViTinh;
 	private JTextField txtDonGia;
 	private JComboBox<String> cbLoai;
@@ -58,19 +57,18 @@ public class FormSuaMonAn extends JFrame{
 	private FileButton btnChonAnh;
 	private String path;
 	
-	private String maMA, tenMA, soLuong, donViTinh, donGia, loai, hinhAnh;
+	private String maMA, tenMA, donViTinh, donGia, loai, hinhAnh;
 	private FileDialog fd;
 	public FormSuaMonAn() {
 		init();
 	}
 	
 
-	public FormSuaMonAn(String maMA, String tenMA, String soLuong, String donViTinh, String donGia, String loai,
+	public FormSuaMonAn(String maMA, String tenMA, String donViTinh, String donGia, String loai,
 			String hinhAnh) throws HeadlessException {
 		super();
 		this.maMA = maMA;
 		this.tenMA = tenMA;
-		this.soLuong = soLuong;
 		this.donViTinh = donViTinh;
 		this.donGia = donGia;
 		this.loai = loai;
@@ -91,14 +89,12 @@ public class FormSuaMonAn extends JFrame{
 		
 		JLabel lblMaMA = new JLabel("     Mã món ăn");
 		JLabel lblTenMA = new JLabel("     Tên món ăn");
-		JLabel lblSL = new JLabel("     Số lượng");
 		JLabel lblDonViTinh = new JLabel("     Đơn vị tính");
 		JLabel lblDonGia = new JLabel("     Đơn giá");
 		JLabel lblLoai = new JLabel("     Loại");
 		
 		lblMaMA.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblTenMA.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		lblSL.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblDonViTinh.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblDonGia.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblLoai.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -110,8 +106,6 @@ public class FormSuaMonAn extends JFrame{
 		txtMaMA = new JTextField();
 		txtMaMA.setEditable(false);
 		txtTenMA = new JTextField();
-		txtSL = new JTextField();
-		txtSL.setEditable(false);
 		txtDonViTinh = new JTextField();
 		txtDonGia = new JTextField();
 		cbLoai = new JComboBox<String>(new String[] {"Thức ăn", "Đồ uống"});
@@ -132,27 +126,21 @@ public class FormSuaMonAn extends JFrame{
 		gbclbl.ipadx = 21;
 		gbclbl.gridx = 0;
 		gbclbl.gridy = 2;
-		pnlInfo.add(lblSL, gbclbl);
-		gbctxt.gridx = 1;
-		pnlInfo.add(txtSL, gbctxt);
-		gbclbl.ipadx = 6;
-		gbclbl.gridx = 0;
-		gbclbl.gridy = 3;
 		pnlInfo.add(lblDonViTinh, gbclbl);
 		gbctxt.gridx = 1;
 		pnlInfo.add(txtDonViTinh, gbctxt);
-		gbclbl.ipadx = 29;
+		gbclbl.ipadx = 6;
 		gbclbl.gridx = 0;
-		gbclbl.gridy = 4;
+		gbclbl.gridy = 3;
 		pnlInfo.add(lblDonGia, gbclbl);
 		gbctxt.gridx = 1;
 		pnlInfo.add(txtDonGia, gbctxt);
-		gbclbl.ipadx = 49;
+		gbclbl.ipadx = 29;
 		gbclbl.gridx = 0;
-		gbclbl.gridy = 5;
+		gbclbl.gridy = 4;
 		pnlInfo.add(lblLoai, gbclbl);
 		gbctxt.ipadx = 378;
-		gbctxt.ipady = 5;
+		gbctxt.ipady = 4;
 		gbctxt.gridx = 1;
 		pnlInfo.add(cbLoai, gbctxt);
 		
@@ -207,7 +195,6 @@ public class FormSuaMonAn extends JFrame{
 		// Set Value
 		txtMaMA.setText(maMA);
 		txtTenMA.setText(tenMA);
-		txtSL.setText(soLuong);
 		txtDonViTinh.setText(donViTinh);
 		txtDonGia.setText(donGia);
 		cbLoai.setSelectedItem(loai);
@@ -241,13 +228,12 @@ public class FormSuaMonAn extends JFrame{
 			String giaStr = txtDonGia.getText();
 			String imagePath = path;
 			String loaiString = (String) cbLoai.getSelectedItem();
-			int sL = Integer.parseInt(soLuong);
 			int gia = Integer.parseInt(giaStr);
 			if (ten.equals(tenMA) && donVi.equals(donViTinh) && giaStr.equals(donGia) && path.equals(hinhAnh)) {
 				JOptionPane.showMessageDialog(this,"Sửa thành công");
 				this.dispose();
 			}else {
-				monan = new MONAN(maMA, ten, sL, donVi, gia, imagePath, loaiString, 1);
+				monan = new MONAN(maMA, ten, 0, donVi, gia, imagePath, loaiString, 1);
 				if (DaoMonAn.getInstance().update(monan)!=0) {
 					JOptionPane.showMessageDialog(this,"Sửa thành công");
 					this.dispose();

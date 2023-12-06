@@ -132,12 +132,13 @@ public class BanHangGUI extends JPanel{
         lblGioHang = new JLabel();
         btnLamMoi = new RefreshButton();
         
-        String[] headers = {"Mã món ăn", "Tên món ăn", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
+        String[] headers = {"Mã món ăn", "Tên món ăn", "Đơn vị tính", "Đơn giá", "Loại"};
+        String[] headers2 = {"Mã món ăn", "Tên món ăn", "Số lượng", "Đơn vị tính", "Đơn giá", "Loại"};
         pnlTableMonAn = new MyTable();
         pnlTableMonAn.setHeaders(headers);
         monAnBus.setDataToTable(monAnBus.getDsMonAn(), pnlTableMonAn);
         pnlTableGioHang = new MyTable();
-        pnlTableGioHang.setHeaders(headers);
+        pnlTableGioHang.setHeaders(headers2);
 
         setLayout(new BorderLayout());
 
@@ -460,9 +461,9 @@ public class BanHangGUI extends JPanel{
 			String maMA = pnlTableMonAn.getValueAt(index, 0);
 			String tenMA = pnlTableMonAn.getValueAt(index, 1);
 			String soLuong = String.valueOf(spnSoLuong.getValue());
-			String donViTinh = pnlTableMonAn.getValueAt(index, 3);
-			String donGia = pnlTableMonAn.getValueAt(index, 4);
-			String loai = pnlTableMonAn.getValueAt(index, 5);
+			String donViTinh = pnlTableMonAn.getValueAt(index, 2);
+			String donGia = pnlTableMonAn.getValueAt(index, 3);
+			String loai = pnlTableMonAn.getValueAt(index, 4);
 			if (checkInfor()) {
 				banHangBus.addDataToTableBanHang(pnlTableGioHang, maMA, tenMA, soLuong, donViTinh,donGia, loai);
 			}
@@ -474,7 +475,7 @@ public class BanHangGUI extends JPanel{
 		if (index!=-1) {
 			String maMA = pnlTableMonAn.getValueAt(index, 0);
 			String tenMA = pnlTableMonAn.getValueAt(index, 1);
-			String donGia = pnlTableMonAn.getValueAt(index, 4);
+			String donGia = pnlTableMonAn.getValueAt(index, 3);
 			
 			txtMaMA.setText(maMA);
 			txtTenMA.setText(tenMA);
@@ -498,12 +499,6 @@ public class BanHangGUI extends JPanel{
 					if (value<0) {
 						JOptionPane.showMessageDialog(null, "Số lượng không hợp lệ");
 						return false;
-					}else {
-						int soLuongMonAn =Integer.parseInt( pnlTableMonAn.getValueAt(pnlTableMonAn.getTable().getSelectedRow(), 2));
-						if (value>soLuongMonAn) {
-							JOptionPane.showMessageDialog(null, "Số lượng món ăn hiện có không đủ");
-							return false;
-						}
 					}
 				}
 			} catch (NumberFormatException e) {
@@ -514,12 +509,6 @@ public class BanHangGUI extends JPanel{
 		return true;
 	}
 	
-	private void updateSoLuong() {
-		String tmpString = String.valueOf(spnSoLuong.getValue());
-		String maMA = txtMaMA.getText();
-		int soLuong = Integer.parseInt(tmpString);
-		banHangBus.updateSoLuong(pnlTableMonAn, soLuong, maMA);
-	}
 	
 	private void updateTongTien() {
 		int donGia = Integer.parseInt(txtDonGia.getText());
@@ -546,7 +535,6 @@ public class BanHangGUI extends JPanel{
 	private void MouseClickThem() {
 		if (checkInfor()) {
 			getInforToTableMonAn();
-			updateSoLuong();
 			updateTongTien();
 			clearInfor();
 			txtKhuyenMai.setText("");
@@ -557,10 +545,6 @@ public class BanHangGUI extends JPanel{
 	private void MouseClickXoa() {
 		int index = pnlTableGioHang.getTable().getSelectedRow();
 		if (index!=-1) {
-			String soLuong = pnlTableGioHang.getValueAt(index, 2);
-			String maMA = pnlTableGioHang.getValueAt(index, 0);
-			int sl = Integer.parseInt(soLuong);
-			banHangBus.updateSoLuong2(pnlTableMonAn, sl, maMA);
 			updateTongTienXoa(index);
 			pnlTableGioHang.getModel().removeRow(index);
 			txtKhuyenMai.setText("");
@@ -602,6 +586,10 @@ public class BanHangGUI extends JPanel{
 		monAnBus.readDB();
 		monAnBus.setDataToTable(monAnBus.getDsMonAn(), pnlTableMonAn);
 		banHangBus.setMaHD(txtMaHD);
+		txtTenMA.setText("");
+		txtMaMA.setText("");
+		txtDonGia.setText("");
+		spnSoLuong.setValue(0);
 		txtKhuyenMai.setText("");
 		txtKhachHang.setText("");
 		txtTongTien.setText("");

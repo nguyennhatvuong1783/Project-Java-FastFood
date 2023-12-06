@@ -50,7 +50,6 @@ public class FormThemMonAn extends JFrame{
 	MONAN monan;
 	private JTextField txtMaMA;
 	private JTextField txtTenMA;
-	private JTextField txtSL;
 	private JTextField txtDonViTinh;
 	private JTextField txtDonGia;
 	private JComboBox<String> cbLoai;
@@ -76,14 +75,12 @@ public class FormThemMonAn extends JFrame{
 		
 		JLabel lblMaMA = new JLabel("     Mã món ăn");
 		JLabel lblTenMA = new JLabel("     Tên món ăn");
-		JLabel lblSL = new JLabel("     Số lượng");
 		JLabel lblDonViTinh = new JLabel("     Đơn vị tính");
 		JLabel lblDonGia = new JLabel("     Đơn giá");
 		JLabel lblLoai = new JLabel("     Loại");
 		
 		lblMaMA.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblTenMA.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		lblSL.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblDonViTinh.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblDonGia.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblLoai.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -95,15 +92,12 @@ public class FormThemMonAn extends JFrame{
 		txtMaMA = new JTextField();
 		txtMaMA.setEditable(false);
 		txtTenMA = new JTextField();
-		txtSL = new JTextField();
-		txtSL.setEditable(false);
 		txtDonViTinh = new JTextField();
 		txtDonGia = new JTextField();
 		cbLoai = new JComboBox<String>(new String[] {"Thức ăn", "Đồ uống"});
 				
 		// defaut value
 		txtMaMA.setText(monAnBus.nextId(monAnBus.getLastID()));
-		txtSL.setText("0");
 		
 		
 		gbclbl.ipadx = 9;
@@ -122,27 +116,21 @@ public class FormThemMonAn extends JFrame{
 		gbclbl.ipadx = 21;
 		gbclbl.gridx = 0;
 		gbclbl.gridy = 2;
-		pnlInfo.add(lblSL, gbclbl);
-		gbctxt.gridx = 1;
-		pnlInfo.add(txtSL, gbctxt);
-		gbclbl.ipadx = 6;
-		gbclbl.gridx = 0;
-		gbclbl.gridy = 3;
 		pnlInfo.add(lblDonViTinh, gbclbl);
 		gbctxt.gridx = 1;
 		pnlInfo.add(txtDonViTinh, gbctxt);
-		gbclbl.ipadx = 29;
+		gbclbl.ipadx = 6;
 		gbclbl.gridx = 0;
-		gbclbl.gridy = 4;
+		gbclbl.gridy = 3;
 		pnlInfo.add(lblDonGia, gbclbl);
 		gbctxt.gridx = 1;
 		pnlInfo.add(txtDonGia, gbctxt);
-		gbclbl.ipadx = 49;
+		gbclbl.ipadx = 29;
 		gbclbl.gridx = 0;
-		gbclbl.gridy = 5;
+		gbclbl.gridy = 4;
 		pnlInfo.add(lblLoai, gbclbl);
 		gbctxt.ipadx = 378;
-		gbctxt.ipady = 5;
+		gbctxt.ipady = 4;
 		gbctxt.gridx = 1;
 		pnlInfo.add(cbLoai, gbctxt);
 		

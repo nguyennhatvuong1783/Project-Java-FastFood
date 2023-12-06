@@ -79,8 +79,7 @@ public class XuatExcel {
     			row.createCell(2,CellType.STRING).setCellValue("Tên món ăn");
     			row.createCell(3,CellType.STRING).setCellValue("Đơn vị tính");
     			row.createCell(4,CellType.STRING).setCellValue("Loại");
-    			row.createCell(5,CellType.NUMERIC).setCellValue("Số lượng");
-    			row.createCell(6,CellType.NUMERIC).setCellValue("Đơn giá");
+    			row.createCell(5,CellType.NUMERIC).setCellValue("Đơn giá");
     			
     			for (MONAN monan : monans) {
     				rowNum++;
@@ -91,8 +90,7 @@ public class XuatExcel {
     				row.createCell(2,CellType.STRING).setCellValue(monan.getTenMonAn());
     				row.createCell(3,CellType.STRING).setCellValue(monan.getDonViTinh());
     				row.createCell(4,CellType.STRING).setCellValue(monan.getLoai());
-    				row.createCell(5,CellType.NUMERIC).setCellValue(monan.getSoLuong());
-    				row.createCell(6,CellType.NUMERIC).setCellValue(monan.getDonGia());				
+    				row.createCell(5,CellType.NUMERIC).setCellValue(monan.getDonGia());				
     			}
     			for (int i = 0; i < rowNum; i++) {
     				sheet.autoSizeColumn(i);

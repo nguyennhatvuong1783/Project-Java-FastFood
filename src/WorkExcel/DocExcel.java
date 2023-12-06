@@ -73,21 +73,19 @@ public class DocExcel {
                      String tenMA = cellIterator.next().getStringCellValue();
                      String donViTinh = cellIterator.next().getStringCellValue();
                      String loai = cellIterator.next().getStringCellValue();
-                     int soLuong = (int) cellIterator.next().getNumericCellValue();
                      int donGia = (int) cellIterator.next().getNumericCellValue();
                      
                      MONAN monanOld = DaoMonAn.getInstance().selectById(new MONAN(maMA, null, 0, maMA, 0, null, null, 0));
                      if (monanOld != null) {
 						if (!hanhDongKhiTrung.contains("Tất cả")) {
 							MyTable table = new MyTable();
-							table.setHeaders(new String[] {" ","Mã món ăn","Tên món ăn","Đơn vị tính","Loại","Số lượng","Đơn giá"});
+							table.setHeaders(new String[] {" ","Mã món ăn","Tên món ăn","Đơn vị tính","Loại","Đơn giá"});
 							table.addRow(new String[] {
 									"Cũ",
 									monanOld.getMaMonAn(),
 									monanOld.getTenMonAn(),
 									monanOld.getDonViTinh(),
 									monanOld.getLoai(),
-									String.valueOf(monanOld.getSoLuong()),
 								    String.valueOf(monanOld.getDonGia())
 						    });
 							table.addRow(new String[] {
@@ -96,7 +94,6 @@ public class DocExcel {
 									tenMA,
 									donViTinh,
 									loai,
-									String.valueOf(soLuong),
 									String.valueOf(donGia)
 							});
 							table.resizeColumnWidth();
@@ -105,14 +102,14 @@ public class DocExcel {
 	                         hanhDongKhiTrung = mop.getAnswer();
 						}
 						if (hanhDongKhiTrung.contains("Ghi đè")) {
-							MONAN monanNew = new MONAN(maMA, tenMA, soLuong, donViTinh, donGia, monanOld.getHinhAnh(), loai, 1);
+							MONAN monanNew = new MONAN(maMA, tenMA, 0, donViTinh, donGia, monanOld.getHinhAnh(), loai, 1);
 							DaoMonAn.getInstance().update(monanNew);
 							countGhiDe++;
 						}else {
 							countBoQua++;
 						}
 					}else {
-						MONAN monan = new MONAN(maMA, tenMA, soLuong, donViTinh, donGia, " ", loai, 1);
+						MONAN monan = new MONAN(maMA, tenMA, 0, donViTinh, donGia, " ", loai, 1);
 						DaoMonAn.getInstance().insert(monan);
 						countThem++;
 					}

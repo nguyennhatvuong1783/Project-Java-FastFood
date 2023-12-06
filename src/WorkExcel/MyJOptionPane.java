@@ -20,7 +20,7 @@ public class MyJOptionPane extends JOptionPane{
 		table.resizeColumnWidth();
 		
 		panel.setLayout(new BorderLayout());
-		panel.setPreferredSize(new Dimension(500, 600));
+		panel.setPreferredSize(new Dimension(400, 600));
 		panel.add(table,BorderLayout.CENTER);
 		panel.add(comboBox, BorderLayout.SOUTH);
 		

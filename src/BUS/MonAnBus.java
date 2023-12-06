@@ -77,7 +77,7 @@ public class MonAnBus {
 		table.getModel().setRowCount(0);
 		for (MONAN monan : data) {
 			if (monan.getTrangThai()==1) {
-				table.addRow(new String[] {monan.getMaMonAn(),monan.getTenMonAn(),String.valueOf(monan.getSoLuong()),monan.getDonViTinh(),String.valueOf(monan.getDonGia()),monan.getLoai()});
+				table.addRow(new String[] {monan.getMaMonAn(),monan.getTenMonAn(),monan.getDonViTinh(),String.valueOf(monan.getDonGia()),monan.getLoai()});
 			}
 		}
 	}

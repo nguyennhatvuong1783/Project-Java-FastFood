@@ -44,36 +44,6 @@ public class BanHangBus {
 		}
 	}
 	
-	public void updateSoLuong(MyTable table ,int soLuongBan, String maMA) {
-		int sumRow = table.getTable().getRowCount();
-		String arr[] = new String[sumRow];
-		String ma;
-		int soLuong=0, soLuongNew=0;
-		for (int i = 0; i < sumRow; i++) {
-			ma = (String) table.getTable().getValueAt(i, 0);
-			if (ma.equals(maMA)) {
-				soLuong = Integer.parseInt(String.valueOf(table.getTable().getValueAt(i, 2)));
-				soLuongNew = soLuong - soLuongBan;
-				table.getTable().setValueAt(String.valueOf(soLuongNew), i, 2);
-				break;
-			}
-		}		
-	}
-	
-	public void updateSoLuong2(MyTable table ,int soLuongBan, String maMA) {
-		int sumRow = table.getTable().getRowCount();
-		String ma;
-		int soLuong=0, soLuongNew=0;
-		for (int i = 0; i < sumRow; i++) {
-			ma = (String) table.getTable().getValueAt(i, 0);
-			if (ma.equals(maMA)) {
-				soLuong = Integer.parseInt(String.valueOf(table.getTable().getValueAt(i, 2)));
-				soLuongNew = soLuong + soLuongBan;
-				table.getTable().setValueAt(String.valueOf(soLuongNew), i, 2);
-				break;
-			}
-		}		
-	}
 	
 	public void tongTien(JTextField txt,int donGia, int soLuong) {
 		int tongTien = 0;
@@ -259,43 +229,30 @@ public class BanHangBus {
 				if(JOptionPane.showConfirmDialog(null, "Hóa đơn có khuyến mãi chưa áp dụng, bạn có muốn áp dụng khuyến mãi","Thông báo",
 						JOptionPane.YES_NO_OPTION)== JOptionPane.OK_OPTION) {
 					MouseclickBtnKhuyenMai(txtKM, txtTongTien, txtTienKhachDua, txtTienThoi);	
-					int soLuongBan = 0, soLuongMoi = 0;
 					String maHD = txtHD.getText();
 					String ngayLap = formatNgayLap(txtNgayLap.getText());
 					String maKM = txtKM.getText();			
-					int tongTien = Integer.parseInt(txtTongTien.getText());
-					int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, maKM, null, null));
-					if (ketqua!=0) {
-						JOptionPane.showMessageDialog(null, "Thanh toán thành công");
-						ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
-					    for (int i = 0; i < table.getModel().getRowCount(); i++) {
-					    	for (MONAN monan : monans) {
-					    		int j=0;
-								if (monan.getMaMonAn().equals(table.getValueAt(j, 0))) {
-									soLuongBan = Integer.parseInt(String.valueOf(table.getValueAt(j, 2)));
-									soLuongMoi = monan.getSoLuong() - soLuongBan;
-									monan.setSoLuong(soLuongMoi);
-									DaoMonAn.getInstance().update(monan);
-									DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
-								}else {
-									j++;
-								}
-							}
+					if (txtTienKhachDua.getText().trim().equals("")==false) {
+						int tongTien = Integer.parseInt(txtTongTien.getText());
+						int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, maKM, null, null));
+						if (ketqua!=0) {
+							JOptionPane.showMessageDialog(null, "Thanh toán thành công");
+						    
+						    int lengh =  table.getModel().getRowCount();
+						    for (int i = 0; i < lengh; i++) {
+						    	String soLuong = String.valueOf(table.getValueAt(0, 2));
+						    	DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, String.valueOf(table.getValueAt(0, 0)),Integer.parseInt(soLuong) , null));
+						        table.getModel().removeRow(0);
+						    }
+							setMaHD(txtHD);
+							txtTongTien.setText("");
+							txtKH.setText("");
+							txtTienThoi.setText("");
+							txtKM.setText("");
 						}
-					    
-					    int lengh =  table.getModel().getRowCount();
-					    for (int i = 0; i < lengh; i++) {
-					        table.getModel().removeRow(0);
-					    }
-						setMaHD(txtHD);
-						txtTongTien.setText("");
-						txtKH.setText("");
-						txtTienThoi.setText("");
-						txtKM.setText("");
 					}
 				}					
 			}else {
-				int soLuongBan = 0, soLuongMoi = 0;
 				String maHD = txtHD.getText();
 				String ngayLap = formatNgayLap(txtNgayLap.getText());
 				String maKM = null;
@@ -306,24 +263,10 @@ public class BanHangBus {
 				int ketqua = DaoHoaDon.getInstance().insert(new HOADON(maHD, ngayLap, tongTien, 1, Manv, maKH, maKM, null, null));
 				if (ketqua!=0) {
 					JOptionPane.showMessageDialog(null, "Thanh toán thành công");
-					ArrayList<MONAN> monans = DaoMonAn.getInstance().selectAll();
-				    for (int i = 0; i < table.getModel().getRowCount(); i++) {
-				    	for (MONAN monan : monans) {
-				    		int j=0;
-							if (monan.getMaMonAn().equals(table.getValueAt(j, 0))) {
-								soLuongBan = Integer.parseInt(String.valueOf(table.getValueAt(j, 2)));
-								soLuongMoi = monan.getSoLuong() - soLuongBan;
-								monan.setSoLuong(soLuongMoi);
-								DaoMonAn.getInstance().update(monan);
-								DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, monan.getMaMonAn(), soLuongBan, ngayLap));
-							}else {
-								j++;
-							}
-						}
-					}
-				    
 				    int lengh =  table.getModel().getRowCount();
 				    for (int i = 0; i < lengh; i++) {
+				    	String soLuong = String.valueOf(table.getValueAt(0, 2));
+				    	DaoChiTietHoaDon.getInstance().insert(new CHITIETHOADON(maHD, String.valueOf(table.getValueAt(0, 0)),Integer.parseInt(soLuong) , null));
 				        table.getModel().removeRow(0);
 				    }
 					setMaHD(txtHD);
